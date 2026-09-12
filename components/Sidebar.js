@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutGrid, KanbanSquare, ListChecks, FileText } from 'lucide-react';
+import { LayoutGrid, KanbanSquare, ListChecks, FileText, Code2 } from 'lucide-react';
 
 const NAV = [
   { href: '/', label: 'Today', icon: LayoutGrid },
   { href: '/pipeline', label: 'Pipeline', icon: KanbanSquare },
   { href: '/applications', label: 'Applications', icon: ListChecks },
   { href: '/resumes', label: 'Resumes', icon: FileText },
+  { href: '/prep', label: 'Interview Prep', icon: Code2 },
 ];
 
 export default function Sidebar() {
