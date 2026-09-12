@@ -21,3 +21,15 @@ Generating suggested edits for a tailored resume from a pasted **job description
 ## Application
 
 A job the user has applied to. Records company, role, date applied, stage, and communications. May link to one tailored resume via a resume reference.
+
+## Interview prep
+
+A standalone page for interview preparation. The user searches a company and sees the LeetCode questions that company asks, ranked by frequency. Read-only, backed by a vendored public dataset. Separate from the user's own application data.
+
+## Frequency (ask count)
+
+For a company-question pair, the reported number of times that question came up at that company over the last six months, per the source dataset. Used to rank a company's questions most-asked first. It is a reported metric, not a literal count the user recorded.
+
+## Company question set
+
+The list of LeetCode questions associated with one company, each with its difficulty, patterns, and frequency. Derived at load time by indexing the question-centric dataset by company.
