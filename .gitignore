@@ -1,2 +1,6 @@
-# Dependency folders/files
 node_modules
+.next
+out
+.env*
+!.env.example
+.DS_Store

@@ -1,39 +1,22 @@
 {
-  "name": "cmput401-job-application-organizer",
-  "version": "1.0.0",
-  "description": "CMPUT 401 Hackathon - Job Application Organizer",
-  "main": "index.js",
+  "name": "trackwise",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx webpack-dev-server --mode development --open --hot",
-    "build": "npx webpack --mode production"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/arronroasa/CMPUT401-Job-Application-Organizer.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/arronroasa/CMPUT401-Job-Application-Organizer/issues"
-  },
-  "homepage": "https://github.com/arronroasa/CMPUT401-Job-Application-Organizer#readme",
-  "devDependencies": {
-    "@babel/cli": "^7.29.7",
-    "@babel/core": "^7.29.7",
-    "@babel/preset-env": "^7.29.7",
-    "@babel/preset-react": "^7.29.7",
-    "babel-loader": "^10.1.1",
-    "css-loader": "^7.1.5",
-    "style-loader": "^4.0.0",
-    "webpack": "^5.110.3",
-    "webpack-cli": "^7.2.3",
-    "webpack-dev-server": "^6.0.0"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "dependencies": {
-    "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.383.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4"
   }
 }

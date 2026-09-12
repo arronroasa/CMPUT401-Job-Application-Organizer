@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #faf6ec;
+    color: #14150f;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  a {
+    color: #14150f;
+    text-decoration: none;
+  }
+  a:hover {
+    color: #3f6b4a;
+  }
+  ::selection {
+    background: #3f6b4a;
+    color: #fff;
+  }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #3f6b4a !important;
+    box-shadow: 0 0 0 3px rgba(207, 233, 212, 0.55);
+  }
+}
+
+@layer components {
+  .focus-ring:focus-visible {
+    outline: 2px solid #3f6b4a;
+    outline-offset: 2px;
+  }
+
+  .input {
+    @apply w-full rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink outline-none;
+  }
+}
+
+/* ---- Landing-page interactive hovers (inline styles can't express :hover) ---- */
+.lp-navlink { transition: background .2s ease, color .2s ease; }
+.lp-navlink:hover { background: #eef1ea; color: #14150f; }
+.lp-dark:hover { background: #2c2f22 !important; color: #fff !important; }
+.lp-login:hover { background: #14150f; color: #fff; border-color: #14150f; }
+.lp-cardcta:hover { background: #14150f !important; color: #fff !important; }
+.lp-loop { transition: background .35s ease; }
+.lp-loop:hover { background: #fffdf7; }
+.lp-why:hover { border-color: rgba(20,21,15,.28) !important; }
+
+/* ---- Shared keyframes (logo intro + landing motion) ---- */
+@keyframes lsIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes lsSlide {
+  from { opacity: 0; transform: translateX(34px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes lsPop {
+  from { opacity: 0; transform: translateY(12px) scale(.97); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes lsFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-9px); }
+}
+@keyframes lsGrow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+@keyframes lsPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .35; }
+}
+@keyframes lsFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes ofIcon {
+  0%, 6% { opacity: 0; transform: scale(.4); }
+  12% { opacity: 1; transform: scale(1.16); }
+  17% { transform: scale(.96); }
+  21%, 100% { opacity: 1; transform: scale(1); }
+}
+@keyframes ofDoc {
+  0%, 26% { opacity: 0; transform: translateY(26px) scale(.85); }
+  36% { opacity: 1; transform: translateY(-4px) scale(1.03); }
+  42%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes ofSpark {
+  0%, 36% { opacity: 0; transform: scale(.2) rotate(-20deg); }
+  44% { opacity: 1; transform: scale(1.35) rotate(6deg); }
+  50%, 70% { opacity: 1; transform: scale(1) rotate(0); }
+  78% { opacity: .35; transform: scale(.9) rotate(-4deg); }
+  84%, 100% { opacity: 1; transform: scale(1) rotate(0); }
+}
+@keyframes ofLetter {
+  0%, 44% { opacity: 0; transform: translateY(16px); }
+  52% { opacity: 1; transform: translateY(-2px); }
+  57%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Printable resume — everything else hides when exporting to PDF via window.print() */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-resume,
+  #printable-resume * {
+    visibility: visible;
+  }
+  #printable-resume {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
