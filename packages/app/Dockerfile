@@ -7,7 +7,7 @@ WORKDIR /app
 COPY pnpm-workspace.yaml ./
 COPY pnpm-lock.yaml ./
 COPY package.json ./
-COPY .npmrc ./
+# COPY .npmrc ./
 COPY tsconfig.base.json ./
 
 # Copy all packages
