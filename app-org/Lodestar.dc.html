@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="_ds/nocturne-58fefe85-6361-4a56-9594-edbf3fc4af1f/styles.css" />
+<script src="_ds/nocturne-58fefe85-6361-4a56-9594-edbf3fc4af1f/_ds_bundle.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" />
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+<style>
+  /* Nocturne retuned to a monochrome ground: same ramps, same steps, chroma removed. */
+  :root {
+    --color-bg: #07080a;
+    --color-surface: #101216;
+    --color-text: #f2f4f7;
+    --color-accent: #e6e9f0;
+    --color-accent-2: #c3c9d4;
+    --color-divider: color-mix(in srgb, #f2f4f7 14%, transparent);
+
+    --color-neutral-100: #f7f8fa; --color-neutral-200: #eceef2; --color-neutral-300: #d8dbe2;
+    --color-neutral-400: #b4b9c2; --color-neutral-500: #8b9099; --color-neutral-600: #63686f;
+    --color-neutral-700: #44484e; --color-neutral-800: #272a2f; --color-neutral-900: #15171a;
+
+    --color-accent-100: #fafbfd; --color-accent-200: #f4f6f9; --color-accent-300: #e2e6ee;
+    --color-accent-400: #c6ccd7; --color-accent-500: #9ea5b1; --color-accent-600: #6f757f;
+    --color-accent-700: #4a4f57; --color-accent-800: #2b2f35; --color-accent-900: #181a1e;
+
+    --color-accent-2-100: #fafbfd; --color-accent-2-200: #f4f6f9; --color-accent-2-300: #e2e6ee;
+    --color-accent-2-400: #c6ccd7; --color-accent-2-500: #9ea5b1; --color-accent-2-600: #6f757f;
+    --color-accent-2-700: #4a4f57; --color-accent-2-800: #2b2f35; --color-accent-2-900: #181a1e;
+
+    --color-section: #13151a;
+    --color-section-glow: #23272f;
+    --color-section-ghost: #3b4048;
+
+    --shadow-sm: 0 0 0 1px #272a2f;
+    --shadow-md: 0 0 0 1px #3a3e45, 0 6px 20px rgba(0,0,0,0.7);
+    --shadow-lg: 0 0 0 1px #565b63, 0 18px 46px rgba(0,0,0,0.8);
+  }
+  body { margin: 0; overflow-x: hidden; -webkit-font-smoothing: antialiased; background: var(--color-bg); overscroll-behavior-y: contain; }
+  .btn, .tag, .seg-opt { white-space: nowrap; }
+  a { color: var(--color-accent); }
+  a:hover { color: var(--color-accent-300); }
+  .btn { transition: background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease; }
+  .btn:active { transform: translateY(1px); }
+  .ls-rev { opacity: 0; transform: translateY(22px); }
+  .ls-rev.in { opacity: 1; transform: none; transition: opacity .7s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+  @keyframes lsInUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes lsInDown { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: none; } }
+  html { scroll-behavior: auto; }
+  @keyframes lsNudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(4px); } }
+  @keyframes lsSpin { to { transform: rotate(360deg); } }
+  @keyframes lsHalo { 0%, 100% { transform: scale(1); opacity: .5; } 50% { transform: scale(1.22); opacity: .12; } }
+  @keyframes lsRise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  @keyframes lsFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes lsBar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes lsBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes lsWave { 0%, 100% { height: 18%; } 50% { height: 96%; } }
+  @keyframes lsFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  @keyframes lsOrbit1 {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(8px, -14px, 0); }
+  }
+  @keyframes lsOrbit2 {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(-10px, -18px, 0); }
+  }
+  @keyframes lsOrbit3 {
+    0%, 100% { transform: translate3d(0, 0, 0); }
+    50% { transform: translate3d(6px, -12px, 0); }
+  }
+  @keyframes lsGlowPulse {
+    0%, 100% { opacity: .45; }
+    50% { opacity: .9; }
+  }
+  .ls-hero-stage {
+    position: relative;
+    width: 100%;
+    min-height: min(580px, 78vh);
+    height: 100%;
+    display: grid;
+    place-items: center;
+  }
+  .ls-hero-stack {
+    position: relative;
+    width: min(100%, 600px);
+    height: min(560px, 72vw);
+    min-height: 500px;
+    perspective: 1100px;
+  }
+  .ls-hero-card-wrap {
+    position: absolute;
+    width: min(340px, 78%);
+    will-change: transform;
+  }
+  /* Arc that cups the left copy: top near headline, mid outer, bottom wraps under */
+  .ls-hero-card-wrap:nth-child(1) {
+    top: 0%;
+    left: 0%;
+    z-index: 3;
+    animation: lsOrbit1 5.8s ease-in-out infinite;
+  }
+  .ls-hero-card-wrap:nth-child(2) {
+    top: 38%;
+    left: 36%;
+    z-index: 2;
+    animation: lsOrbit2 6.4s ease-in-out .7s infinite;
+  }
+  .ls-hero-card-wrap:nth-child(3) {
+    top: 76%;
+    left: 4%;
+    z-index: 1;
+    animation: lsOrbit3 5.2s ease-in-out 1.4s infinite;
+  }
+  @media (max-width: 720px) {
+    .ls-hero-stack { height: 540px; }
+    .ls-hero-card-wrap { width: min(320px, 92%); }
+    .ls-hero-card-wrap:nth-child(1) { left: 2%; top: 0; }
+    .ls-hero-card-wrap:nth-child(2) { left: 22%; top: 40%; }
+    .ls-hero-card-wrap:nth-child(3) { left: 2%; top: 78%; }
+  }
+  .ls-hero-card {
+    position: relative;
+    padding: 22px 24px;
+    border-radius: 18px;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--color-surface) 78%, transparent), color-mix(in srgb, #161920 88%, transparent));
+    border: 1px solid color-mix(in srgb, var(--color-text) 16%, transparent);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 8%, transparent),
+      0 18px 48px rgba(0,0,0,.55),
+      0 0 40px color-mix(in srgb, var(--color-accent) 8%, transparent);
+    transform: scale(1) translateZ(0);
+    transition:
+      transform .35s cubic-bezier(.2,.8,.2,1),
+      box-shadow .35s ease,
+      border-color .35s ease,
+      background .35s ease;
+    cursor: default;
+    overflow: hidden;
+  }
+  .ls-hero-card::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(135deg, color-mix(in srgb, var(--color-accent) 55%, transparent), transparent 42%, color-mix(in srgb, var(--color-accent-2) 35%, transparent));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: .55;
+    animation: lsGlowPulse 4.5s ease-in-out infinite;
+  }
+  .ls-hero-card::after {
+    content: "";
+    position: absolute;
+    top: -40%;
+    left: -20%;
+    width: 55%;
+    height: 90%;
+    background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 18%, transparent), transparent 70%);
+    pointer-events: none;
+    transition: opacity .35s ease;
+  }
+  .ls-hero-card:hover {
+    transform: scale(1.08) translateY(-4px);
+    border-color: color-mix(in srgb, var(--color-accent) 42%, transparent);
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-accent) 28%, transparent),
+      0 28px 64px rgba(0,0,0,.65),
+      0 0 72px color-mix(in srgb, var(--color-accent) 22%, transparent);
+  }
+  .ls-hero-card:hover::before { opacity: 1; animation: none; }
+  .ls-hero-card:hover::after { opacity: 1.4; }
+  .ls-hero-card-wrap:hover { animation-play-state: paused; z-index: 10; }
+  .ls-hero-card .ls-hero-title {
+    font-size: 18px;
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .ls-hero-card .ls-hero-sub {
+    font-size: 13px;
+    margin-top: 2px;
+  }
+  .ls-hero-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, var(--color-neutral-700), var(--color-neutral-900));
+    border: 1px solid color-mix(in srgb, var(--color-accent) 22%, transparent);
+    box-shadow: inset 0 0 18px color-mix(in srgb, var(--color-accent) 12%, transparent);
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    font-family: var(--font-heading);
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .ls-hero-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 24%, transparent);
+    color: var(--color-accent);
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+  .ls-hero-tag {
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--color-accent) 16%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-accent) 30%, transparent);
+    box-shadow: 0 0 18px color-mix(in srgb, var(--color-accent) 18%, transparent);
+    white-space: nowrap;
+  }
+
+  /* ── Landing full-page pager ── */
+  html.ls-land-lock, html.ls-land-lock body { overflow: hidden; height: 100%; overscroll-behavior: none; }
+  .ls-landing {
+    position: relative;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    perspective: 1800px;
+    perspective-origin: 50% 50%;
+  }
+  .ls-land-cta {
+    padding: 12px 22px !important;
+    font-size: 15px !important;
+    font-weight: 500;
+    border-radius: 999px !important;
+    background: #f2f4f7 !important;
+    color: #07080a !important;
+    border: 1px solid #f2f4f7 !important;
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, #f2f4f7 35%, transparent),
+      0 0 28px color-mix(in srgb, #f2f4f7 45%, transparent),
+      0 0 56px color-mix(in srgb, #f2f4f7 22%, transparent);
+    transition: transform .2s ease, box-shadow .25s ease, background .2s ease;
+  }
+  .ls-land-cta:hover {
+    transform: translateY(-1px);
+    background: #ffffff !important;
+    box-shadow:
+      0 0 0 1px #ffffff,
+      0 0 36px color-mix(in srgb, #ffffff 55%, transparent),
+      0 0 72px color-mix(in srgb, #ffffff 28%, transparent);
+  }
+  .ls-land-cta i { color: #07080a !important; }
+  .ls-land-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 40;
+  }
+  .ls-land-pages {
+    position: relative;
+    height: 100%;
+    transform-style: preserve-3d;
+  }
+  .ls-land-page {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 72px 0 56px;
+    overflow: hidden;
+    backface-visibility: hidden;
+    transform-origin: center bottom;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .ls-land-page.is-active {
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 2;
+    transform: none;
+  }
+  .ls-land-page.is-leave-next {
+    z-index: 3;
+    animation: lsTurnOutNext .78s cubic-bezier(.55,.05,.25,1) both;
+  }
+  .ls-land-page.is-enter-next {
+    z-index: 2;
+    animation: lsTurnInNext .78s cubic-bezier(.2,.75,.2,1) both;
+  }
+  .ls-land-page.is-leave-prev {
+    z-index: 3;
+    animation: lsTurnOutPrev .78s cubic-bezier(.55,.05,.25,1) both;
+  }
+  .ls-land-page.is-enter-prev {
+    z-index: 2;
+    animation: lsTurnInPrev .78s cubic-bezier(.2,.75,.2,1) both;
+  }
+  @keyframes lsTurnOutNext {
+    0% { opacity: 1; transform: rotateX(0deg) translateY(0) scale(1); filter: brightness(1); }
+    55% { opacity: 1; }
+    100% { opacity: 0; transform: rotateX(-72deg) translateY(-18%) scale(.92); filter: brightness(.55); }
+  }
+  @keyframes lsTurnInNext {
+    0% { opacity: 0; transform: rotateX(56deg) translateY(28%) scale(.94); filter: brightness(.6); }
+    100% { opacity: 1; transform: rotateX(0) translateY(0) scale(1); filter: brightness(1); }
+  }
+  @keyframes lsTurnOutPrev {
+    0% { opacity: 1; transform: rotateX(0deg) translateY(0) scale(1); filter: brightness(1); }
+    100% { opacity: 0; transform: rotateX(56deg) translateY(22%) scale(.94); filter: brightness(.55); }
+  }
+  @keyframes lsTurnInPrev {
+    0% { opacity: 0; transform: rotateX(-72deg) translateY(-18%) scale(.92); filter: brightness(.55); }
+    100% { opacity: 1; transform: rotateX(0) translateY(0) scale(1); filter: brightness(1); }
+  }
+  .ls-land-inner {
+    width: min(1200px, 100%);
+    margin: 0 auto;
+    padding: 0 22.4px;
+    max-height: 100%;
+    overflow: auto;
+    scrollbar-width: none;
+  }
+  .ls-land-inner::-webkit-scrollbar { display: none; }
+  .ls-land-dots {
+    position: fixed;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 35;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  .ls-land-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    background: var(--color-neutral-700);
+    transition: height .28s ease, background .28s ease, box-shadow .28s ease;
+  }
+  .ls-land-dot.is-on {
+    height: 22px;
+    background: var(--color-accent);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--color-accent) 45%, transparent);
+  }
+  .ls-land-hint {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 35;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: color-mix(in srgb, var(--color-text) 55%, transparent);
+    pointer-events: none;
+    transition: opacity .35s ease;
+  }
+  .ls-land-hint i { animation: lsNudge 1.6s ease-in-out infinite; font-size: 16px; color: var(--color-accent); }
+  .ls-land-hint.is-hidden { opacity: 0; }
+  @media (max-width: 720px) {
+    .ls-land-dots { right: 10px; }
+    .ls-land-page { padding: 64px 0 64px; }
+  }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--color-neutral-800); border-radius: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+</style>
+</helmet>
+
+<div style="min-height:100vh;background:var(--color-bg);color:var(--color-text);font-family:var(--font-body);position:relative">
+
+  <!-- ════════ LANDING ════════ -->
+  <sc-if value="{{ isLanding }}" hint-placeholder-val="{{ true }}">
+  <div class="ls-landing" style="animation:lsFade .4s ease both">
+    <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:repeating-linear-gradient(to right, color-mix(in srgb, var(--color-text) 4%, transparent) 0 1px, transparent 1px 88px), repeating-linear-gradient(to bottom, color-mix(in srgb, var(--color-text) 4%, transparent) 0 1px, transparent 1px 88px);mask-image:radial-gradient(120% 80% at 50% 0%, #000 20%, transparent 78%)"></div>
+    <div style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(400px 400px at var(--ls-mx, 50%) var(--ls-my, 30%), color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 70%)"></div>
+
+    <div class="ls-land-nav" style="backdrop-filter:blur(14px);background:color-mix(in srgb, var(--color-bg) 82%, transparent)">
+      <div style="max-width:1200px;margin:0 auto;padding:14px 22.4px;display:flex;align-items:center;gap:16.8px">
+        <div style="display:flex;align-items:center;gap:10px;margin-right:auto">
+          <div style="width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 32% 30%, var(--color-accent-200), var(--color-accent-600) 62%, var(--color-accent-800));box-shadow:0 0 16px color-mix(in srgb, var(--color-accent) 45%, transparent)"></div>
+          <span style="font-family:var(--font-heading);font-weight:500;font-size:18px;letter-spacing:-0.01em">Lodestar</span>
+        </div>
+        <span class="text-muted" style="font-size:13px">For 2nd-year CS, hunting 2027 internships</span>
+        <button class="btn ls-land-cta" onClick="{{ startOnboard }}">Let's get started <i class="ph ph-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <div class="ls-land-pages">
+      <!-- PAGE 1: Hero -->
+      <section class="ls-land-page">
+        <div class="ls-land-inner">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:44.8px;align-items:center">
+            <div>
+              <div style="display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent);margin-bottom:22.4px;white-space:nowrap">
+                <span style="width:28px;height:1px;background:var(--color-accent)"></span>A to Z job hunt
+              </div>
+              <h1 style="font-size:clamp(40px,6.4vw,72px);line-height:1.02;letter-spacing:-0.03em;margin:0 0 22.4px;max-width:16ch;text-wrap:pretty">Every application, from listing to offer.</h1>
+              <p style="font-size:clamp(16px,1.6vw,19px);line-height:1.6;max-width:52ch;opacity:.78;margin:0 0 28px">Lodestar scrapes the listings, tailors your resume to each one, tracks every reply, and rehearses the interview with you. One place, one thread, no spreadsheet.</p>
+              <div style="display:flex;flex-wrap:wrap;gap:11.2px;align-items:center">
+                <button class="btn btn-primary" style="padding:11px 20px;font-size:15px" onClick="{{ startOnboard }}"><i class="ph ph-sparkle"></i> Start with my resume</button>
+                <button class="btn btn-secondary" style="padding:11px 20px;font-size:15px" onClick="{{ goDash }}">See a live account</button>
+              </div>
+              <div style="margin-top:33.6px;display:flex;gap:22.4px;flex-wrap:wrap;font-size:12px" class="text-muted">
+                <span><i class="ph ph-plugs-connected" style="color:var(--color-accent);margin-right:5px"></i>4 job sources</span>
+                <span><i class="ph ph-shield-check" style="color:var(--color-accent);margin-right:5px"></i>Your data stays local</span>
+                <span><i class="ph ph-device-mobile" style="color:var(--color-accent);margin-right:5px"></i>Works on the bus</span>
+              </div>
+            </div>
+
+            <div class="ls-hero-stage">
+              <div style="position:absolute;inset:8% 4% 12% 0;border-radius:50%;background:radial-gradient(circle at 42% 48%, color-mix(in srgb, var(--color-accent) 28%, transparent), transparent 62%);filter:blur(22px);animation:lsHalo 6s ease-in-out infinite;pointer-events:none"></div>
+              <div style="position:absolute;inset:18% 10% 20% 8%;border:1px solid color-mix(in srgb, var(--color-accent) 12%, transparent);border-radius:50%;opacity:.55;pointer-events:none;mask-image:linear-gradient(90deg, transparent 0%, #000 35%, #000 100%);-webkit-mask-image:linear-gradient(90deg, transparent 0%, #000 35%, #000 100%)"></div>
+              <div class="ls-hero-stack">
+                <div class="ls-hero-card-wrap">
+                  <div class="ls-hero-card">
+                    <div style="display:flex;align-items:center;gap:16px">
+                      <div class="ls-hero-avatar">NF</div>
+                      <div style="flex:1;min-width:0">
+                        <div class="ls-hero-title">Software Engineer Intern</div>
+                        <div class="text-muted ls-hero-sub">Neo Financial · Calgary</div>
+                      </div>
+                      <span class="ls-hero-tag">94% fit</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="ls-hero-card-wrap">
+                  <div class="ls-hero-card">
+                    <div style="display:flex;align-items:center;gap:16px">
+                      <div class="ls-hero-icon"><i class="ph ph-file-text"></i></div>
+                      <div style="flex:1">
+                        <div class="ls-hero-title">resume — neo-financial.pdf</div>
+                        <div class="text-muted ls-hero-sub">6 bullets rewritten · 9 keywords matched</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="ls-hero-card-wrap">
+                  <div class="ls-hero-card">
+                    <div style="display:flex;align-items:center;gap:16px">
+                      <div class="ls-hero-icon"><i class="ph ph-microphone"></i></div>
+                      <div style="flex:1">
+                        <div class="ls-hero-title">Mock interview · 78/100</div>
+                        <div class="text-muted ls-hero-sub">Structure up 14 points since Tuesday</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 2: The Loop + metrics -->
+      <section class="ls-land-page">
+        <div class="ls-land-inner" style="display:flex;flex-direction:column;gap:clamp(28px,4vw,40px)">
+          <div>
+            <h6 style="color:var(--color-accent);margin-bottom:22.4px">The loop</h6>
+            <h2 style="font-size:clamp(26px,3.4vw,38px);letter-spacing:-0.02em;max-width:26ch;margin-bottom:44.8px">Four moves, repeated until someone says yes.</h2>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--color-divider)">
+              <sc-for list="{{ loop }}" as="step" hint-placeholder-count="4">
+                <div style="background:var(--color-bg);padding:22.4px 16.8px 28px;transition:background .3s ease" style-hover="background:color-mix(in srgb, var(--color-accent) 7%, var(--color-bg))">
+                  <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:16.8px">
+                    <span style="font-family:var(--font-heading);font-size:12px;color:var(--color-accent)">{{ step.n }}</span>
+                    <i class="ph {{ step.icon }}" style="font-size:19px;color:var(--color-accent)"></i>
+                  </div>
+                  <div style="font-family:var(--font-heading);font-weight:500;font-size:18px;margin-bottom:8.4px">{{ step.title }}</div>
+                  <p style="font-size:13px;line-height:1.6;opacity:.72;margin:0">{{ step.body }}</p>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="background:var(--color-section);position:relative;overflow:hidden;border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)">
+            <div style="position:absolute;top:-40%;left:12%;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle, var(--color-section-glow), transparent 64%);opacity:.75;pointer-events:none"></div>
+            <div style="position:relative;padding:clamp(28px,4vw,40px) 22.4px;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:33.6px">
+              <sc-for list="{{ stats }}" as="s" hint-placeholder-count="4">
+                <div>
+                  <div style="font-family:var(--font-heading);font-size:clamp(32px,4vw,46px);letter-spacing:-0.02em;line-height:1">{{ s.v }}</div>
+                  <div style="font-size:12px;opacity:.72;margin-top:8.4px">{{ s.k }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE 3: Pitches + tour -->
+      <section class="ls-land-page">
+        <div class="ls-land-inner" style="display:flex;flex-direction:column;gap:clamp(28px,4vw,44px)">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16.8px">
+            <sc-for list="{{ pitches }}" as="p" hint-placeholder-count="3">
+              <div class="card elev-sm" style="padding:22.4px;transition:transform .25s cubic-bezier(.2,.7,.2,1), box-shadow .25s ease" style-hover="transform:translateY(-6px);box-shadow:0 0 0 1px var(--color-accent-700), 0 18px 40px rgba(0,0,0,.5)">
+                <div class="card-kicker">{{ p.kicker }}</div>
+                <div class="card-title" style="font-size:20px">{{ p.title }}</div>
+                <p class="card-body" style="line-height:1.6">{{ p.body }}</p>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;flex-wrap:wrap;gap:22.4px;align-items:center;justify-content:space-between;padding:28px 33.6px;border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)">
+            <div>
+              <h3 style="margin-bottom:8.4px">Vega will walk you through it.</h3>
+              <p class="text-muted" style="margin:0;font-size:14px">A two-minute guided tour of the whole system, narrated as you click.</p>
+            </div>
+            <button class="btn btn-primary" style="padding:11px 20px;font-size:15px" onClick="{{ startTour }}"><i class="ph ph-play"></i> Take the tour</button>
+          </div>
+          <div style="font-size:12px" class="text-muted">Lodestar · built at the Fall 2026 hackathon</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="ls-land-dots" aria-label="Landing pages">
+      <sc-for list="{{ landDots }}" as="d" hint-placeholder-count="3">
+        <button class="ls-land-dot {{ d.cls }}" title="{{ d.label }}" onClick="{{ d.go }}"></button>
+      </sc-for>
+    </div>
+    <div class="ls-land-hint {{ landHintCls }}">
+      <i class="ph ph-caret-down"></i>
+      <span>Swipe</span>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ════════ ONBOARDING ════════ -->
+  <sc-if value="{{ isOnboard }}" hint-placeholder-val="{{ false }}">
+  <div style="min-height:100vh;display:grid;place-items:center;padding:22.4px;animation:lsFade .4s ease both">
+    <div style="width:min(620px,100%)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:28px">
+        <sc-for list="{{ onbDots }}" as="d" hint-placeholder-count="3">
+          <span style="height:2px;flex:1;border-radius:2px;background:{{ d.bg }}"></span>
+        </sc-for>
+      </div>
+      <div style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent);margin-bottom:14px">Step {{ onbStep }} of 3</div>
+      <h2 style="letter-spacing:-0.02em;margin-bottom:11.2px">{{ onb.title }}</h2>
+      <p style="opacity:.75;font-size:15px;max-width:48ch;margin-bottom:28px">{{ onb.body }}</p>
+
+      <sc-if value="{{ onb1 }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="border:1px dashed var(--color-neutral-700);border-radius:var(--radius-lg);padding:33.6px;text-align:center;background:color-mix(in srgb, var(--color-surface) 55%, transparent)">
+            <i class="ph ph-upload-simple" style="font-size:26px;color:var(--color-accent)"></i>
+            <div style="font-family:var(--font-heading);font-size:16px;margin:11.2px 0 5.6px">Drop your master resume</div>
+            <div class="text-muted" style="font-size:12px">PDF or DOCX · or paste the text below</div>
+          </div>
+          <div class="field" style="margin-top:16.8px">
+            <label>Paste instead</label>
+            <textarea class="input" placeholder="Nora Adeyemi — 2nd year CS, University of Alberta…"></textarea>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ onb2 }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:22.4px">
+          <div>
+            <div style="font-size:12px;opacity:.7;margin-bottom:11.2px">Roles you want</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ roleChips }}" as="c" hint-placeholder-count="6">
+                <button class="tag" style="cursor:pointer;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};padding:6px 12px;font-size:12px" onClick="{{ c.toggle }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:12px;opacity:.7;margin-bottom:11.2px">Where</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ locChips }}" as="c" hint-placeholder-count="4">
+                <button class="tag" style="cursor:pointer;border:1px solid {{ c.bd }};background:{{ c.bg }};color:{{ c.fg }};padding:6px 12px;font-size:12px" onClick="{{ c.toggle }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ onb3 }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:8.4px">
+          <sc-for list="{{ sources }}" as="s" hint-placeholder-count="4">
+            <button style="all:unset;cursor:pointer;display:flex;align-items:center;gap:14px;padding:14px 16.8px;border-radius:var(--radius-md);background:var(--color-surface);box-shadow:{{ s.ring }}" onClick="{{ s.toggle }}">
+              <i class="ph {{ s.icon }}" style="font-size:18px;color:var(--color-accent)"></i>
+              <div style="flex:1">
+                <div style="font-size:14px;font-family:var(--font-heading);font-weight:500">{{ s.name }}</div>
+                <div class="text-muted" style="font-size:11px">{{ s.note }}</div>
+              </div>
+              <span style="font-size:11px;color:{{ s.fg }}">{{ s.state }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <div style="display:flex;gap:11.2px;margin-top:33.6px;align-items:center">
+        <button class="btn btn-primary" onClick="{{ onbNext }}">{{ onb.cta }} <i class="ph ph-arrow-right"></i></button>
+        <button class="btn btn-ghost" onClick="{{ goDash }}">Skip setup</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ════════ APP SHELL ════════ -->
+  <sc-if value="{{ inApp }}" hint-placeholder-val="{{ false }}">
+  <div>
+    <span data-ls-top aria-hidden="true" style="position:absolute;top:0;left:0;width:1px;height:1px;pointer-events:none"></span>
+    <div style="position:sticky;top:0;z-index:30;backdrop-filter:blur(14px);background:color-mix(in srgb, var(--color-bg) 86%, transparent)">
+      <div style="max-width:1320px;margin:0 auto;padding:11.2px 16.8px;display:flex;align-items:center;gap:16.8px;flex-wrap:wrap">
+        <button style="all:unset;cursor:pointer;display:flex;align-items:center;gap:9px" onClick="{{ goLanding }}">
+          <div style="width:18px;height:18px;border-radius:50%;background:radial-gradient(circle at 32% 30%, var(--color-accent-200), var(--color-accent-600) 62%, var(--color-accent-800));box-shadow:0 0 12px color-mix(in srgb, var(--color-accent) 45%, transparent)"></div>
+          <span style="font-family:var(--font-heading);font-weight:500;font-size:16px">Lodestar</span>
+        </button>
+        <nav style="display:flex;gap:2px;flex-wrap:wrap;flex:1">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="7">
+            <button style="all:unset;cursor:pointer;display:inline-flex;align-items:center;gap:6px;padding:7px 11.2px;border-radius:var(--radius-md);font-size:13px;color:{{ t.fg }};background:{{ t.bg }}" onClick="{{ t.go }}">
+              <i class="ph {{ t.icon }}" style="font-size:15px"></i>{{ t.label }}
+              <sc-if value="{{ t.badge }}" hint-placeholder-val="{{ false }}"><span style="font-size:10px;padding:1px 5px;border-radius:6px;background:var(--color-accent-800);color:var(--color-accent-100)">{{ t.badge }}</span></sc-if>
+            </button>
+          </sc-for>
+        </nav>
+        <div style="display:flex;align-items:center;gap:8.4px">
+          <div style="display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:var(--radius-md);box-shadow:inset 0 0 0 1px var(--color-neutral-800);font-size:12px">
+            <i class="ph-fill ph-flame" style="color:var(--color-accent);font-size:14px"></i><span style="white-space:nowrap">{{ streak }}-day streak</span>
+          </div>
+          <button class="btn btn-secondary" style="font-size:12px;font-family:var(--font-body)" onClick="{{ openCmd }}"><i class="ph ph-magnifying-glass"></i> ⌘K</button>
+          <button class="btn btn-icon btn-secondary" onClick="{{ toggleOrb }}" title="Vega"><i class="ph ph-sparkle" style="font-size:16px;color:var(--color-accent)"></i></button>
+        </div>
+      </div>
+      <div style="height:1px;background:linear-gradient(to right,transparent,var(--color-divider) 48px,var(--color-divider) calc(100% - 48px),transparent)"></div>
+    </div>
+
+    <main ref="{{ mainRef }}" style="max-width:1320px;margin:0 auto;padding:28px 16.8px 140px;touch-action:pan-y;will-change:transform">
+
+      <!-- ─── DASHBOARD ─── -->
+      <sc-if value="{{ isDash }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <div style="display:flex;flex-wrap:wrap;gap:16.8px;align-items:flex-end;justify-content:space-between;margin-bottom:28px">
+          <div>
+            <div class="text-muted" style="font-size:12px;margin-bottom:5.6px">Saturday, 12 September</div>
+            <h2 style="letter-spacing:-0.02em;margin:0">Good afternoon, Nora.</h2>
+          </div>
+          <div style="display:flex;gap:8.4px">
+            <button class="btn btn-secondary" onClick="{{ goJobs }}"><i class="ph ph-magnifying-glass"></i> Find jobs</button>
+            <button class="btn btn-primary" onClick="{{ goTailor }}"><i class="ph ph-plus"></i> New application</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1px;background:var(--color-divider);border-radius:var(--radius-md);overflow:hidden;margin-bottom:16.8px">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+            <div style="background:var(--color-surface);padding:16.8px;transition:background .25s ease" style-hover="background:color-mix(in srgb, var(--color-accent) 10%, var(--color-surface))">
+              <div class="text-muted" style="font-size:11px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8.4px">{{ k.label }}</div>
+              <div style="display:flex;align-items:baseline;gap:8px">
+                <span style="font-family:var(--font-heading);font-size:28px;letter-spacing:-0.02em">{{ k.v }}</span>
+                <span style="font-size:11px;color:var(--color-accent-300);white-space:nowrap">{{ k.delta }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16.8px">
+          <div class="card elev-sm" style="padding:22.4px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <div class="card-kicker">Pipeline</div>
+              <span class="text-muted" style="font-size:11px">last 60 days</span>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-top:11.2px">
+              <sc-for list="{{ funnel }}" as="f" hint-placeholder-count="5">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px">
+                    <span>{{ f.stage }}</span><span class="text-muted">{{ f.n }}</span>
+                  </div>
+                  <div style="height:6px;border-radius:6px;background:var(--color-neutral-900);overflow:hidden">
+                    <div style="height:100%;width:{{ f.pct }};background:{{ f.fill }};transform-origin:left;animation:lsBar .7s cubic-bezier(.2,.7,.2,1) both"></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div class="card elev-sm" style="padding:22.4px">
+            <div class="card-kicker">Momentum</div>
+            <div style="font-size:13px;opacity:.78;margin-top:5.6px">You have applied on 12 of the last 14 days. Two more to beat your record.</div>
+            <div style="display:flex;gap:4px;margin-top:16.8px;flex-wrap:wrap">
+              <sc-for list="{{ heat }}" as="h" hint-placeholder-count="14">
+                <div style="width:18px;height:26px;border-radius:3px;background:{{ h.bg }}" title="{{ h.t }}"></div>
+              </sc-for>
+            </div>
+            <div style="height:1px;margin:22.4px 0 14px;background:linear-gradient(to right,transparent,var(--color-divider) 24px,var(--color-divider) calc(100% - 24px),transparent)"></div>
+            <div style="display:flex;justify-content:space-between;font-size:12px" class="text-muted">
+              <span>Avg response time</span><span style="color:var(--color-text)">6.4 days</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:12px;margin-top:8px" class="text-muted">
+              <span>Reply rate on tailored resumes</span><span style="color:var(--color-accent-300)">31% vs 12%</span>
+            </div>
+          </div>
+
+          <div class="card elev-sm" style="padding:22.4px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <div class="card-kicker">Next three actions</div>
+              <button class="btn btn-ghost" style="font-size:12px" onClick="{{ goReminders }}">All</button>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:2px;margin-top:8.4px">
+              <sc-for list="{{ nextActions }}" as="a" hint-placeholder-count="3">
+                <button style="all:unset;cursor:pointer;display:flex;gap:11.2px;padding:11.2px 8.4px;border-radius:var(--radius-sm);align-items:flex-start" style-hover="background:color-mix(in srgb, var(--color-text) 6%, transparent)" onClick="{{ a.go }}">
+                  <i class="ph {{ a.icon }}" style="font-size:16px;color:var(--color-accent);margin-top:2px"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13.5px">{{ a.title }}</div>
+                    <div class="text-muted" style="font-size:11px;margin-top:3px">{{ a.meta }}</div>
+                  </div>
+                  <span class="tag" style="background:{{ a.dueBg }};color:{{ a.dueFg }}">{{ a.due }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:16.8px;padding:22.4px;border-radius:var(--radius-md);box-shadow:inset 0 0 0 1px var(--color-accent-800);background:linear-gradient(120deg, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 60%)">
+          <div style="display:flex;gap:16.8px;align-items:flex-start;flex-wrap:wrap">
+            <div style="width:30px;height:30px;flex:none;border-radius:50%;background:radial-gradient(circle at 32% 30%, var(--color-accent-200), var(--color-accent-600) 62%, var(--color-accent-800))"></div>
+            <div style="flex:1;min-width:240px">
+              <div style="font-family:var(--font-heading);font-size:15px;margin-bottom:5.6px">Vega noticed a pattern</div>
+              <p style="margin:0;font-size:13.5px;opacity:.82;line-height:1.6">Four of your five replies came from applications sent before 10am on weekdays, and all of them used the backend-flavoured resume. Want me to queue tomorrow's three in that shape?</p>
+            </div>
+            <div style="display:flex;gap:8.4px">
+              <button class="btn btn-primary" onClick="{{ goTailor }}">Queue three</button>
+              <button class="btn btn-secondary">Not now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── JOB FEED ─── -->
+      <sc-if value="{{ isJobs }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <div style="display:flex;flex-wrap:wrap;gap:16.8px;justify-content:space-between;align-items:flex-end;margin-bottom:22.4px">
+          <div>
+            <h2 style="letter-spacing:-0.02em;margin:0 0 5.6px">Job feed</h2>
+            <div class="text-muted" style="font-size:12.5px"><i class="ph ph-arrows-clockwise" style="margin-right:5px;color:var(--color-accent)"></i>Scraped 4 sources 6 minutes ago · 23 new, 6 above your fit line</div>
+          </div>
+          <div class="seg">
+            <sc-for list="{{ jobFilters }}" as="f" hint-placeholder-count="3">
+              <label class="seg-opt" style="color:{{ f.fg }};box-shadow:{{ f.ring }}"><input type="radio" name="jf" checked="{{ f.on }}" onChange="{{ f.pick }}" />{{ f.label }}</label>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:11.2px">
+          <sc-for list="{{ jobs }}" as="j" hint-placeholder-count="6">
+            <div class="card elev-sm" style="padding:16.8px;gap:11.2px;transition:transform .22s cubic-bezier(.2,.7,.2,1), box-shadow .22s ease" style-hover="transform:translateY(-4px);box-shadow:0 0 0 1px var(--color-accent-700), 0 14px 34px rgba(0,0,0,.55)">
+              <div style="display:flex;gap:11.2px;align-items:flex-start">
+                <div style="width:36px;height:36px;flex:none;border-radius:var(--radius-sm);background:var(--color-neutral-800);display:grid;place-items:center;font-family:var(--font-heading);font-size:12px">{{ j.initials }}</div>
+                <div style="flex:1;min-width:0">
+                  <div style="font-family:var(--font-heading);font-weight:500;font-size:15px;line-height:1.25">{{ j.role }}</div>
+                  <div class="text-muted" style="font-size:12px;margin-top:3px">{{ j.company }} · {{ j.place }}</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-family:var(--font-heading);font-size:17px;color:{{ j.fitFg }}">{{ j.fit }}%</div>
+                  <div class="text-muted" style="font-size:10px">fit</div>
+                </div>
+              </div>
+              <div style="height:4px;border-radius:4px;background:var(--color-neutral-900);overflow:hidden">
+                <div style="height:100%;width:{{ j.fitW }};background:{{ j.fitFill }}"></div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px">
+                <sc-for list="{{ j.tags }}" as="t" hint-placeholder-count="3">
+                  <span class="tag tag-neutral">{{ t }}</span>
+                </sc-for>
+              </div>
+              <div class="card-meta" style="justify-content:space-between">
+                <span>{{ j.pay }} · via {{ j.source }} · {{ j.age }}</span>
+              </div>
+              <div style="font-size:12px;opacity:.72;line-height:1.55;padding:8.4px 0 0;border-top:1px solid var(--color-divider)">
+                <i class="ph ph-sparkle" style="color:var(--color-accent);margin-right:5px"></i>{{ j.why }}
+              </div>
+              <div style="display:flex;gap:8px">
+                <button class="btn btn-primary" style="flex:1" onClick="{{ j.tailor }}">Tailor & apply</button>
+                <button class="btn btn-secondary btn-icon" title="Save"><i class="ph ph-bookmark-simple" style="font-size:15px"></i></button>
+                <button class="btn btn-secondary btn-icon" title="Hide"><i class="ph ph-eye-slash" style="font-size:15px"></i></button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── TRACKER ─── -->
+      <sc-if value="{{ isTracker }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <div style="display:flex;flex-wrap:wrap;gap:16.8px;justify-content:space-between;align-items:flex-end;margin-bottom:22.4px">
+          <div>
+            <h2 style="letter-spacing:-0.02em;margin:0 0 5.6px">Tracker</h2>
+            <div class="text-muted" style="font-size:12.5px">41 applications · drag a card to move a stage, or click it to open the thread</div>
+          </div>
+          <button class="btn btn-secondary" onClick="{{ goInbox }}"><i class="ph ph-envelope-simple"></i> 3 unread replies</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:11.2px;align-items:start">
+          <sc-for list="{{ columns }}" as="c" hint-placeholder-count="5">
+            <div style="border-radius:var(--radius-md);box-shadow:inset 0 0 0 1px var(--color-neutral-900);padding:11.2px;background:color-mix(in srgb, var(--color-surface) 45%, transparent)">
+              <div style="display:flex;align-items:center;gap:8px;padding:2px 4px 11.2px">
+                <span style="width:6px;height:6px;border-radius:50%;background:{{ c.dot }}"></span>
+                <span style="font-family:var(--font-heading);font-size:13px">{{ c.name }}</span>
+                <span class="text-muted" style="font-size:11px;margin-left:auto">{{ c.count }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ c.cards }}" as="k" hint-placeholder-count="2">
+                  <button style="all:unset;cursor:pointer;display:block;padding:11.2px;border-radius:var(--radius-sm);background:var(--color-surface);box-shadow:var(--shadow-sm)" style-hover="box-shadow:0 0 0 1px var(--color-accent-700), 0 6px 18px rgba(0,0,0,.5)" onClick="{{ k.open }}">
+                    <div style="font-family:var(--font-heading);font-weight:500;font-size:13.5px;line-height:1.3">{{ k.role }}</div>
+                    <div class="text-muted" style="font-size:11.5px;margin-top:4px">{{ k.company }}</div>
+                    <div style="display:flex;align-items:center;gap:6px;margin-top:9px">
+                      <span class="tag" style="background:{{ k.tagBg }};color:{{ k.tagFg }};font-size:10px;padding:2px 7px">{{ k.tag }}</span>
+                      <span class="text-muted" style="font-size:10.5px;margin-left:auto">{{ k.when }}</span>
+                    </div>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── APPLICATION DETAIL ─── -->
+      <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <button class="btn btn-ghost" style="margin-bottom:16.8px" onClick="{{ goTracker }}"><i class="ph ph-arrow-left"></i> Tracker</button>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22.4px;align-items:start">
+          <div>
+            <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:22.4px">
+              <div style="width:46px;height:46px;flex:none;border-radius:var(--radius-md);background:var(--color-neutral-800);display:grid;place-items:center;font-family:var(--font-heading);font-size:15px">WS</div>
+              <div>
+                <h3 style="margin:0 0 5.6px">Backend Developer Intern</h3>
+                <div class="text-muted" style="font-size:13px">Wealthsimple · Toronto, remote · applied 2 Sep</div>
+                <div style="display:flex;gap:6px;margin-top:11.2px;flex-wrap:wrap">
+                  <span class="tag tag-accent">Take-home stage</span>
+                  <span class="tag tag-outline">88% fit</span>
+                  <span class="tag tag-neutral">resume v3</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px">
+              <button class="btn btn-primary" onClick="{{ goInterview }}"><i class="ph ph-microphone"></i> Rehearse for this</button>
+              <button class="btn btn-secondary" onClick="{{ goTailor }}"><i class="ph ph-file-text"></i> View resume sent</button>
+              <button class="btn btn-secondary"><i class="ph ph-bell-simple"></i> Set reminder</button>
+            </div>
+
+            <h6 style="color:var(--color-accent);margin-bottom:16.8px">Timeline</h6>
+            <div style="display:flex;flex-direction:column;gap:0">
+              <sc-for list="{{ timeline }}" as="e" hint-placeholder-count="6">
+                <div style="display:grid;grid-template-columns:64px 22px 1fr;gap:11.2px;padding-bottom:22.4px">
+                  <div class="text-muted" style="font-size:11.5px;text-align:right;padding-top:2px">{{ e.date }}</div>
+                  <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+                    <span style="width:9px;height:9px;border-radius:50%;background:{{ e.dot }};box-shadow:{{ e.glow }};margin-top:5px"></span>
+                    <span style="flex:1;width:1px;background:var(--color-neutral-800)"></span>
+                  </div>
+                  <div>
+                    <div style="font-size:13.5px;font-family:var(--font-heading);font-weight:500">{{ e.title }}</div>
+                    <div class="text-muted" style="font-size:12px;margin-top:4px;line-height:1.55">{{ e.body }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:11.2px">
+            <div class="card elev-sm" style="padding:16.8px;box-shadow:inset 0 0 0 1px var(--color-accent-800)">
+              <div class="card-kicker">Next action</div>
+              <div style="font-family:var(--font-heading);font-size:16px">Submit the take-home</div>
+              <div class="text-muted" style="font-size:12px">Due Monday 14 Sep, 9:00am · 2 days left</div>
+              <button class="btn btn-primary btn-block">Open the brief</button>
+            </div>
+            <div class="card elev-sm" style="padding:16.8px">
+              <div class="card-kicker">Contacts</div>
+              <sc-for list="{{ contacts }}" as="p" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:11.2px;padding:6px 0">
+                  <div style="width:28px;height:28px;border-radius:50%;background:var(--color-neutral-800);display:grid;place-items:center;font-size:11px">{{ p.initials }}</div>
+                  <div style="flex:1">
+                    <div style="font-size:13px">{{ p.name }}</div>
+                    <div class="text-muted" style="font-size:11px">{{ p.role }}</div>
+                  </div>
+                  <button class="btn btn-icon btn-secondary"><i class="ph ph-envelope-simple" style="font-size:14px"></i></button>
+                </div>
+              </sc-for>
+            </div>
+            <div class="card elev-sm" style="padding:16.8px">
+              <div class="card-kicker">Job snapshot</div>
+              <div class="text-muted" style="font-size:12px;line-height:1.6">Kept at the moment you applied, so you can compare it to whatever gets asked in the interview.</div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:8.4px">
+                <span class="tag tag-neutral">Python</span><span class="tag tag-neutral">Django</span><span class="tag tag-neutral">PostgreSQL</span><span class="tag tag-neutral">GraphQL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── MASTER RESUME ─── -->
+      <sc-if value="{{ isResume }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <div style="display:flex;flex-wrap:wrap;gap:16.8px;justify-content:space-between;align-items:flex-end;margin-bottom:22.4px">
+          <div>
+            <h2 style="letter-spacing:-0.02em;margin:0 0 5.6px">Master resume</h2>
+            <div class="text-muted" style="font-size:12.5px">One source of truth · 5 variants derived from it · last edited yesterday</div>
+          </div>
+          <div style="display:flex;gap:8.4px">
+            <button class="btn btn-secondary"><i class="ph ph-download-simple"></i> Export PDF</button>
+            <button class="btn btn-primary" onClick="{{ goTailor }}"><i class="ph ph-sparkle"></i> Tailor a copy</button>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16.8px;align-items:start">
+          <div style="grid-column:span 2;min-width:0">
+            <div style="background:var(--color-surface);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);padding:28px">
+              <div style="font-family:var(--font-heading);font-size:22px;letter-spacing:-0.01em">Nora Adeyemi</div>
+              <div class="text-muted" style="font-size:12.5px;margin-top:4px">BSc Computing Science, University of Alberta · Edmonton · nora.a@ualberta.ca</div>
+              <div style="height:1px;margin:22.4px 0;background:linear-gradient(to right,transparent,var(--color-divider) 32px,var(--color-divider) calc(100% - 32px),transparent)"></div>
+              <sc-for list="{{ resumeSections }}" as="s" hint-placeholder-count="4">
+                <div style="margin-bottom:22.4px">
+                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:11.2px">
+                    <h6 style="margin:0;color:var(--color-accent)">{{ s.name }}</h6>
+                    <span style="flex:1;height:1px;background:var(--color-divider)"></span>
+                    <button class="btn btn-ghost" style="font-size:11px">Edit</button>
+                  </div>
+                  <sc-for list="{{ s.items }}" as="it" hint-placeholder-count="2">
+                    <div style="margin-bottom:11.2px">
+                      <div style="display:flex;justify-content:space-between;gap:11.2px;font-size:13.5px">
+                        <span style="font-family:var(--font-heading);font-weight:500">{{ it.head }}</span>
+                        <span class="text-muted" style="font-size:11.5px;white-space:nowrap">{{ it.when }}</span>
+                      </div>
+                      <sc-for list="{{ it.bullets }}" as="b" hint-placeholder-count="2">
+                        <div style="display:flex;gap:8px;font-size:12.5px;opacity:.82;line-height:1.6;margin-top:5px">
+                          <span style="color:var(--color-accent)">·</span><span>{{ b }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:11.2px">
+            <div class="card elev-sm" style="padding:16.8px">
+              <div class="card-kicker">Variants</div>
+              <sc-for list="{{ variants }}" as="v" hint-placeholder-count="4">
+                <button style="all:unset;cursor:pointer;display:flex;align-items:center;gap:10px;padding:9px 8px;border-radius:var(--radius-sm)" style-hover="background:color-mix(in srgb, var(--color-text) 6%, transparent)" onClick="{{ goTailor }}">
+                  <i class="ph ph-file-text" style="font-size:15px;color:var(--color-accent)"></i>
+                  <div style="flex:1">
+                    <div style="font-size:13px">{{ v.name }}</div>
+                    <div class="text-muted" style="font-size:11px">{{ v.note }}</div>
+                  </div>
+                  <i class="ph ph-arrow-up-right" style="font-size:13px;opacity:.5"></i>
+                </button>
+              </sc-for>
+            </div>
+            <div class="card elev-sm" style="padding:16.8px">
+              <div class="card-kicker">Coverage</div>
+              <div class="text-muted" style="font-size:12px;line-height:1.6">Across the 12 roles in your feed, your master resume already covers:</div>
+              <sc-for list="{{ coverage }}" as="c" hint-placeholder-count="4">
+                <div style="margin-top:9px">
+                  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>{{ c.k }}</span><span class="text-muted">{{ c.v }}</span></div>
+                  <div style="height:4px;border-radius:4px;background:var(--color-neutral-900);overflow:hidden"><div style="height:100%;width:{{ c.v }};background:{{ c.fill }}"></div></div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── TAILOR / DIFF ─── -->
+      <sc-if value="{{ isTailor }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <button class="btn btn-ghost" style="margin-bottom:16.8px" onClick="{{ goJobs }}"><i class="ph ph-arrow-left"></i> Job feed</button>
+        <div style="display:flex;flex-wrap:wrap;gap:16.8px;justify-content:space-between;align-items:flex-end;margin-bottom:22.4px">
+          <div>
+            <h2 style="letter-spacing:-0.02em;margin:0 0 5.6px">Tailoring for Neo Financial</h2>
+            <div class="text-muted" style="font-size:12.5px">Software Engineer Intern · master resume → neo-financial.pdf</div>
+          </div>
+          <div style="display:flex;gap:8.4px;align-items:center;flex-wrap:wrap">
+            <span class="tag tag-accent">9 of 11 keywords covered</span>
+            <button class="btn btn-secondary" onClick="{{ toggleDiff }}">{{ diffLabel }}</button>
+            <button class="btn btn-primary" onClick="{{ applySubmit }}">Apply with this <i class="ph ph-paper-plane-tilt"></i></button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16.8px;align-items:start">
+          <div style="grid-column:span 2;min-width:0;background:var(--color-surface);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);padding:22.4px">
+            <div style="display:flex;gap:14px;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:16.8px" class="text-muted">
+              <span style="flex:1">Master</span><span style="flex:1;color:var(--color-accent)">Tailored</span>
+            </div>
+            <sc-for list="{{ diff }}" as="d" hint-placeholder-count="5">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;padding:11.2px 0;border-top:1px solid var(--color-divider)">
+                <div style="font-size:12.5px;line-height:1.6;opacity:.55;text-decoration:{{ d.strike }}">{{ d.from }}</div>
+                <div style="font-size:12.5px;line-height:1.6;padding:8.4px 11.2px;border-radius:var(--radius-sm);background:{{ d.bg }};box-shadow:{{ d.ring }}">
+                  {{ d.to }}
+                  <div style="margin-top:6px;font-size:11px;color:var(--color-accent-300)"><i class="ph ph-sparkle" style="margin-right:4px"></i>{{ d.why }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:11.2px">
+            <div class="card elev-sm" style="padding:16.8px">
+              <div class="card-kicker">Keywords from the posting</div>
+              <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:5.6px">
+                <sc-for list="{{ keywords }}" as="k" hint-placeholder-count="8">
+                  <span class="tag" style="background:{{ k.bg }};color:{{ k.fg }};border:1px solid {{ k.bd }}">{{ k.word }}</span>
+                </sc-for>
+              </div>
+              <div class="text-muted" style="font-size:11.5px;margin-top:11.2px;line-height:1.55">Outlined words are missing. Both are things you have done but have not written down yet.</div>
+            </div>
+            <div class="card elev-sm" style="padding:16.8px">
+              <div class="card-kicker">Length</div>
+              <div style="font-size:13px">1 page · 412 words</div>
+              <div class="text-muted" style="font-size:11.5px">Trimmed the hackathon bullet that this role does not care about.</div>
+            </div>
+            <div class="card elev-sm" style="padding:16.8px">
+              <div class="card-kicker">Cover note</div>
+              <div class="text-muted" style="font-size:12px;line-height:1.6">Drafted, three sentences, references their move to Django 5. Read before sending.</div>
+              <button class="btn btn-secondary btn-block">Review draft</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── MOCK INTERVIEW ─── -->
+      <sc-if value="{{ isInterview }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <div style="display:flex;flex-wrap:wrap;gap:16.8px;justify-content:space-between;align-items:flex-end;margin-bottom:22.4px">
+          <div>
+            <h2 style="letter-spacing:-0.02em;margin:0 0 5.6px">Mock interview</h2>
+            <div class="text-muted" style="font-size:12.5px">Behavioural set, drawn from the Wealthsimple posting · question {{ qNum }} of 5</div>
+          </div>
+          <div style="display:flex;gap:8.4px;align-items:center">
+            <span style="font-family:var(--font-heading);font-size:14px;padding:6px 11.2px;border-radius:var(--radius-md);box-shadow:inset 0 0 0 1px var(--color-neutral-800)">{{ clock }}</span>
+            <button class="btn btn-secondary" onClick="{{ endInterview }}">End & score</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16.8px;align-items:start">
+          <div style="grid-column:span 2;min-width:0;display:flex;flex-direction:column;gap:16.8px">
+            <div style="background:var(--color-surface);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);padding:28px;position:relative;overflow:hidden">
+              <div style="position:absolute;inset:0;background:radial-gradient(600px 200px at 10% 0%, color-mix(in srgb, var(--color-accent) 10%, transparent), transparent 70%)"></div>
+              <div style="position:relative">
+                <div class="card-kicker">Interviewer</div>
+                <p style="font-size:clamp(18px,2.2vw,24px);line-height:1.4;font-family:var(--font-heading);font-weight:500;margin:11.2px 0 0;max-width:40ch">{{ question }}</p>
+                <div style="display:flex;gap:8px;margin-top:16.8px;flex-wrap:wrap">
+                  <span class="tag tag-outline">{{ qCompetency }}</span>
+                  <span class="tag tag-neutral">aim for 90 seconds</span>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:22.4px;flex-wrap:wrap;padding:16.8px 22.4px;border-radius:var(--radius-md);box-shadow:inset 0 0 0 1px var(--color-neutral-900)">
+              <button class="btn" style="width:52px;height:52px;padding:0;border-radius:50%;border:1px solid var(--color-accent);color:var(--color-accent);background:{{ recBg }}" onClick="{{ toggleRec }}">
+                <i class="ph-fill {{ recIcon }}" style="font-size:19px"></i>
+              </button>
+              <div style="display:flex;align-items:flex-end;gap:3px;height:38px;flex:1;min-width:120px">
+                <sc-for list="{{ wave }}" as="w" hint-placeholder-count="28">
+                  <span style="flex:1;border-radius:2px;background:var(--color-accent-600);height:{{ w.h }};animation:{{ w.anim }}"></span>
+                </sc-for>
+              </div>
+              <div class="text-muted" style="font-size:12px;min-width:150px">{{ recState }}</div>
+            </div>
+
+            <div style="padding:16.8px 22.4px;border-radius:var(--radius-md);background:color-mix(in srgb, var(--color-surface) 55%, transparent);min-height:120px">
+              <div class="card-kicker">Live transcript</div>
+              <div style="font-size:13.5px;line-height:1.7;opacity:.85;margin-top:8.4px">{{ transcript }}<span style="animation:lsBlink 1s step-end infinite;color:var(--color-accent)">▌</span></div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
+                <sc-for list="{{ nudges }}" as="n" hint-placeholder-count="2">
+                  <span class="tag" style="background:{{ n.bg }};color:{{ n.fg }}"><i class="ph {{ n.icon }}" style="margin-right:5px"></i>{{ n.text }}</span>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:11.2px">
+            <div class="card elev-sm" style="padding:16.8px">
+              <div style="display:flex;justify-content:space-between;align-items:baseline">
+                <div class="card-kicker">Live score</div>
+                <span style="font-family:var(--font-heading);font-size:24px">{{ liveTotal }}</span>
+              </div>
+              <sc-for list="{{ meters }}" as="m" hint-placeholder-count="4">
+                <div style="margin-top:11.2px">
+                  <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px"><span>{{ m.label }}</span><span class="text-muted">{{ m.v }}</span></div>
+                  <div style="height:5px;border-radius:5px;background:var(--color-neutral-900);overflow:hidden"><div style="height:100%;width:{{ m.w }};background:{{ m.fill }};transition:width .5s ease"></div></div>
+                </div>
+              </sc-for>
+            </div>
+            <div class="card elev-sm" style="padding:16.8px">
+              <div class="card-kicker">Vega, whispering</div>
+              <div style="font-size:13px;line-height:1.6;opacity:.85">{{ coachLine }}</div>
+            </div>
+            <button class="btn btn-primary btn-block" onClick="{{ nextQ }}">Next question <i class="ph ph-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── FEEDBACK REPORT ─── -->
+      <sc-if value="{{ isFeedback }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <button class="btn btn-ghost" style="margin-bottom:16.8px" onClick="{{ goInterview }}"><i class="ph ph-arrow-left"></i> Back to session</button>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:22.4px;align-items:start">
+          <div style="grid-column:span 2;min-width:0">
+            <div style="display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin-bottom:28px">
+              <div style="position:relative;width:112px;height:112px;flex:none;border-radius:50%;background:conic-gradient(var(--color-accent) 0 78%, var(--color-neutral-900) 78% 100%);display:grid;place-items:center">
+                <div style="width:88px;height:88px;border-radius:50%;background:var(--color-bg);display:grid;place-items:center">
+                  <div style="text-align:center">
+                    <div style="font-family:var(--font-heading);font-size:28px;line-height:1">78</div>
+                    <div class="text-muted" style="font-size:10px">of 100</div>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h2 style="letter-spacing:-0.02em;margin:0 0 8.4px">Solid, and specific in the right places.</h2>
+                <p style="margin:0;font-size:14px;opacity:.78;max-width:48ch;line-height:1.6">Five answers, 7 minutes 40 seconds. Your best answer was the deployment rollback story. Your weakest was the conflict question, where you described the situation for 50 seconds and the action for 12.</p>
+              </div>
+            </div>
+
+            <h6 style="color:var(--color-accent);margin-bottom:14px">By competency</h6>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-bottom:33.6px">
+              <sc-for list="{{ competencies }}" as="c" hint-placeholder-count="5">
+                <div>
+                  <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>{{ c.k }}</span><span class="text-muted">{{ c.v }} · {{ c.note }}</span></div>
+                  <div style="height:6px;border-radius:6px;background:var(--color-neutral-900);overflow:hidden"><div style="height:100%;width:{{ c.w }};background:{{ c.fill }};transform-origin:left;animation:lsBar .7s cubic-bezier(.2,.7,.2,1) both"></div></div>
+                </div>
+              </sc-for>
+            </div>
+
+            <h6 style="color:var(--color-accent);margin-bottom:14px">Answer by answer</h6>
+            <div style="display:flex;flex-direction:column;gap:1px;background:var(--color-divider);border-radius:var(--radius-md);overflow:hidden">
+              <sc-for list="{{ answers }}" as="a" hint-placeholder-count="5">
+                <div style="background:var(--color-surface);padding:14px 16.8px;display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+                  <span style="font-family:var(--font-heading);font-size:15px;color:{{ a.fg }};width:28px">{{ a.score }}</span>
+                  <div style="flex:1;min-width:180px">
+                    <div style="font-size:13px">{{ a.q }}</div>
+                    <div class="text-muted" style="font-size:11.5px;margin-top:3px">{{ a.note }}</div>
+                  </div>
+                  <span class="text-muted" style="font-size:11px">{{ a.len }}</span>
+                  <button class="btn btn-ghost" style="font-size:12px">Replay</button>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:11.2px">
+            <div class="card elev-sm" style="padding:16.8px;box-shadow:inset 0 0 0 1px var(--color-accent-800)">
+              <div class="card-kicker">Three things to fix</div>
+              <sc-for list="{{ fixes }}" as="f" hint-placeholder-count="3">
+                <div style="display:flex;gap:10px;padding:7px 0;font-size:13px;line-height:1.55">
+                  <span style="color:var(--color-accent);font-family:var(--font-heading)">{{ f.n }}</span><span>{{ f.text }}</span>
+                </div>
+              </sc-for>
+              <button class="btn btn-primary btn-block" onClick="{{ goInterview }}">Redo with these in mind</button>
+            </div>
+            <div class="card elev-sm" style="padding:16.8px">
+              <div class="card-kicker">Progress</div>
+              <div class="text-muted" style="font-size:12px;line-height:1.6">Fourth session this month. Structure has climbed from 52 to 74; specificity is flat.</div>
+              <div style="display:flex;align-items:flex-end;gap:6px;height:56px;margin-top:11.2px">
+                <sc-for list="{{ history }}" as="h" hint-placeholder-count="4">
+                  <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px">
+                    <div style="width:100%;border-radius:3px 3px 0 0;background:{{ h.fill }};height:{{ h.h }}"></div>
+                    <span class="text-muted" style="font-size:10px">{{ h.k }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── INBOX ─── -->
+      <sc-if value="{{ isInbox }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <div style="margin-bottom:22.4px">
+          <h2 style="letter-spacing:-0.02em;margin:0 0 5.6px">Responses</h2>
+          <div class="text-muted" style="font-size:12.5px">Every reply, classified and stapled to its application</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16.8px;align-items:start">
+          <div style="display:flex;flex-direction:column;gap:1px;background:var(--color-divider);border-radius:var(--radius-md);overflow:hidden">
+            <sc-for list="{{ threads }}" as="t" hint-placeholder-count="5">
+              <button style="all:unset;cursor:pointer;display:block;background:{{ t.bg }};padding:14px 16.8px" style-hover="background:color-mix(in srgb, var(--color-text) 6%, transparent)" onClick="{{ t.open }}">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span style="font-size:13px;font-family:var(--font-heading);font-weight:500">{{ t.company }}</span>
+                  <span class="tag" style="background:{{ t.tagBg }};color:{{ t.tagFg }};font-size:10px;padding:2px 7px">{{ t.kind }}</span>
+                  <span class="text-muted" style="font-size:11px;margin-left:auto">{{ t.when }}</span>
+                </div>
+                <div style="font-size:12.5px;margin-top:5px">{{ t.subject }}</div>
+                <div class="text-muted" style="font-size:11.5px;margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ t.snippet }}</div>
+              </button>
+            </sc-for>
+          </div>
+          <div style="grid-column:span 2;min-width:0;background:var(--color-surface);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);padding:22.4px">
+            <div style="display:flex;flex-wrap:wrap;gap:11.2px;align-items:baseline;justify-content:space-between">
+              <div>
+                <h4 style="margin:0 0 4px">{{ thread.subject }}</h4>
+                <div class="text-muted" style="font-size:12px">{{ thread.company }} · {{ thread.people }}</div>
+              </div>
+              <div style="display:flex;gap:6px">
+                <span class="tag" style="background:{{ thread.tagBg }};color:{{ thread.tagFg }}">{{ thread.kind }}</span>
+                <button class="btn btn-secondary" style="font-size:12px" onClick="{{ goDetail }}">Open application</button>
+              </div>
+            </div>
+            <div style="height:1px;margin:16.8px 0;background:linear-gradient(to right,transparent,var(--color-divider) 32px,var(--color-divider) calc(100% - 32px),transparent)"></div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <sc-for list="{{ thread.messages }}" as="m" hint-placeholder-count="3">
+                <div style="display:flex;gap:11.2px;align-items:flex-start">
+                  <div style="width:28px;height:28px;flex:none;border-radius:50%;background:{{ m.avBg }};display:grid;place-items:center;font-size:11px;color:{{ m.avFg }}">{{ m.initials }}</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;gap:8px;align-items:baseline">
+                      <span style="font-size:12.5px;font-family:var(--font-heading);font-weight:500">{{ m.from }}</span>
+                      <span class="text-muted" style="font-size:11px">{{ m.when }}</span>
+                    </div>
+                    <div style="font-size:13px;line-height:1.65;opacity:.85;margin-top:5px">{{ m.body }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="margin-top:22.4px;padding:14px 16.8px;border-radius:var(--radius-md);box-shadow:inset 0 0 0 1px var(--color-accent-800);background:linear-gradient(120deg, color-mix(in srgb, var(--color-accent) 8%, transparent), transparent 60%)">
+              <div class="card-kicker">Drafted reply</div>
+              <div style="font-size:13px;line-height:1.65;opacity:.86;margin-top:5.6px">{{ draftReply }}</div>
+              <div style="display:flex;gap:8px;margin-top:11.2px;flex-wrap:wrap">
+                <button class="btn btn-primary">Send</button>
+                <button class="btn btn-secondary">Edit</button>
+                <button class="btn btn-ghost">Rewrite shorter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ─── REMINDERS ─── -->
+      <sc-if value="{{ isReminders }}" hint-placeholder-val="{{ false }}">
+      <div style="animation:{{ viewAnim }}">
+        <div style="display:flex;flex-wrap:wrap;gap:16.8px;justify-content:space-between;align-items:flex-end;margin-bottom:22.4px">
+          <div>
+            <h2 style="letter-spacing:-0.02em;margin:0 0 5.6px">Follow-ups</h2>
+            <div class="text-muted" style="font-size:12.5px">Lodestar writes these when you apply, so nothing goes quiet unnoticed</div>
+          </div>
+          <button class="btn btn-secondary"><i class="ph ph-calendar-plus"></i> Add reminder</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16.8px;align-items:start">
+          <sc-for list="{{ reminderGroups }}" as="g" hint-placeholder-count="3">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:11.2px">
+                <h6 style="margin:0;color:{{ g.fg }}">{{ g.name }}</h6>
+                <span class="text-muted" style="font-size:11px">{{ g.count }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ g.items }}" as="r" hint-placeholder-count="3">
+                  <div class="card elev-sm" style="padding:14px;gap:8px">
+                    <div style="display:flex;gap:10px;align-items:flex-start">
+                      <button style="all:unset;cursor:pointer;width:16px;height:16px;flex:none;margin-top:2px;border-radius:4px;box-shadow:inset 0 0 0 1.5px {{ r.boxBd }};background:{{ r.boxBg }};display:grid;place-items:center" onClick="{{ r.toggle }}">
+                        <i class="ph ph-check" style="font-size:11px;color:var(--color-bg);opacity:{{ r.checkOp }}"></i>
+                      </button>
+                      <div style="flex:1">
+                        <div style="font-size:13.5px;line-height:1.4;text-decoration:{{ r.strike }};opacity:{{ r.op }}">{{ r.title }}</div>
+                        <div class="text-muted" style="font-size:11.5px;margin-top:4px">{{ r.company }} · {{ r.when }}</div>
+                      </div>
+                    </div>
+                    <sc-if value="{{ r.draft }}" hint-placeholder-val="{{ false }}">
+                      <div style="font-size:11.5px;line-height:1.55;padding:8.4px;border-radius:var(--radius-sm);background:color-mix(in srgb, var(--color-accent) 8%, transparent);color:var(--color-accent-200)">
+                        <i class="ph ph-sparkle" style="margin-right:5px"></i>{{ r.draft }}
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      </sc-if>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:11.2px;padding:44.8px 0 8px">
+        <div style="height:1px;width:min(420px,70%);background:linear-gradient(to right,transparent,var(--color-divider) 48px,var(--color-divider) calc(100% - 48px),transparent)"></div>
+        <button style="all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 16.8px" onClick="{{ swipeNext }}">
+          <span class="text-muted" style="font-size:11.5px;letter-spacing:0.06em;text-transform:uppercase">Keep scrolling for {{ nextLabel }}</span>
+          <i class="ph ph-caret-down" style="font-size:15px;color:var(--color-accent);animation:lsNudge 2.4s ease-in-out infinite"></i>
+          <span style="display:block;width:86px;height:2px;border-radius:2px;background:var(--color-neutral-800);overflow:hidden">
+            <span style="display:block;height:100%;width:{{ edgeW }};background:var(--color-accent);transition:width .12s linear"></span>
+          </span>
+        </button>
+      </div>
+    </main>
+
+    <div style="position:fixed;left:16.8px;bottom:16.8px;z-index:45;display:flex;align-items:center;gap:11.2px;padding:8px 14px;border-radius:999px;background:color-mix(in srgb, var(--color-surface) 88%, transparent);backdrop-filter:blur(10px);box-shadow:var(--shadow-sm)">
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <button class="btn btn-icon btn-ghost" style="width:22px;height:22px" onClick="{{ swipePrev }}" title="Previous section"><i class="ph ph-caret-left" style="font-size:13px"></i></button>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:7px">
+        <sc-for list="{{ sectionDots }}" as="d" hint-placeholder-count="7">
+          <button style="all:unset;cursor:pointer;width:{{ d.w }};height:6px;border-radius:999px;background:{{ d.bg }};transition:width .3s cubic-bezier(.2,.7,.2,1), background .3s ease" onClick="{{ d.go }}" title="{{ d.label }}"></button>
+        </sc-for>
+      </div>
+      <sc-if value="{{ wide }}" hint-placeholder-val="{{ true }}">
+        <button class="btn btn-icon btn-ghost" style="width:22px;height:22px" onClick="{{ swipeNext }}" title="Next section"><i class="ph ph-caret-right" style="font-size:13px"></i></button>
+        <span class="text-muted" style="font-size:11px;white-space:nowrap;border-left:1px solid var(--color-divider);padding-left:11.2px">{{ sectionLabel }}</span>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ════════ COMMAND BAR ════════ -->
+  <sc-if value="{{ cmdOpen }}" hint-placeholder-val="{{ false }}">
+  <div style="position:fixed;inset:0;z-index:60;display:grid;place-items:start center;padding:11vh 16.8px;background:color-mix(in srgb, var(--color-neutral-900) 62%, transparent);animation:lsFade .18s ease both" onClick="{{ closeCmd }}">
+    <div style="width:min(560px,100%);background:var(--color-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);overflow:hidden;animation:lsRise .22s ease both" onClick="{{ stop }}">
+      <div style="display:flex;align-items:center;gap:11.2px;padding:14px 16.8px">
+        <i class="ph ph-magnifying-glass" style="font-size:17px;color:var(--color-accent)"></i>
+        <input class="input" style="background:transparent;border:none;font-size:15px;padding:0" placeholder="Do anything — apply, tailor, rehearse, log a reply…" value="{{ cmdQ }}" onChange="{{ setCmdQ }}" autoFocus="{{ true }}" />
+        <span class="text-muted" style="font-size:11px">esc</span>
+      </div>
+      <div style="height:1px;background:var(--color-divider)"></div>
+      <div style="padding:8.4px">
+        <sc-for list="{{ cmdItems }}" as="c" hint-placeholder-count="6">
+          <button style="all:unset;cursor:pointer;display:flex;align-items:center;gap:11.2px;width:100%;padding:10px 11.2px;border-radius:var(--radius-sm)" style-hover="background:color-mix(in srgb, var(--color-accent) 12%, transparent)" onClick="{{ c.run }}">
+            <i class="ph {{ c.icon }}" style="font-size:16px;color:var(--color-accent)"></i>
+            <span style="font-size:13.5px;flex:1">{{ c.label }}</span>
+            <span class="text-muted" style="font-size:11px">{{ c.hint }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ════════ VEGA — THE GUIDE ════════ -->
+  <sc-if value="{{ orbOpen }}" hint-placeholder-val="{{ true }}">
+  <div style="position:fixed;right:16.8px;bottom:16.8px;z-index:50;display:flex;align-items:flex-end;gap:11.2px;max-width:min(430px,calc(100vw - 33.6px));flex-direction:{{ orbDir }}">
+    <sc-if value="{{ bubbleOpen }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:{{ bubbleFlex }};background:var(--color-surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-md);padding:14px 16.8px;animation:lsRise .3s ease both">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+          <span style="font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--color-accent)">Vega</span>
+          <span class="text-muted" style="font-size:10.5px">{{ tourLabel }}</span>
+          <button style="all:unset;cursor:pointer;margin-left:auto;opacity:.55" onClick="{{ hideBubble }}"><i class="ph ph-x" style="font-size:13px"></i></button>
+        </div>
+        <div style="font-size:13.5px;line-height:1.6;min-height:3.2em">{{ caption }}<span style="animation:lsBlink 1s step-end infinite;color:var(--color-accent)">▌</span></div>
+        <div style="display:flex;gap:8px;margin-top:11.2px;flex-wrap:wrap">
+          <button class="btn btn-primary" style="font-size:12px" onClick="{{ tourNext }}">{{ tourCta }}</button>
+          <sc-if value="{{ tourRunning }}" hint-placeholder-val="{{ false }}">
+            <button class="btn btn-ghost" style="font-size:12px" onClick="{{ tourStop }}">Leave me to it</button>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+    <button style="all:unset;cursor:pointer;position:relative;width:56px;height:56px;flex:none;display:grid;place-items:center" onClick="{{ toggleBubble }}" title="Vega">
+      <span style="position:absolute;inset:-6px;border-radius:50%;background:radial-gradient(circle, color-mix(in srgb, var(--color-accent) 55%, transparent), transparent 70%);animation:lsHalo 4.5s ease-in-out infinite"></span>
+      <span style="position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg, transparent, var(--color-accent-300), transparent 55%);animation:lsSpin 9s linear infinite;opacity:.85"></span>
+      <span style="position:absolute;inset:4px;border-radius:50%;background:radial-gradient(circle at 34% 28%, var(--color-accent-100), var(--color-accent-500) 52%, var(--color-accent-800) 100%);box-shadow:inset 0 0 12px color-mix(in srgb, var(--color-accent-900) 70%, transparent)"></span>
+      <span style="position:absolute;inset:0;border-radius:50%;box-shadow:0 0 24px color-mix(in srgb, var(--color-accent) 40%, transparent)"></span>
+    </button>
+  </div>
+  </sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#e6e9f0&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#e6e9f0&quot;,&quot;#b9c6d6&quot;,&quot;#d6cfc2&quot;,&quot;#9184d9&quot;],&quot;section&quot;:&quot;Theme&quot;},&quot;guide&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Theme&quot;}}">
+class Component extends DCLogic {
+  state = {
+    view: 'landing', onbStep: 1, cmd: false, cmdQ: '', bubble: true,
+    cap: '', capN: 0, tour: -1,
+    roles: ['Backend', 'Full-stack', 'Data'], locs: ['Edmonton', 'Remote'],
+    src: ['LinkedIn', 'Indeed'],
+    dir: 0, edge: 0, rec: true, elapsed: 44, q: 0, typed: 0, diffOn: true,
+    thread: 0, done: [], scores: { clarity: 71, structure: 64, specificity: 58, pace: 80 },
+    landPage: 0
+  };
+
+  TOUR = [
+    { view: 'dash', label: 'tour 1 of 6', text: 'This is the morning view. One number that matters — 5 live conversations — and the three things to do before noon. Everything else is one keystroke away.' },
+    { view: 'jobs', label: 'tour 2 of 6', text: 'Four job boards, scraped every hour, scored against your master resume. The fit number is a real comparison of your bullets to their requirements, not a keyword count.' },
+    { view: 'tailor', label: 'tour 3 of 6', text: 'Pick a role and Lodestar rewrites your master resume for it — line by line, showing what changed and why, so you can argue with it before it goes out.' },
+    { view: 'tracker', label: 'tour 4 of 6', text: 'Once sent, the application lives here. Stages move as replies arrive; Lodestar reads the reply and moves the card itself.' },
+    { view: 'interview', label: 'tour 5 of 6', text: 'Then we rehearse. Questions drawn from the actual posting, scored live on clarity, structure, specificity and pace while you answer.' },
+    { view: 'feedback', label: 'tour 6 of 6', text: 'And the report tells you the one thing to change next time. That is the whole loop — find, tailor, track, rehearse. Go poke at it.' }
+  ];
+
+  LINES = {
+    landing: 'I am Vega. I will sit in this corner and narrate as you go. Want the two-minute tour?',
+    onboard: 'Give me your resume once. Everything after this — tailoring, scoring, rehearsing — reads from it.',
+    dash: 'Three actions today, one of them due Monday. The take-home is the one that matters.',
+    jobs: 'Six roles above your fit line this morning. The Neo Financial one is the closest match you have had in a month.',
+    tracker: '41 applications, 5 alive. Cards move themselves when a reply lands.',
+    detail: 'Everything about Wealthsimple in one thread: what you sent, what they said, what is next.',
+    resume: 'This is the master. Nothing here gets sent — every application goes out as a derived copy.',
+    tailor: 'Nine of eleven keywords covered. The two missing ones are things you have done but never wrote down.',
+    interview: 'Answer out loud. I score as you speak and stay quiet unless you drift.',
+    feedback: '78. Your rollback story was the strongest thing you said all session.',
+    inbox: 'Replies classified and stapled to their application. The offer thread is the top one.',
+    reminders: 'Five follow-ups queued, two drafted. Nothing has gone quiet on you.'
+  };
+
+  ORDER = ['dash', 'jobs', 'tracker', 'resume', 'interview', 'inbox', 'reminders'];
+  PARENT = { detail: 'tracker', tailor: 'jobs', feedback: 'interview' };
+  SECTION_NAMES = { dash: 'Dashboard', jobs: 'Jobs', tracker: 'Tracker', resume: 'Resume', interview: 'Interview', inbox: 'Responses', reminders: 'Follow-ups' };
+  LAND_COUNT = 3;
+  LAND_EDGE = 90;
+
+  orderIndex(v) { return this.ORDER.indexOf(this.PARENT[v] || v); }
+
+  mainRef = (el) => { this.main = el; };
+
+  getScroller() {
+    // Pick whichever element is actually scrolling: the document, #dc-root,
+    // a .sc-host wrapper, or a scrollable ancestor of <main>.
+    const de = document.scrollingElement || document.documentElement;
+    if (de && de.scrollTop > 0) return de;
+    this.ensureMain();
+    let n = this.main;
+    while (n && n.parentElement) {
+      if (n.scrollHeight - n.clientHeight > 4 &&
+          getComputedStyle(n).overflowY.match(/auto|scroll/)) {
+        return n;
+      }
+      n = n.parentElement;
+    }
+    const root = document.getElementById('dc-root');
+    if (root && root.scrollHeight - root.clientHeight > 4) return root;
+    return de;
+  }
+
+  atBottom() {
+    const se = this.getScroller();
+    const vh = se === document.documentElement || se === document.body
+      ? window.innerHeight : se.clientHeight;
+    return se.scrollTop + vh >= se.scrollHeight - 16;
+  }
+  atTop() {
+    const se = this.getScroller();
+    return se.scrollTop <= 4;
+  }
+
+  scrollTopNow() {
+    // The DC runtime wraps content in #dc-root / .sc-host (height:100%), so the
+    // real scroll container can be a wrapper, not window/body. Reset all of them.
+    window.scrollTo(0, 0);
+    const se = document.scrollingElement || document.documentElement;
+    if (se) se.scrollTop = 0;
+    if (document.documentElement) document.documentElement.scrollTop = 0;
+    if (document.body) document.body.scrollTop = 0;
+    const root = document.getElementById('dc-root');
+    if (root) root.scrollTop = 0;
+    document.querySelectorAll('.sc-host').forEach((el) => { el.scrollTop = 0; });
+    // Walk up from <main> and clear any scrollable ancestor.
+    this.ensureMain();
+    let n = this.main;
+    while (n && n.parentElement) {
+      if (n.scrollTop) n.scrollTop = 0;
+      n = n.parentElement;
+    }
+  }
+
+  forceScrollTop() {
+    this.hardTop();
+  }
+
+  // Single clean jump to top — no multi-frame spam (that caused the jitter).
+  hardTop() {
+    if (this._topLock) return;
+    this._topLock = true;
+    const run = () => {
+      this.scrollTopNow();
+      const top = document.querySelector('[data-ls-top]');
+      if (top && top.scrollIntoView) {
+        try { top.scrollIntoView({ block: 'start', inline: 'nearest', behavior: 'instant' }); }
+        catch (e) { try { top.scrollIntoView(true); } catch (_) {} }
+      }
+    };
+    run();
+    requestAnimationFrame(() => {
+      run();
+      this._topLock = false;
+    });
+  }
+
+  syncLandLock() {
+    const on = this.state.view === 'landing';
+    document.documentElement.classList.toggle('ls-land-lock', on);
+    if (!on) document.documentElement.classList.remove('ls-land-lock');
+    if (on) this.scrollTopNow();
+  }
+
+  // Keep main ref usable even if the template remounts without calling ref.
+  ensureMain() {
+    if (!this.main || !this.main.isConnected) {
+      this.main = document.querySelector('main') || this.main;
+    }
+    return this.main;
+  }
+
+  swipeable() {
+    this.ensureMain();
+    return !this.state.cmd && this.orderIndex(this.state.view) >= 0 && !!this.main;
+  }
+
+  landPages() {
+    return document.querySelectorAll('.ls-landing .ls-land-page');
+  }
+
+  landMarkActive() {
+    if (this._landBusy) return;
+    const pages = this.landPages();
+    if (!pages.length) return;
+    pages.forEach((p, i) => {
+      p.classList.toggle('is-active', i === this.state.landPage);
+      p.classList.remove('is-leave-next', 'is-enter-next', 'is-leave-prev', 'is-enter-prev');
+    });
+  }
+
+  landGo = (to) => {
+    if (this.state.view !== 'landing' || this._landBusy) return;
+    const from = this.state.landPage;
+    if (to === from || to < 0 || to >= this.LAND_COUNT) return;
+    const dir = to > from ? 1 : -1;
+    const pages = this.landPages();
+    const cur = pages[from];
+    const next = pages[to];
+    this._landTarget = to;
+    if (!cur || !next) {
+      this.setState({ landPage: to });
+      return;
+    }
+    this._landBusy = true;
+    this._landAcc = 0;
+    cur.classList.remove('is-active');
+    cur.classList.add(dir > 0 ? 'is-leave-next' : 'is-leave-prev');
+    next.classList.add(dir > 0 ? 'is-enter-next' : 'is-enter-prev');
+    clearTimeout(this._landT);
+    this._landT = setTimeout(() => {
+      if (!cur.isConnected || !next.isConnected) {
+        this._landBusy = false;
+        this.setState({ landPage: to });
+        requestAnimationFrame(() => this.landMarkActive());
+        return;
+      }
+      cur.classList.remove('is-leave-next', 'is-leave-prev');
+      next.classList.remove('is-enter-next', 'is-enter-prev');
+      next.classList.add('is-active');
+      this._landBusy = false;
+      this.setState({ landPage: to });
+    }, 780);
+  };
+
+  landTurn(dir) {
+    this.landGo(this.state.landPage + dir);
+  }
+
+  landPush(dir, amount) {
+    if (this.state.view !== 'landing' || this._landBusy) return;
+    const atStart = this.state.landPage <= 0 && dir < 0;
+    const atEnd = this.state.landPage >= this.LAND_COUNT - 1 && dir > 0;
+    if (atStart || atEnd) { this._landAcc = 0; return; }
+    if (Date.now() - (this._lastLand || 0) < 820) return;
+    if ((this._landDir || 0) !== dir) this._landAcc = 0;
+    this._landDir = dir;
+    this._landAcc = (this._landAcc || 0) + amount;
+    if (this._landAcc >= this.LAND_EDGE) {
+      this._landAcc = 0;
+      this._lastLand = Date.now();
+      this.landTurn(dir);
+    }
+  }
+
+  edgePush(d, amount) {
+    if (!this.swipeable() || this._navBusy) return;
+    if (Date.now() - (this._lastNav || 0) < 650) return;
+
+    // Sticky edge: once the user starts pulling past the end, don't let
+    // macOS rubber-banding wipe the progress on every tiny bounce.
+    if (d > 0) {
+      if (this.atBottom() || this._acc > 0) this._acc = Math.max(0, (this._acc || 0) + amount);
+      else { this._acc = 0; this.setState((s) => (s.edge ? { edge: 0 } : {})); return; }
+    } else {
+      if (this.atTop() || this._acc < 0) this._acc = Math.min(0, (this._acc || 0) - amount);
+      else { this._acc = 0; this.setState((s) => (s.edge ? { edge: 0 } : {})); return; }
+    }
+
+    const acc = Math.abs(this._acc);
+    const edge = Math.min(1, acc / this.EDGE);
+    if (Math.abs(edge - (this.state.edge || 0)) > 0.01) this.setState({ edge });
+    if (acc >= this.EDGE) {
+      this._acc = 0;
+      this._lastNav = Date.now();
+      this.setState({ edge: 0 });
+      this.step(d > 0 ? 1 : -1)();
+    }
+  }
+
+  EDGE = 85;
+
+  _wheel = (e) => {
+    if (Math.abs(e.deltaY) < 2) return;
+    if (this.state.view === 'landing') {
+      e.preventDefault();
+      this.landPush(e.deltaY > 0 ? 1 : -1, Math.min(70, Math.abs(e.deltaY)));
+      return;
+    }
+    if (!this.swipeable()) return;
+    const down = e.deltaY > 0;
+    const pulling = (this._acc || 0) !== 0 || (this.state.edge || 0) > 0.01;
+    const atEdge = (down && this.atBottom()) || (!down && this.atTop());
+    // Lock the native rubber-band only while committing a section change.
+    if (atEdge || pulling) {
+      e.preventDefault();
+      this.edgePush(down ? 1 : -1, Math.min(70, Math.abs(e.deltaY)));
+    } else if (this.state.edge) {
+      this._acc = 0;
+      this.setState({ edge: 0 });
+    }
+  };
+
+  _tstart = (e) => { this._ty = e.touches[0].clientY; this._acc = 0; this._landAcc = 0; };
+  _tmove = (e) => {
+    if (!this._ty) return;
+    const y = e.touches[0].clientY, d = this._ty - y;
+    this._ty = y;
+    if (Math.abs(d) < 1) return;
+    if (this.state.view === 'landing') {
+      this.landPush(d > 0 ? 1 : -1, Math.abs(d) * 1.6);
+      return;
+    }
+    if (!this.swipeable()) return;
+    const down = d > 0;
+    const pulling = (this._acc || 0) !== 0 || (this.state.edge || 0) > 0.01;
+    const atEdge = (down && this.atBottom()) || (!down && this.atTop());
+    if (atEdge || pulling) {
+      if (e.cancelable) e.preventDefault();
+      this.edgePush(down ? 1 : -1, Math.abs(d) * 1.5);
+    }
+  };
+  _tend = () => {
+    this._ty = null;
+    // Keep partial progress briefly so a second flick can finish the turn.
+    clearTimeout(this._edgeDecay);
+    this._edgeDecay = setTimeout(() => {
+      this._acc = 0;
+      if (this.state.edge) this.setState({ edge: 0 });
+    }, 600);
+  };
+
+  step = (delta) => () => {
+    const i = this.orderIndex(this.state.view);
+    if (i < 0) return;
+    const n = (i + delta + this.ORDER.length) % this.ORDER.length;
+    this.go(this.ORDER[n], delta)();
+  };
+
+  reveal() {
+    const root = this.el || document;
+    const nodes = root.querySelectorAll ? root.querySelectorAll('.ls-rev:not(.in)') : [];
+    const h = window.innerHeight || 800;
+    nodes.forEach((n) => {
+      const top = n.getBoundingClientRect().top;
+      if (top < h * 0.92) n.classList.add('in');
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // Only react to real view changes. Vega typing setState must NOT reset scroll.
+    if (this._lastView !== this.state.view) {
+      this._lastView = this.state.view;
+      this.reveal();
+      this.syncLandLock();
+      if (this.state.view !== 'landing') document.documentElement.classList.remove('ls-land-lock');
+      this.hardTop();
+    }
+    if (this.state.view === 'landing') {
+      const pages = this.landPages();
+      const animating = pages.length && [...pages].some((p) => /is-(leave|enter)/.test(p.className));
+      if (this._landBusy && !animating) {
+        this._landBusy = false;
+        clearTimeout(this._landT);
+        if (this._landTarget != null && this._landTarget !== this.state.landPage) {
+          this.setState({ landPage: this._landTarget });
+          return;
+        }
+      }
+      if (!this._landBusy) requestAnimationFrame(() => this.landMarkActive());
+    }
+  }
+
+  componentDidMount() {
+    this.el = document.querySelector('x-dc') || document.body;
+    this._lastView = this.state.view;
+    this.reveal();
+    this.syncLandLock();
+    requestAnimationFrame(() => this.landMarkActive());
+    this._revTick = setInterval(() => { try { this.reveal(); } catch (e) {} }, 400);
+    this._resize = () => {
+      const narrow = window.innerWidth < 640;
+      if (narrow !== this.state.narrow) this.setState({ narrow });
+    };
+    this._resize();
+    window.addEventListener('resize', this._resize);
+    this._move = (e) => {
+      const r = document.documentElement;
+      r.style.setProperty('--ls-mx', e.clientX + 'px');
+      r.style.setProperty('--ls-my', e.clientY + 'px');
+    };
+    window.addEventListener('pointermove', this._move, { passive: true });
+    window.addEventListener('wheel', this._wheel, { passive: false });
+    window.addEventListener('touchstart', this._tstart, { passive: true });
+    window.addEventListener('touchmove', this._tmove, { passive: false });
+    window.addEventListener('touchend', this._tend, { passive: true });
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    const a = this.props.accent;
+    if (a) document.documentElement.style.setProperty('--color-accent', a);
+    if (this.props.guide === false) this.setState({ bubble: false });
+    this.say(this.LINES.landing);
+    this._key = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); this.setState({ cmd: true }); }
+      if (e.key === 'Escape') this.setState({ cmd: false });
+      if (this.state.view === 'landing' && !this.state.cmd) {
+        if (e.key === 'ArrowDown' || e.key === 'PageDown') { e.preventDefault(); this.landTurn(1); }
+        if (e.key === 'ArrowUp' || e.key === 'PageUp') { e.preventDefault(); this.landTurn(-1); }
+      }
+      const typing = /input|textarea/i.test((e.target.tagName || ''));
+      if (typing || this.state.cmd || this.orderIndex(this.state.view) < 0) return;
+      if (e.key === 'ArrowRight') { e.preventDefault(); this.step(1)(); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); this.step(-1)(); }
+    };
+    window.addEventListener('keydown', this._key);
+    this._tick = setInterval(() => {
+      if (this.state.view !== 'interview' || !this.state.rec) return;
+      this.setState((s) => {
+        const t = { clarity: 84, structure: 74, specificity: 66, pace: 88 };
+        const sc = {};
+        for (const k in s.scores) sc[k] = Math.min(t[k], s.scores[k] + (Math.random() < 0.45 ? 1 : 0));
+        return { elapsed: s.elapsed + 1, scores: sc, typed: Math.min(this.TRANSCRIPT.length, s.typed + 3) };
+      });
+    }, 1000);
+  }
+  componentWillUnmount() {
+    clearInterval(this._t); clearInterval(this._tick); clearInterval(this._revTick);
+    clearTimeout(this._landT);
+    clearTimeout(this._navBusyT);
+    clearTimeout(this._edgeDecay);
+    document.documentElement.classList.remove('ls-land-lock');
+    this._navBusy = false;
+    window.removeEventListener('keydown', this._key);
+    window.removeEventListener('pointermove', this._move);
+    window.removeEventListener('wheel', this._wheel);
+    window.removeEventListener('touchstart', this._tstart);
+    window.removeEventListener('touchmove', this._tmove);
+    window.removeEventListener('touchend', this._tend);
+    window.removeEventListener('resize', this._resize);
+  }
+
+  say(text) {
+    clearInterval(this._t);
+    this.setState({ cap: text, capN: 0 });
+    this._t = setInterval(() => {
+      this.setState((s) => {
+        if (s.capN >= s.cap.length) { clearInterval(this._t); return {}; }
+        return { capN: s.capN + Math.max(1, Math.round(s.cap.length / 90)) };
+      });
+    }, 16);
+  }
+
+  go = (view, forceDir) => () => {
+    if (view === this.state.view && forceDir === undefined) {
+      this.scrollTopNow();
+      return;
+    }
+    const from = this.orderIndex(this.state.view), to = this.orderIndex(view);
+    const dir = forceDir !== undefined ? forceDir : (from < 0 || to < 0 || from === to ? 0 : (to > from ? 1 : -1));
+    this._landBusy = false;
+    this._acc = 0;
+    this._navBusy = true;
+    clearTimeout(this._navBusyT);
+    clearTimeout(this._edgeDecay);
+    this._navBusyT = setTimeout(() => { this._navBusy = false; }, 500);
+    if (view !== 'landing') document.documentElement.classList.remove('ls-land-lock');
+    this.setState({
+      view, dir, edge: 0, cmd: false,
+      bubble: this.state.muted ? false : true,
+      ...(view === 'landing' ? { landPage: 0 } : {})
+    });
+    this.say(this.LINES[view] || '');
+    // Top reset happens once in componentDidUpdate — avoid double-firing here.
+    setTimeout(() => { this._navBusy = false; }, 280);
+  };
+
+  TRANSCRIPT = 'Last term our deploy pipeline started failing silently — the build passed but the container never restarted. I noticed it because our staging site was three commits behind. I bisected the workflow file, found a step that swallowed its exit code, and added a health check that fails the job if the new revision is not serving within sixty seconds. After that we caught two more bad deploys in the same week.';
+
+  QUESTIONS = [
+    { q: 'Tell me about a time you found a problem nobody else had noticed.', c: 'Ownership' },
+    { q: 'Walk me through a technical decision you later regretted.', c: 'Judgement' },
+    { q: 'Describe a disagreement with a teammate and how it ended.', c: 'Collaboration' },
+    { q: 'How do you decide what to work on when everything seems urgent?', c: 'Prioritisation' },
+    { q: 'What is something you learned outside of coursework this year?', c: 'Curiosity' }
+  ];
+
+  fill(pct) { return pct >= 80 ? 'var(--color-accent-400)' : pct >= 65 ? 'var(--color-accent-500)' : 'var(--color-accent-700)'; }
+
+  renderVals() {
+    const s = this.state, v = s.view;
+    const tag = (on) => ({ bg: on ? 'var(--color-accent-800)' : 'transparent', fg: on ? 'var(--color-accent-100)' : 'color-mix(in srgb, var(--color-text) 60%, transparent)', bd: on ? 'var(--color-accent-800)' : 'var(--color-divider)' });
+
+    const tabDefs = [
+      ['dash', 'Dashboard', 'ph-squares-four', ''], ['jobs', 'Jobs', 'ph-magnifying-glass', '6'],
+      ['tracker', 'Tracker', 'ph-kanban', ''], ['resume', 'Resume', 'ph-file-text', ''],
+      ['interview', 'Interview', 'ph-microphone', ''], ['inbox', 'Responses', 'ph-envelope-simple', '3'],
+      ['reminders', 'Follow-ups', 'ph-bell-simple', '']
+    ];
+    const activeTab = { detail: 'tracker', tailor: 'jobs', feedback: 'interview' }[v] || v;
+
+    const onbCopy = [
+      { title: 'Start with what you already have.', body: 'One resume. Lodestar reads it, learns your bullets, and uses them for every tailored copy from here on.', cta: 'Read my resume' },
+      { title: 'What are you actually looking for?', body: 'This sets the fit score. You can change it any time without re-uploading anything.', cta: 'Save targets' },
+      { title: 'Where should I look?', body: 'Lodestar checks these every hour and only surfaces roles above your fit line.', cta: 'Start scanning' }
+    ][s.onbStep - 1];
+
+    const jobData = [
+      ['Software Engineer Intern', 'Neo Financial', 'Calgary · hybrid', 94, '$28/hr', 'LinkedIn', '2h ago', ['Python', 'Django', 'PostgreSQL'], 'Your payments-side project maps almost one-to-one onto their ledger team.', 'NF'],
+      ['Backend Developer Intern', 'Wealthsimple', 'Toronto · remote', 88, '$30/hr', 'Indeed', '5h ago', ['Python', 'GraphQL', 'AWS'], 'They ask for API design; you have shipped two REST services with docs.', 'WS'],
+      ['Cloud Platform Co-op', 'Telus', 'Edmonton', 81, '$26/hr', 'Company site', '1d ago', ['Kubernetes', 'Go', 'CI/CD'], 'Strong on CI/CD, thin on Go — worth one weekend before applying.', 'TL'],
+      ['Full-Stack Developer Intern', 'Jobber', 'Edmonton · hybrid', 76, '$27/hr', 'LinkedIn', '1d ago', ['React', 'Ruby', 'Postgres'], 'Front-end work would be new, but they hire for trajectory.', 'JB'],
+      ['Tools Programmer Intern', 'BioWare', 'Edmonton', 68, '$25/hr', 'Company site', '2d ago', ['C++', 'Python', 'Perforce'], 'C++ from CMPUT 201 only. Apply, but keep it low-effort.', 'BW'],
+      ['QA Automation Intern', 'Arcurve', 'Calgary', 61, '$24/hr', 'Glassdoor', '3d ago', ['Selenium', 'Python', 'Jira'], 'Below your fit line. Included because their team is two blocks from home.', 'AC']
+    ];
+
+    return {
+      // ── routing
+      isLanding: v === 'landing', isOnboard: v === 'onboard',
+      inApp: !(v === 'landing' || v === 'onboard'),
+      isDash: v === 'dash', isJobs: v === 'jobs', isTracker: v === 'tracker', isDetail: v === 'detail',
+      isResume: v === 'resume', isTailor: v === 'tailor', isInterview: v === 'interview',
+      isFeedback: v === 'feedback', isInbox: v === 'inbox', isReminders: v === 'reminders',
+      goLanding: this.go('landing'), goDash: this.go('dash'), goJobs: this.go('jobs'),
+      goTracker: this.go('tracker'), goDetail: this.go('detail'), goTailor: this.go('tailor'),
+      goInterview: this.go('interview'), goReminders: this.go('reminders'), goInbox: this.go('inbox'),
+      startOnboard: () => { this.setState({ view: 'onboard', onbStep: 1, dir: 0 }); this.say(this.LINES.onboard); },
+      toggleOrb: () => this.setState({ bubble: !s.bubble, muted: s.bubble }),
+      streak: 12,
+      viewAnim: s.dir > 0 ? 'lsInUp .42s cubic-bezier(.22,.8,.2,1) both'
+        : s.dir < 0 ? 'lsInDown .42s cubic-bezier(.22,.8,.2,1) both'
+        : 'lsRise .32s cubic-bezier(.22,.8,.2,1) both',
+      edgeW: Math.round((s.edge || 0) * 100) + '%',
+      nextLabel: this.SECTION_NAMES[this.ORDER[(this.orderIndex(v) + 1 + this.ORDER.length) % this.ORDER.length]] || '',
+      swipeNext: this.step(1), swipePrev: this.step(-1), mainRef: this.mainRef,
+      sectionLabel: this.SECTION_NAMES[this.PARENT[v] || v] || '',
+      sectionDots: this.ORDER.map((id) => {
+        const on = (this.PARENT[v] || v) === id;
+        return {
+          label: this.SECTION_NAMES[id], w: on ? '22px' : '6px',
+          bg: on ? 'var(--color-accent)' : 'var(--color-neutral-700)',
+          go: this.go(id)
+        };
+      }),
+
+      // ── landing
+      loop: [
+        { n: '01', icon: 'ph-magnifying-glass', title: 'Find', body: 'Four boards scraped hourly, each listing scored against your real bullets. You see six roles, not six hundred.' },
+        { n: '02', icon: 'ph-file-text', title: 'Tailor', body: 'The master resume rewrites itself for the posting, and shows you every changed line with a reason attached.' },
+        { n: '03', icon: 'ph-kanban', title: 'Track', body: 'Replies are read, classified and stapled to the application. Cards move stages on their own.' },
+        { n: '04', icon: 'ph-microphone', title: 'Rehearse', body: 'Mock interviews built from the posting you applied to, scored live, with one thing to fix each time.' }
+      ],
+      stats: [
+        { v: '41', k: 'applications tracked this term' }, { v: '38', k: 'resumes tailored automatically' },
+        { v: '31%', k: 'reply rate on tailored sends' }, { v: '6.4d', k: 'average time to first response' }
+      ],
+      pitches: [
+        { kicker: 'Not a spreadsheet', title: 'The thread, not the row', body: 'An application is a conversation: what you sent, what they replied, what is owed on Monday. Lodestar keeps all of it in one place instead of a cell that says "waiting".' },
+        { kicker: 'Honest scoring', title: 'It will tell you not to apply', body: 'Fit is computed from your bullets against their requirements. When a role is a reach, Lodestar says so and tells you which single gap to close first.' },
+        { kicker: 'Built for momentum', title: 'Two a day beats twenty on Sunday', body: 'A streak, a daily three, and drafted follow-ups. The hard part of a job hunt is not writing — it is coming back tomorrow.' }
+      ],
+      landDots: ['Hero', 'The loop', 'Proof'].map((label, i) => ({
+        label, cls: s.landPage === i ? 'is-on' : '', go: () => this.landGo(i)
+      })),
+      landHintCls: s.landPage >= this.LAND_COUNT - 1 ? 'is-hidden' : '',
+      startTour: () => {
+        document.documentElement.classList.remove('ls-land-lock');
+        this._lastView = 'dash';
+        this.setState({ view: 'dash', tour: 0, bubble: true, muted: false, edge: 0, dir: 1 });
+        this.say(this.TOUR[0].text);
+        requestAnimationFrame(() => this.scrollTopNow());
+      },
+
+      // ── onboarding
+      onb: onbCopy, onbStep: s.onbStep, onb1: s.onbStep === 1, onb2: s.onbStep === 2, onb3: s.onbStep === 3,
+      onbDots: [1, 2, 3].map((n) => ({ bg: n <= s.onbStep ? 'var(--color-accent)' : 'var(--color-neutral-800)' })),
+      onbNext: () => {
+        if (s.onbStep < 3) { this.setState({ onbStep: s.onbStep + 1 }); this.say(['', '', 'Roles and places set. Last thing: where should I look?'][s.onbStep] || ''); }
+        else { this.setState({ view: 'dash', tour: 0 }); this.say(this.TOUR[0].text); }
+      },
+      roleChips: ['Backend', 'Full-stack', 'Data', 'Infra / DevOps', 'ML', 'Front-end'].map((label) => ({
+        label, ...tag(s.roles.includes(label)),
+        toggle: () => this.setState((st) => ({ roles: st.roles.includes(label) ? st.roles.filter((x) => x !== label) : [...st.roles, label] }))
+      })),
+      locChips: ['Edmonton', 'Calgary', 'Remote', 'Toronto', 'Vancouver'].map((label) => ({
+        label, ...tag(s.locs.includes(label)),
+        toggle: () => this.setState((st) => ({ locs: st.locs.includes(label) ? st.locs.filter((x) => x !== label) : [...st.locs, label] }))
+      })),
+      sources: [
+        ['LinkedIn', 'ph-linkedin-logo', 'Internship filter, Alberta + remote'],
+        ['Indeed', 'ph-briefcase', 'Co-op and intern postings'],
+        ['Glassdoor', 'ph-buildings', 'Plus salary data for the fit score'],
+        ['University career portal', 'ph-graduation-cap', 'CMPUT co-op listings']
+      ].map(([name, icon, note]) => {
+        const on = s.src.includes(name);
+        return {
+          name, icon, note, state: on ? 'Connected' : 'Connect',
+          fg: on ? 'var(--color-accent-300)' : 'color-mix(in srgb, var(--color-text) 55%, transparent)',
+          ring: on ? 'inset 0 0 0 1px var(--color-accent-700)' : 'inset 0 0 0 1px var(--color-neutral-900)',
+          toggle: () => this.setState((st) => ({ src: st.src.includes(name) ? st.src.filter((x) => x !== name) : [...st.src, name] }))
+        };
+      }),
+
+      // ── shell
+      tabs: tabDefs.map(([id, label, icon, badge]) => ({
+        label, icon, badge, go: this.go(id),
+        fg: activeTab === id ? 'var(--color-accent)' : 'color-mix(in srgb, var(--color-text) 72%, transparent)',
+        bg: activeTab === id ? 'color-mix(in srgb, var(--color-accent) 14%, transparent)' : 'transparent'
+      })),
+      openCmd: () => this.setState({ cmd: true }), closeCmd: () => this.setState({ cmd: false }),
+      stop: (e) => e.stopPropagation(),
+      cmdOpen: s.cmd, cmdQ: s.cmdQ, setCmdQ: (e) => this.setState({ cmdQ: e.target.value }),
+      cmdItems: [
+        ['Tailor my resume for a role', 'ph-file-text', 'tailor', '⏎'],
+        ['Start a mock interview', 'ph-microphone', 'interview', 'I'],
+        ['Log a response from a company', 'ph-envelope-simple', 'inbox', 'R'],
+        ['Add an application by hand', 'ph-plus', 'tracker', 'A'],
+        ['Find jobs like Neo Financial', 'ph-magnifying-glass', 'jobs', 'F'],
+        ['Show what is due this week', 'ph-bell-simple', 'reminders', 'D']
+      ].filter(([label]) => label.toLowerCase().includes(s.cmdQ.toLowerCase()))
+        .map(([label, icon, target, hint]) => ({ label, icon, hint, run: this.go(target) })),
+
+      // ── dashboard
+      kpis: [
+        { label: 'Live conversations', v: '5', delta: '+2 this week' },
+        { label: 'Applied this week', v: '7', delta: 'goal 8' },
+        { label: 'Interviews booked', v: '2', delta: 'Tue, Thu' },
+        { label: 'Offers', v: '1', delta: 'expires 19 Sep' }
+      ],
+      funnel: [
+        { stage: 'Applied', n: 41, pct: '100%', fill: 'var(--color-accent-700)' },
+        { stage: 'Acknowledged', n: 27, pct: '66%', fill: 'var(--color-accent-600)' },
+        { stage: 'Screening', n: 12, pct: '29%', fill: 'var(--color-accent-500)' },
+        { stage: 'Interview', n: 5, pct: '12%', fill: 'var(--color-accent-400)' },
+        { stage: 'Offer', n: 1, pct: '3%', fill: 'var(--color-accent-300)' }
+      ],
+      heat: [0, 2, 1, 3, 2, 0, 1, 2, 3, 1, 2, 4, 2, 3].map((n, i) => ({
+        t: n + ' sent', bg: n === 0 ? 'var(--color-neutral-900)' : n === 1 ? 'var(--color-accent-800)' : n === 2 ? 'var(--color-accent-700)' : n === 3 ? 'var(--color-accent-600)' : 'var(--color-accent-400)'
+      })),
+      nextActions: [
+        { icon: 'ph-code', title: 'Submit the Wealthsimple take-home', meta: 'Backend Developer Intern · 4 hours of work left', due: 'Mon', dueBg: 'var(--color-accent-800)', dueFg: 'var(--color-accent-100)', go: this.go('detail') },
+        { icon: 'ph-envelope-simple', title: 'Reply to Neo Financial about Thursday', meta: 'Recruiter asked for two time windows', due: 'Today', dueBg: 'var(--color-accent-700)', dueFg: 'var(--color-accent-100)', go: this.go('inbox') },
+        { icon: 'ph-microphone', title: 'One mock interview before Thursday', meta: 'Conflict question is still your weakest', due: 'Wed', dueBg: 'var(--color-neutral-800)', dueFg: 'var(--color-neutral-100)', go: this.go('interview') }
+      ],
+
+      // ── jobs
+      jobFilters: ['Best fit', 'Newest', 'Closing soon'].map((label, i) => ({
+        label, on: i === 0, pick: () => {},
+        fg: i === 0 ? 'var(--color-accent)' : 'inherit',
+        ring: i === 0 ? 'inset 0 0 0 1px var(--color-accent)' : 'none'
+      })),
+      jobs: jobData.map(([role, company, place, fit, pay, source, age, tags, why, initials]) => ({
+        role, company, place, fit, pay, source, age, tags, why, initials,
+        fitW: fit + '%', fitFill: this.fill(fit),
+        fitFg: fit >= 80 ? 'var(--color-accent-300)' : 'var(--color-neutral-400)',
+        tailor: this.go('tailor')
+      })),
+
+      // ── tracker
+      columns: [
+        ['Applied', 'var(--color-neutral-600)', 18, [['Cloud Platform Co-op', 'Telus', 'Auto-acknowledged', '4d ago'], ['Tools Programmer Intern', 'BioWare', 'No reply yet', '9d ago']]],
+        ['Screening', 'var(--color-accent-700)', 12, [['Software Engineer Intern', 'Neo Financial', 'Recruiter call booked', 'Thu 10:00'], ['Full-Stack Intern', 'Jobber', 'Waiting on their reply', '2d ago']]],
+        ['Interview', 'var(--color-accent-500)', 5, [['Backend Developer Intern', 'Wealthsimple', 'Take-home due Mon', 'in 2 days'], ['Data Intern', 'ATB Financial', 'Panel round', 'Tue 14:00']]],
+        ['Offer', 'var(--color-accent-300)', 1, [['Junior Developer (PT)', 'Samdesk', 'Decide by 19 Sep', '1d ago']]],
+        ['Closed', 'var(--color-neutral-800)', 5, [['SWE Intern', 'Shopify', 'Rejected after screen', '11d ago'], ['Infra Intern', 'Arcurve', 'Role paused', '3w ago']]]
+      ].map(([name, dot, count, cards]) => ({
+        name, dot, count,
+        cards: cards.map(([role, company, tagText, when]) => ({
+          role, company, when, tag: tagText, open: this.go('detail'),
+          tagBg: dot === 'var(--color-accent-300)' ? 'var(--color-accent-800)' : 'var(--color-neutral-800)',
+          tagFg: dot === 'var(--color-accent-300)' ? 'var(--color-accent-100)' : 'var(--color-neutral-100)'
+        }))
+      })),
+
+      // ── detail
+      timeline: [
+        ['2 Sep', 'Applied with resume v3', 'Tailored copy: GraphQL and API-design bullets promoted, hackathon bullet cut.', 'var(--color-accent-700)', 'none'],
+        ['2 Sep', 'Automatic acknowledgement', '"We have received your application" — classified as auto-reply, no action needed.', 'var(--color-neutral-700)', 'none'],
+        ['6 Sep', 'Recruiter screen · 20 min', 'Priya Raman. Asked about the payments project and course load next term.', 'var(--color-accent-600)', 'none'],
+        ['8 Sep', 'Moved to take-home', 'Lodestar read the email and moved this card to Interview on its own.', 'var(--color-accent-500)', 'none'],
+        ['10 Sep', 'Take-home brief received', 'Build a small ledger API. Submit by Monday 14 Sep, 9:00am.', 'var(--color-accent-400)', '0 0 10px color-mix(in srgb, var(--color-accent) 60%, transparent)'],
+        ['17 Sep', 'Follow up if nothing heard', 'Draft is written and waiting. Lodestar will nudge you that morning.', 'var(--color-neutral-800)', 'none']
+      ].map(([date, title, body, dot, glow]) => ({ date, title, body, dot, glow })),
+      contacts: [
+        { initials: 'PR', name: 'Priya Raman', role: 'Technical recruiter' },
+        { initials: 'DK', name: 'Daniel Kwon', role: 'Engineering manager, Ledger' }
+      ],
+
+      // ── resume
+      resumeSections: [
+        { name: 'Education', items: [{ head: 'BSc Computing Science, University of Alberta', when: '2025 — 2029', bullets: ['GPA 3.7 · Dean\'s list 2025-26', 'Relevant: CMPUT 201, 204, 291, 379'] }] },
+        { name: 'Experience', items: [
+          { head: 'Undergraduate Research Assistant · UAlberta HCI Lab', when: 'May — Aug 2026', bullets: ['Built a Django service that collected and replayed 40,000 interaction traces for a study on reading behaviour.', 'Cut the nightly aggregation job from 50 minutes to 6 by moving it to batched Postgres upserts.'] },
+          { head: 'Peer Tutor · Faculty of Science', when: 'Sep 2025 — Apr 2026', bullets: ['Ran weekly sessions for 20 students in intro programming; wrote the practice set still used by the course.'] }
+        ] },
+        { name: 'Projects', items: [
+          { head: 'Split — shared expense ledger', when: '2026', bullets: ['REST API in Django with a double-entry ledger; 94% test coverage and an OpenAPI spec.', 'Used by 60 students in residence over one term.'] },
+          { head: 'Deploy watchdog', when: '2026', bullets: ['GitHub Action that fails a deploy when the new revision is not serving within 60 seconds.'] }
+        ] },
+        { name: 'Skills', items: [{ head: 'Languages and tools', when: '', bullets: ['Python, Django, PostgreSQL, JavaScript, React, Docker, GitHub Actions, C, C++'] }] }
+      ],
+      variants: [
+        { name: 'Backend-flavoured', note: '31% reply rate · 18 sends' },
+        { name: 'Data / analytics', note: '2 sends · too new to tell' },
+        { name: 'Front-end', note: 'Drafted, never sent' },
+        { name: 'One-page hard cut', note: 'For career fairs' }
+      ],
+      coverage: [
+        { k: 'Python / Django', v: '92%', fill: 'var(--color-accent-400)' },
+        { k: 'SQL and data modelling', v: '78%', fill: 'var(--color-accent-500)' },
+        { k: 'Cloud and CI/CD', v: '54%', fill: 'var(--color-accent-600)' },
+        { k: 'Front-end frameworks', v: '31%', fill: 'var(--color-accent-700)' }
+      ],
+
+      // ── tailor
+      diffOn: s.diffOn, diffLabel: s.diffOn ? 'Hide reasons' : 'Show reasons',
+      toggleDiff: () => this.setState({ diffOn: !s.diffOn }),
+      applySubmit: () => { this.setState({ view: 'tracker' }); this.say('Sent, and filed under Applied. I have queued a follow-up for the 19th in case they go quiet.'); },
+      diff: [
+        ['Built a Django service that collected and replayed 40,000 interaction traces.', 'Built and shipped a Django + PostgreSQL service handling 40,000 interaction traces, with an OpenAPI spec used by three other students.', 'Their posting names PostgreSQL and API documentation twice.'],
+        ['Cut the nightly aggregation job from 50 minutes to 6.', 'Cut a nightly aggregation job from 50 to 6 minutes by batching Postgres upserts — measured, not estimated.', 'Ledger teams care about measured throughput work.'],
+        ['REST API with a double-entry ledger; 94% test coverage.', 'Designed a double-entry ledger API from scratch — the closest thing I have built to a payments system.', 'This is a ledger role. Lead with the ledger.'],
+        ['Hackathon: 36-hour game jam, 2nd place.', 'Hackathon: 36-hour game jam, 2nd place.', 'Cut for length. Not relevant to this team.'],
+        ['Skills: Python, Django, PostgreSQL, JavaScript, React, Docker.', 'Skills: Python, Django, PostgreSQL, Docker, GitHub Actions, JavaScript, React.', 'Reordered to match the order in their requirements list.']
+      ].map(([from, to, why], i) => {
+        const cut = i === 3;
+        return {
+          from, to: cut ? '— removed —' : to, why: s.diffOn ? why : '',
+          strike: cut ? 'line-through' : 'none',
+          bg: cut ? 'transparent' : 'color-mix(in srgb, var(--color-accent) 9%, transparent)',
+          ring: cut ? 'inset 0 0 0 1px var(--color-neutral-900)' : 'inset 0 0 0 1px var(--color-accent-800)'
+        };
+      }),
+      keywords: ['Python', 'Django', 'PostgreSQL', 'REST', 'ledger', 'testing', 'Docker', 'CI/CD', 'code review', 'Kafka', 'Terraform'].map((word, i) => {
+        const missing = i >= 9;
+        return { word, bg: missing ? 'transparent' : 'var(--color-accent-800)', fg: missing ? 'var(--color-accent-300)' : 'var(--color-accent-100)', bd: missing ? 'var(--color-accent-600)' : 'transparent' };
+      }),
+
+      // ── interview
+      qNum: s.q + 1, question: this.QUESTIONS[s.q].q, qCompetency: this.QUESTIONS[s.q].c,
+      clock: '0' + Math.floor(s.elapsed / 60) + ':' + String(s.elapsed % 60).padStart(2, '0'),
+      recIcon: s.rec ? 'ph-pause' : 'ph-microphone',
+      recBg: s.rec ? 'color-mix(in srgb, var(--color-accent) 18%, transparent)' : 'transparent',
+      recState: s.rec ? 'Listening · speak naturally' : 'Paused — press to continue',
+      toggleRec: () => this.setState({ rec: !s.rec }),
+      wave: Array.from({ length: 28 }, (_, i) => ({
+        h: s.rec ? '38%' : '14%',
+        anim: s.rec ? 'lsWave ' + (0.7 + ((i * 7) % 9) / 10) + 's ease-in-out ' + (i % 6) / 10 + 's infinite' : 'none'
+      })),
+      transcript: this.TRANSCRIPT.slice(0, s.typed),
+      nudges: s.typed > 180
+        ? [{ icon: 'ph-check-circle', text: 'Good: you named the metric', bg: 'var(--color-accent-800)', fg: 'var(--color-accent-100)' },
+           { icon: 'ph-arrow-bend-up-right', text: 'Now say what changed for the team', bg: 'var(--color-neutral-800)', fg: 'var(--color-neutral-100)' }]
+        : [{ icon: 'ph-info', text: 'Situation is clear — move to what you did', bg: 'var(--color-neutral-800)', fg: 'var(--color-neutral-100)' }],
+      liveTotal: Math.round((s.scores.clarity + s.scores.structure + s.scores.specificity + s.scores.pace) / 4),
+      meters: [['Clarity', s.scores.clarity], ['Structure', s.scores.structure], ['Specificity', s.scores.specificity], ['Pace', s.scores.pace]]
+        .map(([label, val]) => ({ label, v: val, w: val + '%', fill: this.fill(val) })),
+      coachLine: s.scores.specificity < 64 ? 'One number would lift this answer — how many traces, how long it took, who noticed.' : 'That number landed. Close with the consequence and stop talking.',
+      nextQ: () => { this.setState({ q: (s.q + 1) % 5, typed: 0, elapsed: 0 }); this.say('Next one. This is the question you scored lowest on last time, so take a breath first.'); },
+      endInterview: () => { this.setState({ view: 'feedback' }); this.say(this.LINES.feedback); window.scrollTo(0, 0); },
+
+      // ── feedback
+      competencies: [
+        { k: 'Structure (situation → action → result)', v: 74, w: '74%', note: 'up 14', fill: 'var(--color-accent-400)' },
+        { k: 'Specificity', v: 61, w: '61%', note: 'flat', fill: 'var(--color-accent-600)' },
+        { k: 'Clarity', v: 84, w: '84%', note: 'up 3', fill: 'var(--color-accent-300)' },
+        { k: 'Pace and filler words', v: 88, w: '88%', note: '9 filler words in 7 min', fill: 'var(--color-accent-300)' },
+        { k: 'Reflection', v: 66, w: '66%', note: 'down 5', fill: 'var(--color-accent-500)' }
+      ],
+      answers: [
+        { score: 86, q: 'A problem nobody else noticed', note: 'Deploy rollback story — named the metric and the outcome', len: '1:42', fg: 'var(--color-accent-300)' },
+        { score: 79, q: 'A technical decision you regretted', note: 'Honest, but no mention of what you would do instead', len: '1:20', fg: 'var(--color-accent-300)' },
+        { score: 58, q: 'A disagreement with a teammate', note: '50 seconds of setup, 12 seconds of action', len: '1:58', fg: 'var(--color-accent-500)' },
+        { score: 81, q: 'Deciding what to work on', note: 'Clear framework, slightly rehearsed', len: '1:08', fg: 'var(--color-accent-300)' },
+        { score: 74, q: 'Something learned outside coursework', note: 'Good example, ended abruptly', len: '1:32', fg: 'var(--color-accent-400)' }
+      ],
+      fixes: [
+        { n: '1', text: 'Cap the setup at two sentences. Start the clock on what you did.' },
+        { n: '2', text: 'Put one number in every answer. You have them; you just skip them.' },
+        { n: '3', text: 'End on the consequence for other people, then stop.' }
+      ],
+      history: [['Jun', 52], ['Jul', 61], ['Aug', 70], ['Sep', 78]].map(([k, val]) => ({ k, h: val + '%', fill: val >= 75 ? 'var(--color-accent-400)' : 'var(--color-accent-700)' })),
+
+      // ── inbox
+      threads: [
+        ['Samdesk', 'Offer', 'Offer — Junior Developer (part-time)', 'We would love to have you join us starting in October…', '1d', 'var(--color-accent-800)', 'var(--color-accent-100)'],
+        ['Neo Financial', 'Interview', 'Recruiter call — Thursday?', 'Could you send two windows that work for you this week…', '2d', 'var(--color-accent-700)', 'var(--color-accent-100)'],
+        ['Wealthsimple', 'Take-home', 'Your take-home brief', 'Attached is the exercise. Please submit by Monday 9am…', '2d', 'var(--color-neutral-800)', 'var(--color-neutral-100)'],
+        ['Shopify', 'Rejection', 'Update on your application', 'After careful consideration we have decided to move forward…', '11d', 'var(--color-neutral-900)', 'var(--color-neutral-300)'],
+        ['Telus', 'Auto-reply', 'Application received', 'This is an automated confirmation. No action needed…', '4d', 'var(--color-neutral-900)', 'var(--color-neutral-300)']
+      ].map(([company, kind, subject, snippet, when, tagBg, tagFg], i) => ({
+        company, kind, subject, snippet, when, tagBg, tagFg,
+        bg: i === s.thread ? 'color-mix(in srgb, var(--color-accent) 12%, transparent)' : 'var(--color-surface)',
+        open: () => this.setState({ thread: i })
+      })),
+      thread: [
+        {
+          subject: 'Offer — Junior Developer (part-time)', company: 'Samdesk', people: 'Alia Fournier · 1 day ago', kind: 'Offer',
+          tagBg: 'var(--color-accent-800)', tagFg: 'var(--color-accent-100)',
+          messages: [
+            { initials: 'AF', from: 'Alia Fournier', when: '11 Sep, 4:12pm', body: 'Nora — the team was unanimous. We would like to offer you the part-time junior developer role, 15 hours a week through the fall, with a full-time intern conversion in May if it goes well. Details attached. Could you let us know by the 19th?', avBg: 'var(--color-accent-800)', avFg: 'var(--color-accent-100)' },
+            { initials: 'NA', from: 'You', when: '11 Sep, 7:40pm', body: 'Thank you — genuinely pleased. I have one other process closing next week, so I will come back to you well before the 19th.', avBg: 'var(--color-neutral-800)', avFg: 'var(--color-neutral-100)' },
+            { initials: 'AF', from: 'Alia Fournier', when: '12 Sep, 9:02am', body: 'Understood. Happy to answer anything about the conversion path in the meantime.', avBg: 'var(--color-accent-800)', avFg: 'var(--color-accent-100)' }
+          ]
+        },
+        { subject: 'Recruiter call — Thursday?', company: 'Neo Financial', people: 'Priya Raman · 2 days ago', kind: 'Interview', tagBg: 'var(--color-accent-700)', tagFg: 'var(--color-accent-100)', messages: [{ initials: 'PR', from: 'Priya Raman', when: '10 Sep, 10:20am', body: 'Hi Nora — thanks for applying to the Software Engineer Intern role. Could you send two windows that work for you this week for a 20 minute call?', avBg: 'var(--color-accent-800)', avFg: 'var(--color-accent-100)' }] },
+        { subject: 'Your take-home brief', company: 'Wealthsimple', people: 'Daniel Kwon · 2 days ago', kind: 'Take-home', tagBg: 'var(--color-neutral-800)', tagFg: 'var(--color-neutral-100)', messages: [{ initials: 'DK', from: 'Daniel Kwon', when: '10 Sep, 1:05pm', body: 'Attached is the exercise — a small ledger API, roughly four hours. Please submit by Monday 14 September, 9am. Ask us anything as you go.', avBg: 'var(--color-neutral-800)', avFg: 'var(--color-neutral-100)' }] },
+        { subject: 'Update on your application', company: 'Shopify', people: 'Talent team · 11 days ago', kind: 'Rejection', tagBg: 'var(--color-neutral-900)', tagFg: 'var(--color-neutral-300)', messages: [{ initials: 'SH', from: 'Talent team', when: '1 Sep, 8:00am', body: 'After careful consideration we have decided to move forward with other candidates for this role. We encourage you to apply again next cycle.', avBg: 'var(--color-neutral-800)', avFg: 'var(--color-neutral-100)' }] },
+        { subject: 'Application received', company: 'Telus', people: 'Automated · 4 days ago', kind: 'Auto-reply', tagBg: 'var(--color-neutral-900)', tagFg: 'var(--color-neutral-300)', messages: [{ initials: 'TL', from: 'Telus Careers', when: '8 Sep, 6:31pm', body: 'This is an automated confirmation that your application was received. No action is needed from you at this time.', avBg: 'var(--color-neutral-800)', avFg: 'var(--color-neutral-100)' }] }
+      ][s.thread],
+      draftReply: ['Thank you again for the offer. I would like to accept, with a start date of 1 October if that still works.', 'Thursday 1:00–3:00pm or Friday 10:00am–12:00pm both work well for me. Happy to fit another window if neither suits.', 'Received — I will have the ledger API in by Monday morning. One question on scope: should transfers between two of a user\'s own accounts count as a single entry?', 'Thank you for letting me know. I would welcome any note on what would have made the application stronger.', 'No reply needed.'][s.thread],
+
+      // ── reminders
+      reminderGroups: [
+        ['Today', 'var(--color-accent)', [
+          ['Send two interview windows to Neo Financial', 'Neo Financial', 'asked 2 days ago', 'Draft ready: Thursday 1–3pm or Friday 10–12.'],
+          ['Decide on the Samdesk offer', 'Samdesk', 'expires 19 Sep', '']
+        ]],
+        ['This week', 'var(--color-text)', [
+          ['Submit the take-home', 'Wealthsimple', 'Mon 14 Sep, 9:00am', ''],
+          ['One mock interview', 'Practice', 'before Thursday', ''],
+          ['Follow up on the Jobber application', 'Jobber', 'Wed · 10 days silent', 'Draft ready: short nudge, references their Edmonton office.']
+        ]],
+        ['Later', 'var(--color-neutral-500)', [
+          ['Check in with Telus', 'Telus', '17 Sep · 14 days silent', ''],
+          ['Ask Priya about the fall cohort timeline', 'Neo Financial', 'after Thursday', '']
+        ]]
+      ].map(([name, fg, items]) => ({
+        name, fg, count: items.length,
+        items: items.map(([title, company, when, draft], i) => {
+          const key = name + i, on = s.done.includes(key);
+          return {
+            title, company, when, draft: on ? '' : draft,
+            strike: on ? 'line-through' : 'none', op: on ? '.45' : '1',
+            checkOp: on ? '1' : '0',
+            boxBg: on ? 'var(--color-accent)' : 'transparent',
+            boxBd: on ? 'var(--color-accent)' : 'var(--color-neutral-700)',
+            toggle: () => this.setState((st) => ({ done: st.done.includes(key) ? st.done.filter((x) => x !== key) : [...st.done, key] }))
+          };
+        })
+      })),
+
+      // ── Vega
+      wide: !s.narrow,
+      orbDir: s.narrow ? 'column' : 'row',
+      bubbleFlex: s.narrow ? '0 0 auto' : '1',
+      orbOpen: this.props.guide !== false, bubbleOpen: s.bubble,
+      caption: s.cap.slice(0, s.capN),
+      toggleBubble: () => this.setState({ bubble: !s.bubble, muted: s.bubble }),
+      hideBubble: () => this.setState({ bubble: false, muted: true }),
+      tourRunning: s.tour >= 0,
+      tourLabel: s.tour >= 0 ? this.TOUR[s.tour].label : 'always here',
+      tourCta: s.tour >= 0 ? (s.tour === this.TOUR.length - 1 ? 'Done' : 'Next') : (v === 'landing' ? 'Give me the tour' : 'Tour the app'),
+      tourStop: () => { this.setState({ tour: -1 }); this.say('Fine. Tap the orb whenever you want me back.'); },
+      tourNext: () => {
+        if (s.tour < 0) { this.setState({ view: 'dash', tour: 0, muted: false, bubble: true }); this.say(this.TOUR[0].text); window.scrollTo(0, 0); return; }
+        if (s.tour >= this.TOUR.length - 1) { this.setState({ tour: -1 }); this.say('That is the loop. I will stay out of the way — tap me if you get stuck.'); return; }
+        const n = s.tour + 1;
+        this.setState({ tour: n, view: this.TOUR[n].view });
+        this.say(this.TOUR[n].text);
+        window.scrollTo(0, 0);
+      }
+    };
+  }
+}
+
+</script>
+</body>
+</html>
