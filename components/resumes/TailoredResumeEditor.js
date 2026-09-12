@@ -117,11 +117,11 @@ export default function TailoredResumeEditor({ resume, onDeleted }) {
 
   return (
     <div className="grid lg:grid-cols-[1fr,320px] gap-6 items-start">
-      <div className="bg-surface border border-line rounded-lg p-6">
+      <div className="bg-surface border border-line rounded-xl p-[26px] animate-[lsPop_.4s_cubic-bezier(.2,.8,.2,1)_both]">
         <input
           value={form.name}
           onChange={(e) => update('name', e.target.value)}
-          className="font-serif text-lg text-ink bg-transparent border-none focus-ring rounded px-0 py-0 w-full mb-4"
+          className="font-display font-semibold text-xl text-ink bg-transparent border-none focus-ring rounded px-0 py-0 w-full mb-4"
         />
 
         <FormField label="Linked application">
@@ -169,17 +169,17 @@ export default function TailoredResumeEditor({ resume, onDeleted }) {
               return (
                 <span
                   key={skill}
-                  className={`inline-flex items-center gap-1 text-xs px-2 py-1 rounded-sm ${
+                  className={`inline-flex items-center gap-2 text-[13px] px-3 py-1.5 rounded-full ${
                     status === 'covered'
-                      ? 'bg-stageOfferSoft text-stageOffer'
+                      ? 'bg-stageOfferSoft text-ink'
                       : status === 'missing'
-                      ? 'bg-stageClosedSoft text-stageClosed'
-                      : 'bg-pineSoft text-pineDark'
+                      ? 'bg-stageClosedSoft text-ink'
+                      : 'bg-panel text-ink'
                   }`}
                 >
                   {skill}
-                  <button onClick={() => removeSkill(skill)} className="hover:opacity-60">
-                    <X size={11} />
+                  <button onClick={() => removeSkill(skill)} className="text-inkFaint hover:text-ink">
+                    <X size={12} />
                   </button>
                 </span>
               );
@@ -191,7 +191,7 @@ export default function TailoredResumeEditor({ resume, onDeleted }) {
                 <button
                   key={skill}
                   onClick={() => addSuggestedSkill(skill)}
-                  className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded-sm border border-dashed border-pine text-pineDark hover:bg-pineSoft"
+                  className="inline-flex items-center gap-1 text-[13px] px-3 py-1.5 rounded-full border border-dashed border-pine text-pine hover:bg-mint transition-colors"
                   title="Suggested from the job description — click to add"
                 >
                   + {skill}
@@ -215,12 +215,12 @@ export default function TailoredResumeEditor({ resume, onDeleted }) {
           <Button variant="danger" onClick={handleDelete}>
             <Trash2 size={14} /> Delete
           </Button>
-          {saved && <span className="text-xs text-pineDark">Saved.</span>}
+          {saved && <span className="text-[13px] text-pine">Saved ✓</span>}
         </div>
       </div>
 
-      <div className="bg-surface border border-line rounded-lg p-5">
-        <h3 className="text-sm font-medium text-ink mb-1">Tailor to a job posting</h3>
+      <div className="bg-surface border border-line rounded-xl p-5">
+        <h3 className="font-display font-semibold text-base text-ink mb-1">Tailor to a job posting</h3>
         <p className="text-xs text-inkFaint mb-3">Paste the job description, then let AI suggest edits or check your keywords.</p>
         <textarea
           value={form.jobDescription}
@@ -269,8 +269,8 @@ export default function TailoredResumeEditor({ resume, onDeleted }) {
 function SuggestionCard({ field, text, onAccept, onDismiss }) {
   if (!text) return null;
   return (
-    <div className="mt-2 rounded-md border border-pine/40 bg-pineSoft/50 p-3">
-      <div className="flex items-center gap-1.5 text-xs text-pineDark mb-1.5">
+    <div className="mt-2 rounded-md border border-pine/40 bg-mint/50 p-3">
+      <div className="flex items-center gap-1.5 text-xs text-pine mb-1.5">
         <Sparkles size={12} /> Suggested edit
       </div>
       <p className="text-sm text-ink whitespace-pre-line mb-2">{text}</p>
@@ -289,7 +289,7 @@ function SuggestionCard({ field, text, onAccept, onDismiss }) {
 function FormField({ label, children }) {
   return (
     <div className="mb-5">
-      <span className="block text-xs text-inkSoft mb-1.5">{label}</span>
+      <span className="block text-[13px] text-inkSoft mb-2">{label}</span>
       {children}
     </div>
   );

@@ -35,20 +35,20 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex justify-end bg-ink/30" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex justify-end bg-ink/[.34] animate-[lsFade_.3s_ease_both]" onClick={onClose}>
       <div
-        className="w-full max-w-md h-full bg-surface border-l border-line overflow-y-auto px-6 py-6"
+        className="w-full max-w-[470px] h-full bg-surface border-l border-line overflow-y-auto px-[30px] py-[30px] animate-[lsSlide_.42s_cubic-bezier(.2,.8,.2,1)_both]"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-start justify-between mb-1">
+        <div className="flex items-start justify-between gap-4 mb-1">
           <div>
-            <h2 className="font-serif text-xl text-ink">{app.role}</h2>
-            <p className="text-sm text-inkSoft">
+            <h2 className="font-display font-semibold text-[25px] text-ink mb-1">{app.role}</h2>
+            <p className="text-[13.5px] text-inkSoft">
               {app.company}
               {app.location ? ` · ${app.location}` : ''}
             </p>
           </div>
-          <button onClick={onClose} className="text-inkFaint hover:text-ink focus-ring rounded">
+          <button onClick={onClose} className="text-inkFaint hover:text-ink focus-ring rounded text-lg leading-none">
             <X size={18} />
           </button>
         </div>
@@ -83,7 +83,7 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
             <div className="flex items-center justify-between mt-2 text-xs text-inkSoft">
               <span>{app.nextAction.done ? 'Done ✓' : `Due ${app.nextAction.date}`}</span>
               {!app.nextAction.done && (
-                <button onClick={() => completeNextAction(app.id)} className="text-pineDark hover:underline">
+                <button onClick={() => completeNextAction(app.id)} className="text-pine hover:underline">
                   Mark done
                 </button>
               )}
@@ -105,7 +105,7 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
 
         <Section title="Resume used">
           {tailored ? (
-            <Link href={`/resumes?tailored=${tailored.id}`} className="text-sm text-pineDark hover:underline">
+            <Link href={`/resumes?tailored=${tailored.id}`} className="text-sm text-pine hover:underline">
               Open “{tailored.name}” →
             </Link>
           ) : (
@@ -136,7 +136,7 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
           </form>
           <ul className="space-y-3">
             {app.communications.map((c) => (
-              <li key={c.id} className="text-sm border-l-2 border-line pl-3">
+              <li key={c.id} className="text-sm border-l-2 border-mint pl-3">
                 <p className="text-ink">{c.note}</p>
                 <p className="text-xs text-inkFaint mt-0.5">
                   {c.type} · {c.date}
@@ -166,7 +166,7 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
 function Section({ title, children }) {
   return (
     <div className="py-4 border-t border-line first:border-t-0">
-      <h3 className="text-xs font-medium text-inkSoft mb-2">{title}</h3>
+      <h3 className="text-[11px] tracking-[.18em] uppercase text-inkFaint mb-2.5">{title}</h3>
       {children}
     </div>
   );

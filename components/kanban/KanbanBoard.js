@@ -20,9 +20,15 @@ export default function KanbanBoard({ applications, onOpen }) {
     setDragOverStage(null);
   }
 
+  function shift(app, dir) {
+    const i = STAGES.findIndex((s) => s.id === app.stage);
+    const next = STAGES[Math.min(STAGES.length - 1, Math.max(0, i + dir))];
+    if (next.id !== app.stage) moveStage(app.id, next.id);
+  }
+
   return (
-    <div className="flex gap-4 overflow-x-auto pb-4 -mx-1 px-1">
-      {STAGES.map((stage) => {
+    <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-3.5 items-start overflow-x-auto pb-2">
+      {STAGES.map((stage, ci) => {
         const items = applications.filter((a) => a.stage === stage.id);
         return (
           <div
@@ -33,21 +39,37 @@ export default function KanbanBoard({ applications, onOpen }) {
             }}
             onDragLeave={() => setDragOverStage(null)}
             onDrop={(e) => handleDrop(e, stage.id)}
-            className={`w-64 shrink-0 rounded-lg border px-3 py-3 transition-colors ${
-              dragOverStage === stage.id ? 'border-pine bg-pineSoft/40' : 'border-line bg-paper'
+            className={`rounded-lg border px-3 pt-3.5 pb-4 min-h-[150px] transition-colors ${
+              dragOverStage === stage.id ? 'border-pine bg-mint/40' : 'border-line bg-surface'
             }`}
           >
-            <div className="flex items-center gap-2 mb-3 px-1">
-              <span className={`w-1.5 h-1.5 rounded-full ${stage.dot}`} />
-              <h3 className="text-sm font-medium text-ink">{stage.label}</h3>
-              <span className="text-xs text-inkFaint ml-auto">{items.length}</span>
+            <div className="flex items-center justify-between gap-2 px-2 pb-3">
+              <span className="flex items-center gap-2 font-display font-semibold text-[15px] text-ink">
+                <span
+                  className={`w-2 h-2 rounded-full ${stage.dot} animate-[lsPulse_2.6s_ease-in-out_infinite]`}
+                  style={{ animationDelay: `${(ci * 0.3).toFixed(2)}s` }}
+                />
+                {stage.label}
+              </span>
+              <span className="text-[12.5px] text-inkFaint">{items.length}</span>
             </div>
-            <div className="flex flex-col gap-2 min-h-[60px]">
-              {items.map((app) => (
-                <KanbanCard key={app.id} app={app} onDragStart={handleDragStart} onOpen={onOpen} />
-              ))}
+            <div className="flex flex-col gap-2.5 min-h-[40px]">
+              {items.map((app) => {
+                const i = STAGES.findIndex((s) => s.id === app.stage);
+                return (
+                  <KanbanCard
+                    key={app.id}
+                    app={app}
+                    onDragStart={handleDragStart}
+                    onOpen={onOpen}
+                    onShift={shift}
+                    canBack={i > 0}
+                    canFwd={i < STAGES.length - 1}
+                  />
+                );
+              })}
               {items.length === 0 && (
-                <div className="border border-dashed border-line rounded-md py-6 text-center text-xs text-inkFaint">
+                <div className="border border-dashed border-ink/15 rounded-md py-6 text-center text-xs text-inkFaint">
                   Drop here
                 </div>
               )}
