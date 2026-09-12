@@ -42,8 +42,8 @@ export default function MasterResumeEditor() {
   }
 
   return (
-    <div className="max-w-2xl bg-surface border border-line rounded-lg p-6">
-      <p className="text-xs text-inkFaint mb-5">
+    <div className="max-w-2xl bg-surface border border-line rounded-xl p-[26px] animate-[lsPop_.4s_cubic-bezier(.2,.8,.2,1)_both]">
+      <p className="text-[13px] text-inkFaint mb-5">
         This is your source of truth. Tailored copies start from whatever is saved here.
       </p>
 
@@ -66,10 +66,10 @@ export default function MasterResumeEditor() {
       <FormField label="Skills">
         <div className="flex flex-wrap gap-1.5 mb-2">
           {form.skills.map((skill) => (
-            <span key={skill} className="inline-flex items-center gap-1 bg-pineSoft text-pineDark text-xs px-2 py-1 rounded-sm">
+            <span key={skill} className="inline-flex items-center gap-2 bg-panel text-ink text-[13px] px-3 py-1.5 rounded-full hover:bg-mint transition-colors">
               {skill}
-              <button onClick={() => removeSkill(skill)} className="hover:text-stageClosed">
-                <X size={11} />
+              <button onClick={() => removeSkill(skill)} className="text-inkFaint hover:text-ink">
+                <X size={12} />
               </button>
             </span>
           ))}
@@ -84,7 +84,7 @@ export default function MasterResumeEditor() {
 
       <div className="flex items-center gap-3 pt-2">
         <Button onClick={handleSave}>Save changes</Button>
-        {saved && <span className="text-xs text-pineDark">Saved.</span>}
+        {saved && <span className="text-[13px] text-pine">Saved ✓</span>}
       </div>
     </div>
   );
@@ -93,7 +93,7 @@ export default function MasterResumeEditor() {
 function FormField({ label, children }) {
   return (
     <div className="mb-5">
-      <span className="block text-xs text-inkSoft mb-1.5">{label}</span>
+      <span className="block text-[13px] text-inkSoft mb-2">{label}</span>
       {children}
     </div>
   );

@@ -1,6 +1,6 @@
 # Context
 
-Glossary for TrackWise, a job application organizer. Terms only, no implementation detail.
+Glossary for OnFile, a job application organizer. (Formerly "TrackWise"; also seen as "Lodestar" in some design-tool exports — the product name is **OnFile**, tagline "your job search, organized".) Terms only, no implementation detail.
 
 ## Master resume
 

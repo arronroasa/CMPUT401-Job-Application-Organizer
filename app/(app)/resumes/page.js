@@ -44,13 +44,13 @@ function ResumesPage() {
   }
 
   return (
-    <div className="px-5 py-8 md:px-10 md:py-10">
-      <header className="mb-6">
-        <h1 className="font-serif text-3xl text-ink">Resumes</h1>
-        <p className="text-inkSoft text-sm mt-1">Keep one master resume, and a tailored copy for each application.</p>
+    <div className="px-6 md:px-11 py-8 md:py-10 animate-[lsIn_.5s_cubic-bezier(.2,.8,.2,1)_both]">
+      <header className="mb-5">
+        <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Resumes</h1>
+        <p className="text-inkSoft text-[14.5px]">Keep one master resume, and a tailored copy for each application.</p>
       </header>
 
-      <div className="flex items-center gap-2 mb-6 flex-wrap">
+      <div className="flex items-center gap-2.5 mb-6 flex-wrap">
         <TabButton active={activeId === 'master'} onClick={() => setActiveId('master')}>
           Master
         </TabButton>
@@ -66,7 +66,7 @@ function ResumesPage() {
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder="e.g. v3 — Acme Corp"
-              className="input w-44 py-1.5"
+              className="input w-44 py-2"
             />
             <Button type="submit" variant="secondary">
               Create
@@ -75,7 +75,7 @@ function ResumesPage() {
         ) : (
           <button
             onClick={() => setCreating(true)}
-            className="flex items-center gap-1.5 text-sm text-pineDark hover:underline px-2 py-1.5"
+            className="flex items-center gap-1.5 rounded-full border border-dashed border-ink/30 px-[18px] py-[9px] text-[13.5px] text-inkSoft hover:border-ink hover:text-ink transition-colors focus-ring"
           >
             <Plus size={15} /> New tailored copy
           </button>
@@ -97,8 +97,10 @@ function TabButton({ active, onClick, children }) {
   return (
     <button
       onClick={onClick}
-      className={`px-3 py-1.5 rounded-md text-sm transition-colors focus-ring ${
-        active ? 'bg-ink text-white' : 'bg-surface border border-line text-inkSoft hover:text-ink'
+      className={`rounded-full px-[18px] py-[9px] text-[13.5px] border transition-colors focus-ring ${
+        active
+          ? 'bg-ink text-[#fffdf7] border-ink font-medium'
+          : 'bg-surface border-line text-ink hover:border-ink'
       }`}
     >
       {children}

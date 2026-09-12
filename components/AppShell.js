@@ -9,15 +9,15 @@ export default function AppShell({ children }) {
   if (!data) {
     return (
       <div className="min-h-screen flex items-center justify-center text-inkFaint text-sm">
-        Loading TrackWise…
+        Loading OnFile…
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
+    <div className="min-h-screen flex flex-col md:flex-row items-stretch">
       <Sidebar />
-      <main className="flex-1 min-w-0 pb-20 md:pb-0">{children}</main>
+      <main className="flex-1 min-w-0 pb-24 md:pb-0">{children}</main>
     </div>
   );
 }

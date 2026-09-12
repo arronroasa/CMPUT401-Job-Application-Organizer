@@ -1,30 +1,27 @@
-import { Fraunces, IBM_Plex_Sans } from 'next/font/google';
+import { Quicksand, Work_Sans } from 'next/font/google';
 import './globals.css';
-import Providers from '@/components/Providers';
 
-const fraunces = Fraunces({
+const quicksand = Quicksand({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-fraunces',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-quicksand',
 });
 
-const plex = IBM_Plex_Sans({
+const workSans = Work_Sans({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
-  variable: '--font-plex',
+  variable: '--font-work-sans',
 });
 
 export const metadata = {
-  title: 'TrackWise — Job Application Organizer',
-  description: 'Track applications, tailor resumes, and stay on top of your job search.',
+  title: 'OnFile — Job Application Organizer',
+  description: 'Every application, from listing to offer. Tailor your resume, track every reply, and prep for the interview — one place, one thread, no spreadsheet.',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${plex.variable}`}>
-      <body className="font-sans text-ink bg-paper antialiased">
-        <Providers>{children}</Providers>
-      </body>
+    <html lang="en" className={`${quicksand.variable} ${workSans.variable}`}>
+      <body className="font-sans text-ink bg-paper antialiased">{children}</body>
     </html>
   );
 }

@@ -17,18 +17,18 @@ export default function PipelinePage() {
   const filtered = data.applications.filter((a) => `${a.company} ${a.role}`.toLowerCase().includes(query.toLowerCase()));
 
   return (
-    <div className="px-5 py-8 md:px-10 md:py-10">
-      <header className="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <div className="px-6 md:px-11 py-8 md:py-10 animate-[lsIn_.5s_cubic-bezier(.2,.8,.2,1)_both]">
+      <header className="flex flex-wrap items-start justify-between gap-4 mb-7">
         <div>
-          <h1 className="font-serif text-3xl text-ink">Pipeline</h1>
-          <p className="text-inkSoft text-sm mt-1">Drag a card to move it between stages.</p>
+          <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Pipeline</h1>
+          <p className="text-inkSoft text-[14.5px]">Drag a card, or use the arrows, to change its stage.</p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search company or role"
-            className="input w-56"
+            className="input w-[230px]"
           />
           <Button onClick={() => setShowModal(true)}>
             <Plus size={16} /> Add application

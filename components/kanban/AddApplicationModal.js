@@ -29,14 +29,17 @@ export default function AddApplicationModal({ onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-ink/40 px-4" onClick={onClose}>
+    <div
+      className="fixed inset-0 z-50 grid place-items-center bg-ink/[.34] px-6 animate-[lsFade_.28s_ease_both]"
+      onClick={onClose}
+    >
       <div
-        className="bg-surface rounded-lg border border-line w-full max-w-md p-6 max-h-[90vh] overflow-y-auto"
+        className="bg-surface rounded-2xl border border-line w-full max-w-[470px] p-7 max-h-[90vh] overflow-y-auto animate-[lsPop_.4s_cubic-bezier(.2,.8,.2,1)_both]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-5">
-          <h2 className="font-serif text-lg text-ink">Add application</h2>
-          <button onClick={onClose} className="text-inkFaint hover:text-ink focus-ring rounded">
+          <h2 className="font-display font-semibold text-[23px] text-ink">Add application</h2>
+          <button onClick={onClose} className="text-inkFaint hover:text-ink focus-ring rounded text-lg leading-none">
             <X size={18} />
           </button>
         </div>

@@ -33,17 +33,17 @@ export default function PrepPage() {
   }
 
   return (
-    <div className="px-5 py-8 md:px-10 md:py-10 max-w-3xl">
-      <header className="mb-6">
-        <h1 className="font-serif text-3xl text-ink">Interview Prep</h1>
-        <p className="text-inkSoft text-sm mt-1">
-          Search a company to see some of the LeetCode questions they asked in the last 6 months.
+    <div className="px-6 md:px-11 py-8 md:py-10 max-w-3xl animate-[lsIn_.5s_cubic-bezier(.2,.8,.2,1)_both]">
+      <header className="mb-5">
+        <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Interview prep</h1>
+        <p className="text-inkSoft text-[14.5px]">
+          Search a company to see the LeetCode questions it asked in the last 6 months.
         </p>
       </header>
 
       {/* Company autocomplete */}
       <div className="relative mb-4">
-        <div className="flex items-center gap-2 input">
+        <div className="flex items-center gap-2.5 input rounded-lg px-[18px] py-[14px] text-[15px]">
           <Search size={16} className="text-inkFaint shrink-0" />
           <input
             value={query}
@@ -58,7 +58,7 @@ export default function PrepPage() {
               if (e.key === 'Escape') setOpen(false);
             }}
             placeholder="Search a company (e.g. Amazon)"
-            className="flex-1 bg-transparent outline-none text-sm text-ink"
+            className="flex-1 bg-transparent outline-none text-[15px] text-ink"
           />
           {query && (
             <button onClick={clear} className="text-inkFaint hover:text-ink shrink-0">
@@ -68,7 +68,7 @@ export default function PrepPage() {
         </div>
 
         {open && matches.length > 0 && (
-          <ul className="absolute z-20 mt-1 w-full max-h-64 overflow-y-auto bg-surface border border-line rounded-md shadow-sm">
+          <ul className="absolute z-20 mt-1 w-full max-h-64 overflow-y-auto bg-surface border border-line rounded-md shadow-card">
             {matches.map((name) => (
               <li key={name}>
                 <button
@@ -76,7 +76,7 @@ export default function PrepPage() {
                     e.preventDefault();
                     pick(name);
                   }}
-                  className="w-full text-left px-3 py-2 text-sm text-ink hover:bg-pineSoft"
+                  className="w-full text-left px-3.5 py-2.5 text-sm text-ink hover:bg-mint"
                 >
                   {name}
                 </button>
@@ -88,13 +88,13 @@ export default function PrepPage() {
 
       {/* Popular shortcuts */}
       {!selected && (
-        <div className="flex flex-wrap items-center gap-1.5 mb-8 text-xs text-inkFaint">
-          <span>Popular:</span>
+        <div className="flex flex-wrap items-center gap-2 mb-8 text-[13px] text-inkFaint">
+          <span className="mr-0.5">Popular:</span>
           {POPULAR.filter((c) => companies.includes(c)).map((c) => (
             <button
               key={c}
               onClick={() => pick(c)}
-              className="px-2 py-1 rounded-sm bg-surface border border-line text-inkSoft hover:text-ink hover:bg-paper"
+              className="px-3.5 py-[7px] rounded-full bg-surface border border-line text-ink hover:border-ink hover:bg-panel transition-colors"
             >
               {c}
             </button>
@@ -106,36 +106,34 @@ export default function PrepPage() {
       {selected && (
         <section>
           <div className="mb-4">
-            <h2 className="font-serif text-xl text-ink">{selected}</h2>
-            <p className="text-xs text-inkFaint mt-0.5">
+            <h2 className="font-display font-semibold text-2xl text-ink">{selected}</h2>
+            <p className="text-[13.5px] text-inkSoft mt-1">
               Some of the questions asked in the last 6 months.
             </p>
           </div>
 
-          <ul className="space-y-2">
+          <ul className="flex flex-col gap-2.5">
             {questions.map((q) => (
               <li
                 key={q.id}
-                className="bg-surface border border-line rounded-lg px-4 py-3"
+                className="bg-surface border border-line rounded-lg px-5 py-4 transition-all hover:border-ink/30 hover:translate-x-1 hover:shadow-card"
               >
                 <a
                   href={leetcodeUrl(q.slug)}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-ink hover:text-pineDark focus-ring rounded"
+                  className="inline-flex items-center gap-1.5 font-display font-semibold text-base text-ink hover:text-pine focus-ring rounded"
                 >
                   {q.title}
-                  <ExternalLink size={12} className="text-inkFaint shrink-0" />
+                  <ExternalLink size={13} className="text-inkFaint shrink-0" />
                 </a>
-                <div className="flex flex-wrap items-center gap-1.5 mt-1.5">
+                <div className="flex flex-wrap items-center gap-2 mt-3">
                   <DifficultyBadge difficulty={q.difficulty} />
                   {q.premium && (
-                    <span className="text-[11px] px-1.5 py-0.5 rounded-sm bg-stageScreeningSoft text-stageScreening">
-                      Premium
-                    </span>
+                    <span className="text-[11.5px] px-2.5 py-1 rounded-full bg-honey text-ink">Premium</span>
                   )}
                   {q.patterns.map((p) => (
-                    <span key={p} className="text-[11px] px-1.5 py-0.5 rounded-sm bg-pineSoft text-pineDark">
+                    <span key={p} className="text-[11.5px] px-2.5 py-1 rounded-full bg-panel text-inkSoft">
                       {p}
                     </span>
                   ))}
@@ -154,17 +152,17 @@ export default function PrepPage() {
   );
 }
 
-// LeetCode-style difficulty colors.
+// Difficulty chips in the OnFile palette (Easy mint, Medium honey, Hard blush).
 const DIFF = {
-  Easy: { color: '#1c9c8c', bg: 'rgba(28, 156, 140, 0.14)' },
-  Medium: { color: '#c98a00', bg: 'rgba(255, 183, 0, 0.16)' },
-  Hard: { color: '#e02f4a', bg: 'rgba(224, 47, 74, 0.12)' },
+  Easy: '#cfe9d4',
+  Medium: '#fdf1cf',
+  Hard: '#f4ddd6',
 };
 
 function DifficultyBadge({ difficulty }) {
-  const s = DIFF[difficulty] || DIFF.Medium;
+  const bg = DIFF[difficulty] || DIFF.Medium;
   return (
-    <span className="text-[11px] px-1.5 py-0.5 rounded-sm font-medium" style={{ color: s.color, backgroundColor: s.bg }}>
+    <span className="text-[11.5px] px-2.5 py-1 rounded-full text-ink" style={{ backgroundColor: bg }}>
       {difficulty}
     </span>
   );
