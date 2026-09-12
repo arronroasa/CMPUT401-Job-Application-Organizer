@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Lodestar theme fonts */
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Work+Sans:wght@400;500;600&display=swap');
+
+@layer base {
+  :root {
+    /* Lodestar theme — light cream/green palette */
+    --background: 43 58% 95%;       /* #faf6ec */
+    --foreground: 70 17% 7%;        /* #14150f */
+    --card: 45 100% 98%;            /* #fffdf7 */
+    --card-foreground: 70 17% 7%;   /* #14150f */
+    --popover: 45 100% 98%;         /* #fffdf7 */
+    --popover-foreground: 70 17% 7%;
+
+    --primary: 135 26% 33%;         /* #3f6b4a */
+    --primary-foreground: 45 100% 98%;
+
+    --secondary: 132 37% 86%;       /* #cfe9d4 mint */
+    --secondary-foreground: 70 17% 7%;
+
+    --muted: 80 21% 95%;            /* #f2f4ee */
+    --muted-foreground: 82 5% 55%;  /* #8d9186 */
+
+    --accent: 44 100% 77%;          /* #ffe08a gold */
+    --accent-foreground: 70 17% 7%;
+
+    --destructive: 14 61% 47%;      /* #c1502f */
+    --destructive-foreground: 45 100% 98%;
+
+    --border: 75 15% 90%;           /* #e7e9e1 */
+    --input: 75 15% 88%;
+    --ring: 135 26% 33%;
+    --radius: 1rem;
+
+    /* Extra Lodestar tokens used directly (not part of the shadcn set) */
+    --ls-gold: 40 61% 47%;          /* #c1902f */
+    --ls-gold-light: 44 100% 77%;   /* #ffe08a */
+    --ls-gold-lighter: 44 92% 90%;  /* #fdf1cf */
+    --ls-pink: 334 73% 91%;         /* #f9d9e7 */
+    --ls-pink2: 14 58% 90%;         /* #f4ddd6 */
+    --ls-blue-light: 213 48% 91%;   /* #dde7f3 */
+    --ls-blue-light2: 219 57% 91%;  /* #dbe4f5 */
+    --ls-blue: 213 36% 45%;         /* #4a6f9c */
+    --ls-mint: 132 37% 86%;         /* #cfe9d4 */
+    --ls-secondary-text: 64 16% 21%; /* #3c3d2c */
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Work Sans', ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Quicksand', ui-sans-serif, system-ui, sans-serif;
+    font-weight: 600;
+  }
+
+  /* Custom scrollbar for light theme */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(70 17% 7% / 0.18);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(70 17% 7% / 0.3);
+  }
+}
