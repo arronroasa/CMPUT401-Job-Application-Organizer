@@ -300,6 +300,235 @@ html.dark .lp-login:hover {
     opacity: 1;
   }
 }
+@keyframes lsInUp {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes lsInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-28px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes lsNudge {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+@keyframes lsBar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes lsRise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.page-motion {
+  will-change: transform, opacity;
+}
+
+/* Active nav pulse */
+.nav-active-glow {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent),
+    0 0 24px color-mix(in srgb, var(--accent) 12%, transparent);
+}
+
+/* ---- Landing full-page turn pager ---- */
+html.ls-land-lock,
+html.ls-land-lock body {
+  overflow: hidden;
+  height: 100%;
+  overscroll-behavior: none;
+}
+.ls-landing-shell {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  perspective: 1800px;
+  perspective-origin: 50% 50%;
+}
+.ls-land-pages {
+  position: relative;
+  height: 100%;
+  transform-style: preserve-3d;
+}
+.ls-land-page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 88px 0 64px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  transform-origin: center bottom;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.ls-land-page.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+  transform: none;
+}
+.ls-land-page.is-leave-next {
+  z-index: 3;
+  animation: lsTurnOutNext 0.78s cubic-bezier(0.55, 0.05, 0.25, 1) both;
+}
+.ls-land-page.is-enter-next {
+  z-index: 2;
+  animation: lsTurnInNext 0.78s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+.ls-land-page.is-leave-prev {
+  z-index: 3;
+  animation: lsTurnOutPrev 0.78s cubic-bezier(0.55, 0.05, 0.25, 1) both;
+}
+.ls-land-page.is-enter-prev {
+  z-index: 2;
+  animation: lsTurnInPrev 0.78s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+@keyframes lsTurnOutNext {
+  0% {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: rotateX(-72deg) translateY(-18%) scale(0.92);
+    filter: brightness(0.55);
+  }
+}
+@keyframes lsTurnInNext {
+  0% {
+    opacity: 0;
+    transform: rotateX(56deg) translateY(28%) scale(0.94);
+    filter: brightness(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0) translateY(0) scale(1);
+    filter: brightness(1);
+  }
+}
+@keyframes lsTurnOutPrev {
+  0% {
+    opacity: 1;
+    transform: rotateX(0deg) translateY(0) scale(1);
+    filter: brightness(1);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateX(56deg) translateY(22%) scale(0.94);
+    filter: brightness(0.55);
+  }
+}
+@keyframes lsTurnInPrev {
+  0% {
+    opacity: 0;
+    transform: rotateX(-72deg) translateY(-18%) scale(0.92);
+    filter: brightness(0.55);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateX(0) translateY(0) scale(1);
+    filter: brightness(1);
+  }
+}
+.ls-land-inner {
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 0 28px;
+  max-height: 100%;
+  overflow: auto;
+  scrollbar-width: none;
+}
+.ls-land-inner::-webkit-scrollbar {
+  display: none;
+}
+.ls-land-dots {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+}
+.ls-land-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  background: var(--ink-faint);
+  transition: height 0.28s ease, background 0.28s ease, box-shadow 0.28s ease;
+}
+.ls-land-dot.is-on {
+  height: 22px;
+  background: var(--accent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 45%, transparent);
+}
+.ls-land-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.ls-land-hint.is-hidden {
+  opacity: 0;
+}
+@media (max-width: 720px) {
+  .ls-land-page {
+    padding: 72px 0 56px;
+  }
+  .ls-land-dots {
+    right: 10px;
+  }
+}
 @keyframes ofIcon {
   0%,
   6% {

@@ -42,6 +42,7 @@ export default function KanbanBoard({ applications, onOpen }) {
             className={`rounded-lg border px-3 pt-3.5 pb-4 min-h-[150px] transition-colors ${
               dragOverStage === stage.id ? 'border-pine bg-mint/40' : 'border-line bg-surface'
             }`}
+            style={{ animation: `lsRise .5s cubic-bezier(.22,.8,.2,1) ${ci * 70}ms both` }}
           >
             <div className="flex items-center justify-between gap-2 px-2 pb-3">
               <span className="flex items-center gap-2 font-display font-semibold text-[15px] text-ink">
@@ -54,18 +55,19 @@ export default function KanbanBoard({ applications, onOpen }) {
               <span className="text-[12.5px] text-inkFaint">{items.length}</span>
             </div>
             <div className="flex flex-col gap-2.5 min-h-[40px]">
-              {items.map((app) => {
+              {items.map((app, ai) => {
                 const i = STAGES.findIndex((s) => s.id === app.stage);
                 return (
-                  <KanbanCard
-                    key={app.id}
-                    app={app}
-                    onDragStart={handleDragStart}
-                    onOpen={onOpen}
-                    onShift={shift}
-                    canBack={i > 0}
-                    canFwd={i < STAGES.length - 1}
-                  />
+                  <div key={app.id} style={{ animation: `lsPop .45s cubic-bezier(.22,.8,.2,1) ${ci * 70 + ai * 50}ms both` }}>
+                    <KanbanCard
+                      app={app}
+                      onDragStart={handleDragStart}
+                      onOpen={onOpen}
+                      onShift={shift}
+                      canBack={i > 0}
+                      canFwd={i < STAGES.length - 1}
+                    />
+                  </div>
                 );
               })}
               {items.length === 0 && (

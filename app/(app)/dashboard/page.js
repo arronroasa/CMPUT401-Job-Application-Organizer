@@ -7,6 +7,7 @@ import { STAGES } from '@/lib/constants';
 import StatCard from '@/components/ui/StatCard';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
+import Reveal from '@/components/Reveal';
 
 export default function TodayPage() {
   const { data, completeNextAction } = useStore();
@@ -29,7 +30,7 @@ export default function TodayPage() {
   const maxCount = Math.max(1, ...stageBreakdown.map((st) => st.count));
 
   return (
-    <div className="px-6 md:px-11 py-8 md:py-10 animate-[lsIn_.5s_cubic-bezier(.2,.8,.2,1)_both]">
+    <div className="px-6 md:px-11 py-8 md:py-10">
       <header className="mb-8">
         <h1 className="font-display font-semibold text-[40px] leading-none tracking-tight text-ink">{greeting}.</h1>
         <p className="text-inkSoft text-[15px] mt-2">
@@ -37,14 +38,14 @@ export default function TodayPage() {
         </p>
       </header>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+      <Reveal className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
         <StatCard label="Applied" value={s.total} />
         <StatCard label="In progress" value={s.inProgress} />
         <StatCard label="Awaiting reply" value={s.awaitingReply} />
         <StatCard label="Offers" value={s.offers} />
-      </div>
+      </Reveal>
 
-      <section className="mb-10">
+      <Reveal as="section" className="mb-10" delay={80}>
         <h2 className="font-display font-semibold text-xl text-ink mb-3.5">Do today</h2>
         {due.length === 0 ? (
           <div className="border border-dashed border-ink/20 rounded-lg px-5 py-5 text-sm text-inkSoft">
@@ -55,7 +56,7 @@ export default function TodayPage() {
             {due.map((app) => (
               <div
                 key={app.id}
-                className="flex flex-wrap items-center gap-4 bg-surface border border-line rounded-lg px-5 py-4 transition-all hover:border-ink/25 hover:translate-x-1"
+                className="flex flex-wrap items-center gap-4 bg-surface border border-line rounded-lg px-5 py-4 transition-all hover:border-ink/25 hover:translate-x-1 hover:shadow-card"
               >
                 <div className="flex-1 min-w-[180px]">
                   <p className="font-display font-semibold text-base text-ink">{app.nextAction.label}</p>
@@ -71,27 +72,30 @@ export default function TodayPage() {
             ))}
           </div>
         )}
-      </section>
+      </Reveal>
 
-      <section className="mb-10">
+      <Reveal as="section" className="mb-10" delay={140}>
         <h2 className="font-display font-semibold text-xl text-ink mb-3.5">Pipeline at a glance</h2>
         <div className="bg-surface border border-line rounded-lg px-6 py-[22px] flex flex-col gap-3.5">
-          {stageBreakdown.map((st) => (
+          {stageBreakdown.map((st, i) => (
             <div key={st.id} className="grid grid-cols-[92px_minmax(0,1fr)_28px] items-center gap-4">
               <span className="text-[13.5px] text-inkSoft">{st.label}</span>
               <span className="h-[7px] rounded-full bg-ink/[.08] overflow-hidden block">
                 <span
                   className={`block h-full rounded-full ${st.dot} origin-left`}
-                  style={{ width: `${(st.count / maxCount) * 100}%` }}
+                  style={{
+                    width: `${(st.count / maxCount) * 100}%`,
+                    animation: `lsBar .7s cubic-bezier(.2,.7,.2,1) ${i * 80}ms both`,
+                  }}
                 />
               </span>
               <span className="text-[13px] text-inkFaint text-right">{st.count}</span>
             </div>
           ))}
         </div>
-      </section>
+      </Reveal>
 
-      <section>
+      <Reveal as="section" delay={200}>
         <div className="flex items-baseline justify-between mb-3.5">
           <h2 className="font-display font-semibold text-xl text-ink">Recent activity</h2>
           <Link href="/applications" className="text-[13px] text-inkSoft underline hover:text-ink">
@@ -112,7 +116,7 @@ export default function TodayPage() {
           ))}
           {activity.length === 0 && <div className="px-6 py-6 text-sm text-inkFaint">No activity yet.</div>}
         </div>
-      </section>
+      </Reveal>
     </div>
   );
 }

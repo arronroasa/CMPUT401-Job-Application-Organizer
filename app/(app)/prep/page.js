@@ -33,7 +33,7 @@ export default function PrepPage() {
   }
 
   return (
-    <div className="px-6 md:px-11 py-8 md:py-10 max-w-3xl animate-[lsIn_.5s_cubic-bezier(.2,.8,.2,1)_both]">
+    <div className="px-6 md:px-11 py-8 md:py-10 max-w-3xl">
       <header className="mb-5">
         <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Interview prep</h1>
         <p className="text-inkSoft text-[14.5px]">
