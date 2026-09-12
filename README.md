@@ -2,7 +2,7 @@
 
 A Next.js + React frontend for the hackathon brief. No backend or database —
 all data lives in the browser's `localStorage`, seeded with demo data on first
-load, so the app is fully usable out of the box.
+load, so the app is fully usable out of the box. 
 
 ## Pages
 
