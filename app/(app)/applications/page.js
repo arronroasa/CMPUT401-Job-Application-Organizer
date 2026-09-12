@@ -23,7 +23,7 @@ export default function ApplicationsPage() {
   });
 
   return (
-    <div className="px-6 md:px-11 py-8 md:py-10 animate-[lsIn_.5s_cubic-bezier(.2,.8,.2,1)_both]">
+    <div className="px-6 md:px-11 py-8 md:py-10">
       <header className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
           <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Applications</h1>
@@ -45,7 +45,7 @@ export default function ApplicationsPage() {
         </div>
       </header>
 
-      <div className="bg-surface border border-line rounded-lg overflow-hidden">
+      <div className="bg-surface border border-line rounded-lg overflow-hidden animate-[lsRise_.45s_cubic-bezier(.22,.8,.2,1)_both]">
         <div className="overflow-x-auto">
           <div className="min-w-[720px]">
             <div className="grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_120px_120px_minmax(0,1.2fr)] gap-4 px-[22px] py-3.5 border-b border-line text-[11px] tracking-[.16em] uppercase text-inkFaint">

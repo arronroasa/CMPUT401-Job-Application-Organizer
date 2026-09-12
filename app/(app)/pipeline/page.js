@@ -17,7 +17,7 @@ export default function PipelinePage() {
   const filtered = data.applications.filter((a) => `${a.company} ${a.role}`.toLowerCase().includes(query.toLowerCase()));
 
   return (
-    <div className="px-6 md:px-11 py-8 md:py-10 animate-[lsIn_.5s_cubic-bezier(.2,.8,.2,1)_both]">
+    <div className="px-6 md:px-11 py-8 md:py-10">
       <header className="flex flex-wrap items-start justify-between gap-4 mb-7">
         <div>
           <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Pipeline</h1>
@@ -36,7 +36,9 @@ export default function PipelinePage() {
         </div>
       </header>
 
-      <KanbanBoard applications={filtered} onOpen={setSelected} />
+      <div className="animate-[lsRise_.45s_cubic-bezier(.22,.8,.2,1)_both]">
+        <KanbanBoard applications={filtered} onOpen={setSelected} />
+      </div>
 
       {showModal && <AddApplicationModal onClose={() => setShowModal(false)} />}
       {selected && <ApplicationDetail app={selected} onClose={() => setSelected(null)} />}

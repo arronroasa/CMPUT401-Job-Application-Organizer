@@ -5,7 +5,7 @@ export default function Button({ variant = 'primary', pill = false, className = 
   const shape = pill ? 'rounded-full' : 'rounded-md';
 
   const variants = {
-    primary: 'bg-ink text-[#fffdf7] hover:bg-[#2c2f22]',
+    primary: 'bg-ink text-paper hover:opacity-90 dark:bg-accent dark:text-paper dark:hover:opacity-95',
     secondary: 'bg-surface text-ink border border-line hover:border-ink',
     ghost: 'text-inkSoft hover:text-ink hover:bg-panel',
     danger: 'text-stageClosed hover:bg-stageClosedSoft',
