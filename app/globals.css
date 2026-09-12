@@ -2,108 +2,379 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ---- Theme tokens: light OnFile / dark Lodestar ---- */
+:root {
+  --paper: #faf6ec;
+  --surface: #fffdf7;
+  --ink: #14150f;
+  --ink-soft: #5d5f52;
+  --ink-faint: #8f9184;
+  --line: #e6e2d4;
+  --panel: #f2f4ee;
+
+  --pine: #3f6b4a;
+  --pine-dark: #2f5137;
+  --pine-soft: #cfe9d4;
+
+  --mint: #cfe9d4;
+  --honey: #ffe08a;
+  --blush: #f9d9e7;
+  --sage: #eaf3ec;
+  --logo: #3c3d2c;
+  --spark: #c1902f;
+  --accent: #3f6b4a;
+
+  --stage-applied: #8d9186;
+  --stage-applied-soft: #eceee6;
+  --stage-screening: #c99a3d;
+  --stage-screening-soft: #fdf1cf;
+  --stage-interview: #4a6f9c;
+  --stage-interview-soft: #dde7f3;
+  --stage-offer: #3f6b4a;
+  --stage-offer-soft: #cfe9d4;
+  --stage-closed: #9c5a4a;
+  --stage-closed-soft: #f4ddd6;
+
+  --shadow-card: 0 18px 40px -26px rgba(20, 21, 15, 0.35);
+  --shadow-lift: 0 30px 60px -40px rgba(20, 21, 15, 0.55);
+  --shadow-glow: 0 0 40px color-mix(in srgb, var(--accent) 12%, transparent);
+  --nav-blur: rgba(250, 246, 236, 0.9);
+  --hero-tint: #cfe9d4;
+  --card-bg: #ffffff;
+}
+
+html.dark {
+  --paper: #07080a;
+  --surface: #101216;
+  --ink: #f2f4f7;
+  --ink-soft: #b4b9c2;
+  --ink-faint: #8b9099;
+  --line: color-mix(in srgb, #f2f4f7 14%, transparent);
+  --panel: #15171a;
+
+  --pine: #e6e9f0;
+  --pine-dark: #c3c9d4;
+  --pine-soft: #272a2f;
+
+  --mint: #1a1d22;
+  --honey: #2b2f35;
+  --blush: #23272f;
+  --sage: #13151a;
+  --logo: #f2f4f7;
+  --spark: #e6e9f0;
+  --accent: #e6e9f0;
+
+  --stage-applied: #8b9099;
+  --stage-applied-soft: #1a1d22;
+  --stage-screening: #c6ccd7;
+  --stage-screening-soft: #272a2f;
+  --stage-interview: #9ea5b1;
+  --stage-interview-soft: #1a1d22;
+  --stage-offer: #e6e9f0;
+  --stage-offer-soft: #272a2f;
+  --stage-closed: #b4b9c2;
+  --stage-closed-soft: #1a1d22;
+
+  --shadow-card: 0 18px 48px rgba(0, 0, 0, 0.55);
+  --shadow-lift: 0 28px 64px rgba(0, 0, 0, 0.65);
+  --shadow-glow: 0 0 56px color-mix(in srgb, var(--accent) 18%, transparent);
+  --nav-blur: color-mix(in srgb, #07080a 82%, transparent);
+  --hero-tint: #e6e9f0;
+  --card-bg: #101216;
+  color-scheme: dark;
+}
+
 @layer base {
   html,
   body {
     margin: 0;
     padding: 0;
-    background-color: #faf6ec;
-    color: #14150f;
+    background-color: var(--paper);
+    color: var(--ink);
+    transition: background-color 0.35s ease, color 0.35s ease;
   }
   * {
     box-sizing: border-box;
   }
   a {
-    color: #14150f;
+    color: var(--ink);
     text-decoration: none;
   }
   a:hover {
-    color: #3f6b4a;
+    color: var(--pine);
+  }
+  html.dark a:hover {
+    color: var(--accent);
   }
   ::selection {
-    background: #3f6b4a;
-    color: #fff;
+    background: var(--pine);
+    color: var(--surface);
+  }
+  html.dark ::selection {
+    background: var(--accent);
+    color: var(--paper);
   }
   input:focus,
   select:focus,
   textarea:focus {
-    border-color: #3f6b4a !important;
-    box-shadow: 0 0 0 3px rgba(207, 233, 212, 0.55);
+    border-color: var(--pine) !important;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--pine-soft) 55%, transparent);
   }
 }
 
 @layer components {
   .focus-ring:focus-visible {
-    outline: 2px solid #3f6b4a;
+    outline: 2px solid var(--pine);
     outline-offset: 2px;
   }
 
   .input {
     @apply w-full rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink outline-none;
   }
+
+  /* Lodestar-style glass hero cards (dark mode) */
+  .ls-hero-card {
+    position: relative;
+    border-radius: 18px;
+    padding: 18px 20px;
+    background: linear-gradient(
+      145deg,
+      color-mix(in srgb, var(--surface) 78%, transparent),
+      color-mix(in srgb, #161920 88%, transparent)
+    );
+    border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+    backdrop-filter: blur(18px) saturate(1.2);
+    -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    box-shadow: var(--shadow-card), var(--shadow-glow);
+    transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease,
+      border-color 0.35s ease;
+  }
+  .ls-hero-card:hover {
+    transform: scale(1.05) translateY(-4px);
+    border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+    box-shadow: var(--shadow-lift), 0 0 72px color-mix(in srgb, var(--accent) 22%, transparent);
+  }
+  html:not(.dark) .ls-hero-card {
+    background: var(--card-bg);
+    border-color: color-mix(in srgb, var(--ink) 10%, transparent);
+  }
 }
 
-/* ---- Landing-page interactive hovers (inline styles can't express :hover) ---- */
-.lp-navlink { transition: background .2s ease, color .2s ease; }
-.lp-navlink:hover { background: #eef1ea; color: #14150f; }
-.lp-dark:hover { background: #2c2f22 !important; color: #fff !important; }
-.lp-login:hover { background: #14150f; color: #fff; border-color: #14150f; }
-.lp-cardcta:hover { background: #14150f !important; color: #fff !important; }
-.lp-loop { transition: background .35s ease; }
-.lp-loop:hover { background: #fffdf7; }
-.lp-why:hover { border-color: rgba(20,21,15,.28) !important; }
+/* ---- Landing-page interactive hovers ---- */
+.lp-navlink {
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.lp-navlink:hover {
+  background: var(--panel);
+  color: var(--ink);
+}
+.lp-dark:hover {
+  filter: brightness(1.12);
+}
+.lp-login:hover {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+html.dark .lp-login:hover {
+  background: var(--accent);
+  color: var(--paper);
+}
+.lp-cardcta:hover {
+  background: var(--ink) !important;
+  color: var(--paper) !important;
+}
+.lp-loop {
+  transition: background 0.35s ease;
+}
+.lp-loop:hover {
+  background: var(--surface);
+}
+.lp-why:hover {
+  border-color: color-mix(in srgb, var(--ink) 28%, transparent) !important;
+}
 
-/* ---- Shared keyframes (logo intro + landing motion) ---- */
+/* Theme toggle */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease,
+    transform 0.2s ease;
+}
+.theme-toggle:hover {
+  border-color: color-mix(in srgb, var(--ink) 28%, transparent);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-1px);
+}
+
+/* ---- Shared keyframes ---- */
 @keyframes lsIn {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 @keyframes lsSlide {
-  from { opacity: 0; transform: translateX(34px); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateX(34px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 @keyframes lsPop {
-  from { opacity: 0; transform: translateY(12px) scale(.97); }
-  to { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 @keyframes lsFloat {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-9px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-9px);
+  }
+}
+@keyframes lsOrbit {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(8px, -14px, 0);
+  }
+}
+@keyframes lsHalo {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.22);
+    opacity: 0.12;
+  }
 }
 @keyframes lsGrow {
-  from { transform: scaleX(0); }
-  to { transform: scaleX(1); }
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 @keyframes lsPulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: .35; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
 @keyframes lsFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes ofIcon {
-  0%, 6% { opacity: 0; transform: scale(.4); }
-  12% { opacity: 1; transform: scale(1.16); }
-  17% { transform: scale(.96); }
-  21%, 100% { opacity: 1; transform: scale(1); }
+  0%,
+  6% {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  12% {
+    opacity: 1;
+    transform: scale(1.16);
+  }
+  17% {
+    transform: scale(0.96);
+  }
+  21%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 @keyframes ofDoc {
-  0%, 26% { opacity: 0; transform: translateY(26px) scale(.85); }
-  36% { opacity: 1; transform: translateY(-4px) scale(1.03); }
-  42%, 100% { opacity: 1; transform: translateY(0) scale(1); }
+  0%,
+  26% {
+    opacity: 0;
+    transform: translateY(26px) scale(0.85);
+  }
+  36% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.03);
+  }
+  42%,
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 @keyframes ofSpark {
-  0%, 36% { opacity: 0; transform: scale(.2) rotate(-20deg); }
-  44% { opacity: 1; transform: scale(1.35) rotate(6deg); }
-  50%, 70% { opacity: 1; transform: scale(1) rotate(0); }
-  78% { opacity: .35; transform: scale(.9) rotate(-4deg); }
-  84%, 100% { opacity: 1; transform: scale(1) rotate(0); }
+  0%,
+  36% {
+    opacity: 0;
+    transform: scale(0.2) rotate(-20deg);
+  }
+  44% {
+    opacity: 1;
+    transform: scale(1.35) rotate(6deg);
+  }
+  50%,
+  70% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+  78% {
+    opacity: 0.35;
+    transform: scale(0.9) rotate(-4deg);
+  }
+  84%,
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
 }
 @keyframes ofLetter {
-  0%, 44% { opacity: 0; transform: translateY(16px); }
-  52% { opacity: 1; transform: translateY(-2px); }
-  57%, 100% { opacity: 1; transform: translateY(0); }
+  0%,
+  44% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  52% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+  57%,
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -116,7 +387,6 @@
   }
 }
 
-/* Printable resume — everything else hides when exporting to PDF via window.print() */
 @media print {
   body * {
     visibility: hidden;

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     './app/**/*.{js,jsx}',
     './components/**/*.{js,jsx}',
@@ -8,44 +9,41 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // OnFile core palette
-        paper: '#faf6ec',      // page background (warm cream)
-        surface: '#fffdf7',    // cards / raised surfaces
-        ink: '#14150f',        // primary text / dark buttons
-        inkSoft: '#5d5f52',    // secondary text  (~ rgba(20,21,15,.72))
-        inkFaint: '#8f9184',   // muted text      (~ rgba(20,21,15,.5))
-        line: '#e6e2d4',       // hairline borders (~ rgba(20,21,15,.1))
-        panel: '#f2f4ee',      // inset panels / chips
+        // Theme tokens (light OnFile / dark Lodestar via CSS vars)
+        paper: 'var(--paper)',
+        surface: 'var(--surface)',
+        ink: 'var(--ink)',
+        inkSoft: 'var(--ink-soft)',
+        inkFaint: 'var(--ink-faint)',
+        line: 'var(--line)',
+        panel: 'var(--panel)',
 
-        // brand green (was "pine")
-        pine: '#3f6b4a',
-        pineDark: '#2f5137',
-        pineSoft: '#cfe9d4',
+        pine: 'var(--pine)',
+        pineDark: 'var(--pine-dark)',
+        pineSoft: 'var(--pine-soft)',
 
-        // landing accents
-        mint: '#cfe9d4',
-        honey: '#ffe08a',
-        blush: '#f9d9e7',
-        sage: '#eaf3ec',
-        logo: '#3c3d2c',
-        spark: '#c1902f',
+        mint: 'var(--mint)',
+        honey: 'var(--honey)',
+        blush: 'var(--blush)',
+        sage: 'var(--sage)',
+        logo: 'var(--logo)',
+        spark: 'var(--spark)',
+        accent: 'var(--accent)',
 
-        // pipeline stages (from the OnFile template)
-        stageApplied: '#8d9186',
-        stageAppliedSoft: '#eceee6',
-        stageScreening: '#c99a3d',
-        stageScreeningSoft: '#fdf1cf',
-        stageInterview: '#4a6f9c',
-        stageInterviewSoft: '#dde7f3',
-        stageOffer: '#3f6b4a',
-        stageOfferSoft: '#cfe9d4',
-        stageClosed: '#9c5a4a',
-        stageClosedSoft: '#f4ddd6',
+        stageApplied: 'var(--stage-applied)',
+        stageAppliedSoft: 'var(--stage-applied-soft)',
+        stageScreening: 'var(--stage-screening)',
+        stageScreeningSoft: 'var(--stage-screening-soft)',
+        stageInterview: 'var(--stage-interview)',
+        stageInterviewSoft: 'var(--stage-interview-soft)',
+        stageOffer: 'var(--stage-offer)',
+        stageOfferSoft: 'var(--stage-offer-soft)',
+        stageClosed: 'var(--stage-closed)',
+        stageClosedSoft: 'var(--stage-closed-soft)',
       },
       fontFamily: {
         display: ['var(--font-quicksand)', 'ui-rounded', 'system-ui', 'sans-serif'],
         sans: ['var(--font-work-sans)', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        // legacy alias so any pre-reskin markup keeps a sane face
         serif: ['var(--font-quicksand)', 'Georgia', 'serif'],
       },
       borderRadius: {
@@ -56,8 +54,33 @@ module.exports = {
         '2xl': '24px',
       },
       boxShadow: {
-        card: '0 18px 40px -26px rgba(20,21,15,.35)',
-        lift: '0 30px 60px -40px rgba(20,21,15,.55)',
+        card: 'var(--shadow-card)',
+        lift: 'var(--shadow-lift)',
+        glow: 'var(--shadow-glow)',
+      },
+      keyframes: {
+        lsFloat: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        lsOrbit: {
+          '0%, 100%': { transform: 'translate3d(0,0,0)' },
+          '50%': { transform: 'translate3d(6px,-14px,0)' },
+        },
+        lsGlow: {
+          '0%, 100%': { opacity: '.45' },
+          '50%': { opacity: '.9' },
+        },
+        lsInUp: {
+          from: { opacity: '0', transform: 'translateY(18px)' },
+          to: { opacity: '1', transform: 'none' },
+        },
+      },
+      animation: {
+        lsFloat: 'lsFloat 7s ease-in-out infinite',
+        lsOrbit: 'lsOrbit 5.8s ease-in-out infinite',
+        lsGlow: 'lsGlow 4.5s ease-in-out infinite',
+        lsInUp: 'lsInUp .42s cubic-bezier(.22,.8,.2,1) both',
       },
     },
   },
