@@ -6,6 +6,10 @@ Glossary for OnFile, a job application organizer. (Formerly "TrackWise"; also se
 
 The single source-of-truth resume. One per user. Holds a summary, experience, projects, and a list of skills. The user edits it directly. It is never tied to a specific job.
 
+## Resume import
+
+Filling the master resume in from the one resume already on file for **Auto Search and Apply**. There is a single resume upload in the app; importing reshapes that same backend profile's summary, experience, projects, and skills into the master resume's fields and offers them back as a **review** — the user accepts or dismisses each section, and accepting only fills the editor, so nothing reaches the master resume until the user saves.
+
 ## Tailored resume
 
 A resume aimed at one specific job application. Created as a **snapshot copy** of the master at the moment of creation, then edited freely on its own. It carries the same fields as the master plus a name, an optional link to an application, and the job description it targets.

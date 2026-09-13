@@ -3,9 +3,10 @@
 // Imports/re-imports the ONE resume the backend actually uses: Auto Search's
 // match-score ranking and the Apply autofill (careersavers, lifted into
 // backend/) both read straight off whichever profile is "active" there.
-// This is deliberately separate from the Master/Tailored resume editor
-// above — that's local content you write yourself; this is a real file
-// that gets AI-parsed into structured profile data server-side.
+// This is a real file that gets AI-parsed into structured profile data
+// server-side — the Master tab's importer (MasterResumeImport.js) reads that
+// same profile to offer filling in the master resume, rather than asking for
+// a second upload.
 
 import { useEffect, useRef, useState } from 'react';
 import { UploadCloud, FileText, Check, Loader2, AlertTriangle, RefreshCw, Sparkles } from 'lucide-react';

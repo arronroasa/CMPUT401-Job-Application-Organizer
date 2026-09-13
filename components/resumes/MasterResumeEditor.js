@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import Button from '@/components/ui/Button';
+import MasterResumeImport from './MasterResumeImport';
 
 export default function MasterResumeEditor() {
   const { data, saveMasterResume } = useStore();
@@ -36,6 +37,19 @@ export default function MasterResumeEditor() {
     );
   }
 
+  // Used by the importer, which may add several skills in one go — hence the
+  // functional update and the duplicate check rather than reading `form`.
+  function addSkillNamed(skill) {
+    const name = (skill || '').trim();
+    if (!name) return;
+    setForm((f) =>
+      f.skills.some((s) => s.toLowerCase() === name.toLowerCase())
+        ? f
+        : { ...f, skills: [...f.skills, name] }
+    );
+    setSaved(false);
+  }
+
   function handleSave() {
     saveMasterResume(form);
     setSaved(true);
@@ -46,6 +60,12 @@ export default function MasterResumeEditor() {
       <p className="text-[13px] text-inkFaint mb-5">
         This is your source of truth. Tailored copies start from whatever is saved here.
       </p>
+
+      <MasterResumeImport
+        currentSkills={form.skills}
+        onAcceptSection={update}
+        onAddSkill={addSkillNamed}
+      />
 
       <FormField label="Summary">
         <textarea value={form.summary} onChange={(e) => update('summary', e.target.value)} className="input min-h-[70px]" />
