@@ -211,7 +211,15 @@ export default function Landing() {
         const avail = page.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
         room = avail - (inner.scrollHeight - wrap.offsetHeight) - 8;
       }
-      setCarouselWidth(Math.max(258, Math.min(520, window.innerWidth - 72, room)));
+      // 258 was too tight for the longer Tour card descriptions to fit inside
+      // a true circle (border-radius: 50% clips well before the padding
+      // box's own edges) — 300 gives the text enough room even on short
+      // laptop-height windows. Only raise the floor when the viewport is
+      // actually wide enough for it, though — on a narrow phone, forcing
+      // 300px would push the circle past the screen edges, which is its
+      // own version of "cut off".
+      const widthCap = Math.min(520, window.innerWidth - 72);
+      setCarouselWidth(widthCap < 300 ? widthCap : Math.max(300, Math.min(widthCap, room)));
     };
     fit();
     window.addEventListener('resize', fit);

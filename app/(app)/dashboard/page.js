@@ -29,10 +29,10 @@ export default function TodayPage() {
   const maxCount = Math.max(1, ...stageBreakdown.map((st) => st.count));
 
   const tiles = [
-    { n: '01', label: 'Applied', value: s.total, fill: 'var(--sage)' },
-    { n: '02', label: 'In progress', value: s.inProgress, fill: 'color-mix(in srgb, var(--honey) 55%, transparent)' },
-    { n: '03', label: 'Awaiting reply', value: s.awaitingReply, fill: 'var(--blush)' },
-    { n: '04', label: 'Offers', value: s.offers, fill: 'var(--mint)' },
+    { n: '01', label: 'Applied', value: s.total, fill: 'var(--tile-applied)' },
+    { n: '02', label: 'In progress', value: s.inProgress, fill: 'var(--tile-progress)' },
+    { n: '03', label: 'Awaiting reply', value: s.awaitingReply, fill: 'var(--tile-awaiting)' },
+    { n: '04', label: 'Offers', value: s.offers, fill: 'var(--tile-offers)' },
   ];
 
   return (

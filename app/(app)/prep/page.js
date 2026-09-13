@@ -193,14 +193,29 @@ export default function PrepPage() {
           <div className="flex flex-wrap gap-2.5 mt-6 pt-6 border-t border-line">
             {TABS.map((t) => {
               const active = t === tab;
+              // Easy/Medium/Hard light up in their own difficulty color when
+              // selected (same --diff-* tokens the per-row chips use, neon
+              // in dark mode) instead of the generic ink/paper every tab
+              // used before, which made them all look the same when active.
+              const diffStyle =
+                active && t !== 'All'
+                  ? {
+                      background: `var(--diff-${t.toLowerCase()}-bg)`,
+                      color: `var(--diff-${t.toLowerCase()}-ink)`,
+                      borderColor: `var(--diff-${t.toLowerCase()}-ink)`,
+                    }
+                  : undefined;
               return (
                 <button
                   key={t}
                   onClick={() => switchTab(t)}
                   aria-pressed={active}
+                  style={diffStyle}
                   className={`px-4 py-[7px] rounded-full text-[13.5px] border transition-colors ${
                     active
-                      ? 'bg-ink text-paper border-ink'
+                      ? t === 'All'
+                        ? 'bg-ink text-paper border-ink'
+                        : 'font-medium'
                       : 'bg-surface text-ink border-line hover:border-ink'
                   }`}
                 >
