@@ -39,6 +39,7 @@ COPY jsconfig.json next.config.mjs postcss.config.js tailwind.config.js ./
 COPY app ./app
 COPY components ./components
 COPY lib ./lib
+COPY public ./public
 
 ARG NEXT_PUBLIC_CAREERSAVERS_API_URL=http://localhost:8000
 ENV NEXT_PUBLIC_CAREERSAVERS_API_URL=${NEXT_PUBLIC_CAREERSAVERS_API_URL}
@@ -72,6 +73,7 @@ COPY backend/app ./backend/app
 COPY --from=frontend-builder /app/node_modules ./node_modules
 COPY --from=frontend-builder /app/.next ./.next
 COPY --from=frontend-builder /app/package.json ./package.json
+COPY --from=frontend-builder /app/public ./public
 COPY next.config.mjs ./next.config.mjs
 
 ARG NEXT_PUBLIC_CAREERSAVERS_API_URL=http://localhost:8000

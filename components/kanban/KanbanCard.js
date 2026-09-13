@@ -1,10 +1,9 @@
-import Badge from '@/components/ui/Badge';
+import { CalendarDays } from 'lucide-react';
 import Tooltip from '@/components/ui/Tooltip';
-import { stageMeta } from '@/lib/constants';
+import { shortDate } from '@/lib/dates';
 
 export default function KanbanCard({ app, onDragStart, onOpen, onShift, canBack, canFwd }) {
   const hasTooltipContent = app.notes || app.nextAction;
-  const meta = stageMeta(app.stage);
 
   const tooltipContent = hasTooltipContent ? (
     <div className="flex flex-col gap-1">
@@ -24,31 +23,35 @@ export default function KanbanCard({ app, onDragStart, onOpen, onShift, canBack,
       <div
         draggable
         onDragStart={(e) => onDragStart(e, app.id)}
-        className="group flex flex-col min-h-[136px] bg-surface rounded-2xl p-[18px] cursor-grab active:cursor-grabbing shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift"
+        className="flex flex-col bg-surface rounded-2xl p-[18px] cursor-grab active:cursor-grabbing shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift"
         style={{ borderLeft: `3px solid var(--stage-${app.stage})` }}
       >
         <button onClick={() => onOpen(app)} className="block w-full text-left focus-ring rounded">
-          <p className="font-display font-semibold text-[18px] leading-snug text-ink truncate">{app.role}</p>
-          <p className="text-[13px] text-ink truncate mt-1">{app.company}</p>
+          <p className="font-display font-semibold text-[17px] leading-snug text-ink">{app.role}</p>
+          <p className="text-[13px] text-inkSoft truncate mt-1">{app.company}</p>
         </button>
 
         {app.nextAction && !app.nextAction.done && (
           <span
-            className={`inline-flex items-center gap-2 self-start max-w-full mt-3.5 px-3 py-1.5 rounded-full text-[12.5px] text-ink ${meta.bg}`}
+            className="inline-flex items-center gap-1.5 mt-3 text-[12.5px] font-medium"
+            style={{ color: `var(--stage-${app.stage})` }}
           >
-            <span className={`shrink-0 w-1.5 h-1.5 rounded-full ${meta.dot}`} />
-            <span className="min-w-0 truncate">{app.nextAction.label}</span>
+            <CalendarDays size={13} className="shrink-0" />
+            <span className="min-w-0 truncate">
+              {app.nextAction.label}
+              {app.nextAction.date ? ` ${shortDate(app.nextAction.date)}` : ''}
+            </span>
           </span>
         )}
 
         <div className="flex items-center justify-between gap-2 mt-auto pt-4">
-          <span className="text-[12px] text-ink">{app.dateApplied}</span>
-          <span className="flex gap-1 opacity-30 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100">
+          <span className="text-[12px] text-inkSoft">{app.dateApplied}</span>
+          <span className="flex gap-1">
             <button
               onClick={() => onShift(app, -1)}
               disabled={!canBack}
               aria-label="Move to previous stage"
-              className="w-6 h-6 rounded-md border border-line bg-surface text-xs leading-none hover:border-ink disabled:opacity-30 disabled:hover:border-line focus-ring"
+              className="w-6 h-6 rounded-full border border-line bg-surface text-xs leading-none text-ink hover:border-ink disabled:opacity-30 disabled:hover:border-line focus-ring"
             >
               ←
             </button>
@@ -56,7 +59,7 @@ export default function KanbanCard({ app, onDragStart, onOpen, onShift, canBack,
               onClick={() => onShift(app, 1)}
               disabled={!canFwd}
               aria-label="Move to next stage"
-              className="w-6 h-6 rounded-md border border-line bg-surface text-xs leading-none hover:border-ink disabled:opacity-30 disabled:hover:border-line focus-ring"
+              className="w-6 h-6 rounded-full border border-line bg-surface text-xs leading-none text-ink hover:border-ink disabled:opacity-30 disabled:hover:border-line focus-ring"
             >
               →
             </button>
