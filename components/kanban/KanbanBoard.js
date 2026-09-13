@@ -28,7 +28,7 @@ export default function KanbanBoard({ applications, onOpen }) {
   }
 
   return (
-    <div className="flex gap-3.5 items-start overflow-x-auto pb-2 -mx-1 px-1">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr gap-3.5 pb-2">
       {STAGES.map((stage, ci) => {
         const items = applications.filter((a) => a.stage === stage.id);
         return (
@@ -40,22 +40,16 @@ export default function KanbanBoard({ applications, onOpen }) {
             }}
             onDragLeave={() => setDragOverStage(null)}
             onDrop={(e) => handleDrop(e, stage.id)}
-            className={`w-[240px] sm:w-[260px] shrink-0 rounded-lg border px-3 pt-3.5 pb-4 min-h-[150px] transition-colors ${
+            className={`w-full rounded-lg border px-3 pt-3.5 pb-4 min-h-[150px] transition-colors ${
               dragOverStage === stage.id ? 'border-pine bg-mint/40' : 'border-line bg-surface'
             }`}
             style={{ animation: `lsRise .5s cubic-bezier(.22,.8,.2,1) ${ci * 70}ms both` }}
           >
             <div className="flex items-center justify-between gap-2 px-2 pb-3">
-              <span className="flex items-center gap-2 font-display font-semibold text-[15px] text-ink">
-                <span
-                  className={`w-2 h-2 rounded-full ${stage.dot} animate-[lsPulse_2.6s_ease-in-out_infinite]`}
-                  style={{ animationDelay: `${(ci * 0.3).toFixed(2)}s` }}
-                />
-                {stage.label}
-              </span>
-              <span className="text-[12.5px] text-inkFaint">{items.length}</span>
+              <span className="font-display font-semibold text-[15px] text-ink">{stage.label}</span>
+              <span className="text-[12.5px] text-ink">{items.length}</span>
             </div>
-            <div className="flex flex-col gap-2.5 min-h-[40px]">
+            <div className="flex flex-col gap-3.5 min-h-[40px]">
               {items.map((app, ai) => {
                 const i = STAGES.findIndex((s) => s.id === app.stage);
                 return (
@@ -72,7 +66,7 @@ export default function KanbanBoard({ applications, onOpen }) {
                 );
               })}
               {items.length === 0 && (
-                <div className="border border-dashed border-ink/15 rounded-md py-6 text-center text-xs text-inkFaint">
+                <div className="border border-dashed border-ink/15 rounded-md py-6 text-center text-xs text-ink">
                   Drop here
                 </div>
               )}

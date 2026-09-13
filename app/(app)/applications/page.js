@@ -3,8 +3,7 @@
 import { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useStore } from '@/lib/store';
-import { STAGES } from '@/lib/constants';
-import Badge from '@/components/ui/Badge';
+import { STAGES, stageMeta } from '@/lib/constants';
 import ApplicationDetail from '@/components/applications/ApplicationDetail';
 import AddApplicationModal from '@/components/kanban/AddApplicationModal';
 import AddApplicationButton from '@/components/kanban/AddApplicationButton';
@@ -59,45 +58,52 @@ function ApplicationsPage() {
         </div>
       </header>
 
-      <div className="bg-surface border border-line rounded-lg overflow-hidden animate-[lsRise_.45s_cubic-bezier(.22,.8,.2,1)_both]">
-        <div className="sm:overflow-x-auto">
-          <div className="sm:min-w-[720px]">
-            <div className="hidden sm:grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_120px_120px_minmax(0,1.2fr)] gap-4 px-[22px] py-3.5 border-b border-line text-[11px] tracking-[.16em] uppercase text-inkFaint">
-              <span>Company</span>
-              <span>Role</span>
-              <span>Applied</span>
-              <span>Stage</span>
-              <span>Next action</span>
-            </div>
-            {filtered.map((app) => (
-              <button
-                key={app.id}
-                onClick={() => setSelected(app)}
-                className="flex w-full flex-col gap-1 text-left px-4 py-3.5 sm:grid sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_120px_120px_minmax(0,1.2fr)] sm:gap-4 sm:items-center sm:px-[22px] sm:py-4 border-b border-ink/[.07] last:border-0 cursor-pointer transition-all hover:bg-paper sm:hover:pl-7"
+      <div className="flex flex-col gap-3 animate-[lsRise_.45s_cubic-bezier(.22,.8,.2,1)_both]">
+        {filtered.map((app) => {
+          const meta = stageMeta(app.stage);
+          const next =
+            app.nextAction && !app.nextAction.done
+              ? `${app.nextAction.label}${app.nextAction.date ? ` · ${app.nextAction.date}` : ''}`
+              : null;
+
+          return (
+            <button
+              key={app.id}
+              onClick={() => setSelected(app)}
+              className="w-full text-left bg-surface rounded-2xl p-[18px] shadow-card cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5"
+              style={{ borderLeft: `3px solid var(--stage-${app.stage})` }}
+            >
+              <span className="flex-1 min-w-0">
+                <span className="block font-display font-semibold text-[17px] text-ink truncate">{app.company}</span>
+                <span className="block text-[13.5px] text-inkSoft truncate mt-0.5">{app.role}</span>
+              </span>
+
+              <span className="shrink-0 text-[12.5px] text-inkFaint sm:w-[96px]">{app.dateApplied}</span>
+
+              <span
+                className={`inline-flex items-center gap-2 self-start sm:self-auto shrink-0 rounded-full px-3 py-1.5 text-[12.5px] text-ink ${meta.bg}`}
               >
-                {/* Below sm the five columns stack into a card, with the stage
-                    badge pulled up next to the company name. */}
-                <span className="flex items-center justify-between gap-3 min-w-0 sm:block">
-                  <span className="text-[14.5px] font-medium text-ink truncate">{app.company}</span>
-                  <span className="shrink-0 sm:hidden">
-                    <Badge stageId={app.stage} />
+                <span className={`w-1.5 h-1.5 rounded-full ${meta.dot}`} />
+                {meta.label}
+              </span>
+
+              <span className="min-w-0 sm:w-[290px] sm:shrink-0 sm:text-right">
+                {next ? (
+                  <span className="inline-flex max-w-full items-center rounded-full bg-sage px-3.5 py-1.5 text-[12.5px] text-ink">
+                    <span className="min-w-0 truncate">{next}</span>
                   </span>
-                </span>
-                <span className="text-[14px] text-inkSoft truncate">{app.role}</span>
-                <span className="text-[13px] text-inkFaint">{app.dateApplied}</span>
-                <span className="hidden sm:block">
-                  <Badge stageId={app.stage} />
-                </span>
-                <span className="text-[13.5px] text-inkSoft truncate">
-                  {app.nextAction && !app.nextAction.done ? `${app.nextAction.label}${app.nextAction.date ? ` · ${app.nextAction.date}` : ''}` : '—'}
-                </span>
-              </button>
-            ))}
-            {filtered.length === 0 && (
-              <div className="px-[22px] py-10 text-center text-inkFaint text-sm">No applications match.</div>
-            )}
+                ) : (
+                  <span className="text-[12.5px] text-inkFaint">Nothing due</span>
+                )}
+              </span>
+            </button>
+          );
+        })}
+        {filtered.length === 0 && (
+          <div className="bg-surface rounded-2xl shadow-card px-[22px] py-10 text-center text-inkFaint text-sm">
+            No applications match.
           </div>
-        </div>
+        )}
       </div>
 
       {selected && <ApplicationDetail app={selected} onClose={() => setSelected(null)} />}

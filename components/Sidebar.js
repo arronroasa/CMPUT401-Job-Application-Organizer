@@ -74,13 +74,6 @@ export default function Sidebar() {
             );
           })}
         </nav>
-
-        <div className="mt-auto rounded-lg bg-panel border border-line px-3.5 pt-3.5 pb-4">
-          <div className="text-[11px] tracking-[.18em] uppercase text-inkFaint">Local demo</div>
-          <div className="text-[12.5px] text-inkSoft mt-1.5 leading-snug">
-            Data lives in your browser. Nothing leaves this device.
-          </div>
-        </div>
       </aside>
 
       {/* Mobile bottom nav */}

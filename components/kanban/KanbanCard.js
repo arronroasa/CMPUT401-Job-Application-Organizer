@@ -1,8 +1,10 @@
 import Badge from '@/components/ui/Badge';
 import Tooltip from '@/components/ui/Tooltip';
+import { stageMeta } from '@/lib/constants';
 
 export default function KanbanCard({ app, onDragStart, onOpen, onShift, canBack, canFwd }) {
   const hasTooltipContent = app.notes || app.nextAction;
+  const meta = stageMeta(app.stage);
 
   const tooltipContent = hasTooltipContent ? (
     <div className="flex flex-col gap-1">
@@ -22,20 +24,26 @@ export default function KanbanCard({ app, onDragStart, onOpen, onShift, canBack,
       <div
         draggable
         onDragStart={(e) => onDragStart(e, app.id)}
-        className="bg-paper border border-line rounded-lg px-3.5 pt-3.5 pb-3 cursor-grab active:cursor-grabbing transition-all hover:border-ink/30 hover:-translate-y-0.5 hover:shadow-card"
+        className="group flex flex-col min-h-[136px] bg-surface rounded-2xl p-[18px] cursor-grab active:cursor-grabbing shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift"
+        style={{ borderLeft: `3px solid var(--stage-${app.stage})` }}
       >
         <button onClick={() => onOpen(app)} className="block w-full text-left focus-ring rounded">
-          <p className="font-display font-semibold text-[15px] text-ink truncate">{app.role}</p>
-          <p className="text-[13px] text-inkSoft truncate mt-0.5">{app.company}</p>
+          <p className="font-display font-semibold text-[18px] leading-snug text-ink truncate">{app.role}</p>
+          <p className="text-[13px] text-ink truncate mt-1">{app.company}</p>
         </button>
-        <div className="flex flex-wrap items-center gap-2 mt-3">
-          <span className="text-xs text-inkFaint">{app.dateApplied}</span>
-          {app.nextAction && !app.nextAction.done && (
-            <span className="text-[11.5px] px-2.5 py-1 rounded-full bg-mint text-ink truncate max-w-[130px]">
-              {app.nextAction.label}
-            </span>
-          )}
-          <span className="ml-auto flex gap-1">
+
+        {app.nextAction && !app.nextAction.done && (
+          <span
+            className={`inline-flex items-center gap-2 self-start max-w-full mt-3.5 px-3 py-1.5 rounded-full text-[12.5px] text-ink ${meta.bg}`}
+          >
+            <span className={`shrink-0 w-1.5 h-1.5 rounded-full ${meta.dot}`} />
+            <span className="min-w-0 truncate">{app.nextAction.label}</span>
+          </span>
+        )}
+
+        <div className="flex items-center justify-between gap-2 mt-auto pt-4">
+          <span className="text-[12px] text-ink">{app.dateApplied}</span>
+          <span className="flex gap-1 opacity-30 transition-opacity duration-300 group-hover:opacity-100 focus-within:opacity-100">
             <button
               onClick={() => onShift(app, -1)}
               disabled={!canBack}

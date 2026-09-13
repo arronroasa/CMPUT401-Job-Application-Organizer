@@ -199,7 +199,20 @@ export default function Landing() {
     else document.querySelector('.ls-land-page.is-active .ls-land-inner')?.scrollTo({ top: 0, behavior: 'smooth' });
   };
   useEffect(() => {
-    const fit = () => setCarouselWidth(Math.max(258, Math.min(520, window.innerWidth - 72, window.innerHeight - 390)));
+    // Give the circle whatever height the rest of the Tour page leaves over,
+    // measured from the real layout so it tracks the CSS at every screen size.
+    const fit = () => {
+      const page = document.getElementById('why');
+      const inner = page?.querySelector('.ls-land-inner');
+      const wrap = page?.querySelector('.of-why-carousel');
+      let room = window.innerHeight - 390;
+      if (page && inner && wrap) {
+        const cs = getComputedStyle(page);
+        const avail = page.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+        room = avail - (inner.scrollHeight - wrap.offsetHeight) - 8;
+      }
+      setCarouselWidth(Math.max(258, Math.min(520, window.innerWidth - 72, room)));
+    };
     fit();
     window.addEventListener('resize', fit);
     return () => window.removeEventListener('resize', fit);
@@ -422,7 +435,7 @@ export default function Landing() {
 
         {/* Page 2 — Why + tour + footer */}
         <section className="ls-land-page" id="why">
-          <div className="ls-land-inner" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(28px,4vw,44px)' }}>
+          <div className="ls-land-inner of-why-stack">
             <div className="of-why-split">
               <div className="of-why-carousel">
                 <Carousel items={WHY_ITEMS} baseWidth={carouselWidth} round autoplay autoplayDelay={4200} pauseOnHover loop />

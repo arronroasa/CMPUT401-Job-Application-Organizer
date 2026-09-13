@@ -22,7 +22,7 @@ export default function PipelinePage() {
       <header className="flex flex-wrap items-start justify-between gap-4 mb-7">
         <div>
           <h1 className="font-display font-semibold text-[28px] sm:text-[38px] leading-none tracking-tight text-ink mb-1.5">Pipeline</h1>
-          <p className="text-inkSoft text-[14.5px]">Drag a card, or use the arrows, to change its stage.</p>
+          <p className="text-ink text-[14.5px]">Drag a card, or use the arrows, to change its stage.</p>
         </div>
         <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
           <input
@@ -37,7 +37,7 @@ export default function PipelinePage() {
         </div>
       </header>
 
-      <div className="flex flex-col md:flex-row gap-6 items-start">
+      <div className="flex flex-col xl:flex-row gap-6 items-start">
         <div className="flex-1 min-w-0">
           <KanbanBoard applications={filtered} onOpen={setSelected} />
         </div>

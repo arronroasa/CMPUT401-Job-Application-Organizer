@@ -179,7 +179,7 @@ export default function PrepPage() {
         <section className="mt-9">
           <header className="flex items-end justify-between gap-4 flex-wrap">
             <div>
-              <h1 className="font-display font-semibold text-[34px] leading-none tracking-tight text-ink">
+              <h1 className="font-display font-semibold text-[26px] sm:text-[34px] leading-none tracking-tight text-ink">
                 {selected}
               </h1>
               <p className="text-[14px] text-inkSoft mt-2">
