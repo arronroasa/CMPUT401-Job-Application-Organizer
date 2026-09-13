@@ -20,6 +20,14 @@
   --honey: #ffe08a;
   --blush: #f9d9e7;
   --sage: #eaf3ec;
+
+  /* LeetCode difficulty chips (interview prep) */
+  --diff-easy-bg: #cfe9d4;
+  --diff-easy-ink: #2f5137;
+  --diff-medium-bg: #fdf1cf;
+  --diff-medium-ink: #7a5a13;
+  --diff-hard-bg: #f4ddd6;
+  --diff-hard-ink: #8a3f2c;
   --logo: #3c3d2c;
   --spark: #c1902f;
   --accent: #3f6b4a;
@@ -60,6 +68,14 @@ html.dark {
   --honey: #2b2f35;
   --blush: #23272f;
   --sage: #13151a;
+
+  /* Kept faintly tinted so the three stay tellable apart on dark. */
+  --diff-easy-bg: color-mix(in srgb, #6ee7a5 14%, transparent);
+  --diff-easy-ink: #a7e8c4;
+  --diff-medium-bg: color-mix(in srgb, #f5c451 14%, transparent);
+  --diff-medium-ink: #f0d296;
+  --diff-hard-bg: color-mix(in srgb, #f08a7a 14%, transparent);
+  --diff-hard-ink: #f3b3a7;
   --logo: #f2f4f7;
   --spark: #e6e9f0;
   --accent: #e6e9f0;
@@ -130,6 +146,22 @@ html.dark {
 
   .input {
     @apply w-full rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink outline-none;
+  }
+
+  .diff-chip {
+    @apply inline-flex items-center justify-center rounded-full px-2.5 py-1 text-[11.5px] leading-none;
+  }
+  .diff-Easy {
+    background: var(--diff-easy-bg);
+    color: var(--diff-easy-ink);
+  }
+  .diff-Medium {
+    background: var(--diff-medium-bg);
+    color: var(--diff-medium-ink);
+  }
+  .diff-Hard {
+    background: var(--diff-hard-bg);
+    color: var(--diff-hard-ink);
   }
 
   /* Lodestar-style glass hero cards (dark mode) */
