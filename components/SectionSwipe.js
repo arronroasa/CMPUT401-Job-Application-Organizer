@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { APP_SECTIONS, neighborSection, sectionIndex } from '@/lib/nav';
 
-const EDGE = 90;
+const EDGE = 220;
 
 function getScroller(root) {
   if (!root) return document.scrollingElement || document.documentElement;
