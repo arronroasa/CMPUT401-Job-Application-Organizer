@@ -22,8 +22,7 @@ export default function ResumesPageWrapper() {
 }
 
 function ResumesPage() {
-  const { data, addResumeVersion, updateResumeVersion, saveMatchResult, deleteResumeVersion, setMasterResume, saveContactHeader } =
-    useStore();
+  const { data, addResumeVersion, updateResumeVersion, deleteResumeVersion, setMasterResume, saveContactHeader } = useStore();
   const searchParams = useSearchParams();
   const preselect = searchParams.get('version');
   const [activeId, setActiveId] = useState(preselect || null);
@@ -103,11 +102,16 @@ function ResumesPage() {
 
       <ImportedResumeCard />
 
-      <div className="flex items-center gap-2 mb-5">
+      <div className="flex items-center justify-between gap-2 mb-5">
         <div className="flex items-center gap-1.5">
           <h2 className="font-display font-semibold text-xl text-ink">{active.name}</h2>
           {isMaster && <span className="text-[10.5px] px-1.5 py-0.5 rounded-full bg-mint text-pine font-medium">Master</span>}
         </div>
+        {!editing && (
+          <Button variant="ghost" onClick={() => setEditing(true)} className="text-[12.5px] px-2.5 py-1.5 gap-1.5">
+            <Pencil size={13} /> Edit
+          </Button>
+        )}
       </div>
       <p className="text-[12.5px] text-inkFaint mb-5">
         Updated {active.updatedAt} · sent with {sentCount(active.id, data.applications)} application
@@ -139,7 +143,7 @@ function ResumesPage() {
                 <Trash2 size={14} /> Delete
               </Button>
             </div>
-            <MatchCheckCard resume={active} onResult={(result) => saveMatchResult(active.id, result)} />
+            <MatchCheckCard />
             <WhereItsBeenSent resume={active} applications={data.applications} />
           </div>
         </div>
