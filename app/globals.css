@@ -358,10 +358,13 @@ html.dark .lp-login:hover {
 
 .of-loop-split {
   display: grid;
-  grid-template-columns: 30px minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(18px, 2.2vw, 36px);
+  /* Card and links size to their content and the group centres, so the gap
+     between them stays fixed instead of growing with the viewport. */
+  grid-template-columns: 30px auto minmax(0, 480px);
+  justify-content: center;
+  column-gap: clamp(28px, 5vw, 96px);
+  row-gap: clamp(18px, 2.2vw, 36px);
   align-items: center;
-  max-width: 1240px;
   margin: 0 auto;
 }
 
@@ -405,15 +408,15 @@ html.dark .lp-login:hover {
   box-shadow: 0 0 0 6px color-mix(in srgb, var(--ink) 12%, transparent);
 }
 
+/* Cards share one grid cell, so the stack is as tall as its tallest card
+   and the text never gets clipped on short screens. */
 .of-loop-cards {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  width: min(100%, 54vh);
+  display: grid;
+  width: min(52vh, 38vw, 560px);
 }
 
 .of-loop-card {
-  position: absolute;
-  inset: 0;
+  grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
   background: var(--card-bg);
@@ -533,12 +536,17 @@ html.dark .lp-login:hover {
     padding-left: 0;
   }
   .of-loop-cards {
-    aspect-ratio: 4 / 5;
     width: min(100%, 42vh);
   }
   .of-loop-links {
     max-width: 460px;
   }
+}
+
+.of-why-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(28px, 4vw, 44px);
 }
 
 .of-why-split {
@@ -600,12 +608,28 @@ html.dark .lp-login:hover {
   padding: 18px 0 6px;
 }
 
+/* Laptop-height screens: tighten the Tour page so the carousel gets the room. */
+@media (max-height: 820px) {
+  .of-why-stack {
+    gap: 20px;
+  }
+  .of-why-split {
+    gap: 18px;
+  }
+  .of-why-side .of-hero-cta {
+    padding: 13px 28px;
+    font-size: 19px;
+  }
+  .of-footer {
+    display: none;
+  }
+}
+
 @media (max-width: 560px) {
   .of-why-carousel {
     width: 100%;
   }
   .of-loop-cards {
-    aspect-ratio: 1 / 1;
     width: min(100%, 40vh);
   }
   .of-loop-split {

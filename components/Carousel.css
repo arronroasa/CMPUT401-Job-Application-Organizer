@@ -36,6 +36,7 @@
 }
 
 .carousel-item.round {
+  container-type: inline-size;
   background-color: var(--card-bg);
   position: relative;
   bottom: 0.1em;
@@ -88,6 +89,23 @@
 .carousel-item.round .carousel-item-content {
   padding: 0;
   max-width: 88%;
+}
+
+/* The circle is sized from the viewport height, so scale its text with the
+   circle itself (cqi) rather than the viewport width. */
+.carousel-item.round .carousel-item-eyebrow {
+  font-size: clamp(9px, 2.5cqi, 11.5px);
+  margin-bottom: clamp(4px, 1.6cqi, 8px);
+}
+
+.carousel-item.round .carousel-item-title {
+  font-size: clamp(15px, 5.8cqi, 26px);
+  margin-bottom: clamp(4px, 1.6cqi, 8px);
+}
+
+.carousel-item.round .carousel-item-description {
+  font-size: clamp(11px, 3.6cqi, 16.5px);
+  line-height: 1.45;
 }
 
 .carousel-item-eyebrow {
@@ -158,17 +176,5 @@
   }
   .carousel-item.round .carousel-item-content {
     max-width: 94%;
-  }
-  .carousel-item-eyebrow {
-    font-size: 10px;
-    margin-bottom: 6px;
-  }
-  .carousel-item-title {
-    font-size: 16px;
-    margin-bottom: 6px;
-  }
-  .carousel-item-description {
-    font-size: 12px;
-    line-height: 1.45;
   }
 }
