@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Search, X, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
+import { Search, X, ExternalLink, Video } from 'lucide-react';
 import { getCompanies, getQuestionsForCompany, leetcodeUrl, datasetUpdated } from '@/lib/leetcode';
 
 const TABS = ['All', 'Easy', 'Medium', 'Hard'];
@@ -167,6 +168,14 @@ export default function PrepPage() {
             ))}
           </div>
         )}
+
+        <Link
+          href="/prep/mock"
+          className="mt-10 inline-flex items-center gap-2.5 rounded-full bg-ink text-paper px-6 py-3.5 text-[14.5px] font-medium hover:opacity-90 transition-opacity focus-ring"
+        >
+          <Video size={16} />
+          Start a mock interview
+        </Link>
       </div>
     );
   }

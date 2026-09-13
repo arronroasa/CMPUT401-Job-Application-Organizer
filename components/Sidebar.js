@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutGrid, KanbanSquare, Briefcase, ListChecks, FileText, Code2, Bell } from 'lucide-react';
+import { LayoutGrid, KanbanSquare, Briefcase, ListChecks, FileText, Code2, Video, Bell } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { notifications, unreadNotifications } from '@/lib/derived';
 import OnFileLogo from './OnFileLogo';
@@ -16,11 +16,14 @@ const NAV = [
   { href: '/applications', label: 'Applications', icon: ListChecks },
   { href: '/resumes', label: 'Resumes', icon: FileText },
   { href: '/prep', label: 'Interview Prep', mobileLabel: 'Prep', icon: Code2 },
+  { href: '/prep/mock', label: 'Mock Interview', mobileLabel: 'Mock', icon: Video },
   { href: '/notifications', label: 'Notifications', mobileLabel: 'Alerts', icon: Bell },
 ];
 
 function isActive(pathname, href) {
   if (href === '/dashboard') return pathname === '/dashboard';
+  // Exact match for /prep so /prep/mock does not highlight Interview Prep.
+  if (href === '/prep') return pathname === '/prep';
   return pathname === href || pathname.startsWith(href + '/');
 }
 
