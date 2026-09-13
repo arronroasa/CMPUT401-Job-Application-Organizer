@@ -49,6 +49,36 @@ const HYPERSPEED_OPTIONS = {
   },
 };
 
+const HERO_CARDS = [
+  {
+    href: '/prep',
+    eyebrow: 'Interview prep',
+    title: 'LeetCode, by company',
+    sub: 'Questions companies asked in the last 6 months',
+    cta: 'Open prep',
+    image: '/hero/leetcode.png',
+    backdrop: '#1a1a1a',
+  },
+  {
+    href: '/resumes',
+    eyebrow: 'Tailored resume',
+    title: 'neo-financial.pdf',
+    sub: 'Tailor your resume to the posting',
+    cta: 'View resume',
+    image: '/hero/resume.png',
+    backdrop: '#ffffff',
+  },
+  {
+    href: '/prep',
+    eyebrow: 'Mock interview',
+    title: 'Practice out loud',
+    sub: 'Rehearse your answers before the real call',
+    cta: 'Start a mock',
+    image: '/hero/mock-interview.png',
+    backdrop: '#e2f1f6',
+  },
+];
+
 const NAV_SECTIONS = [
   { label: 'Home', hash: null, page: 0 },
   { label: 'About', hash: 'loop', page: 1 },
@@ -180,7 +210,7 @@ export default function Landing() {
   };
 
   return (
-    <div ref={rootRef} className="bg-paper text-ink transition-colors duration-300" style={{ maxWidth: 1440, margin: '0 auto' }}>
+    <div ref={rootRef} className="bg-paper text-ink transition-colors duration-300" style={{ maxWidth: 1720, margin: '0 auto' }}>
       <AppEntryLinkGuard />
 
       {/* Dark mode gets the Hyperspeed road; light mode keeps the grid
@@ -207,7 +237,7 @@ export default function Landing() {
           top: 0,
           left: 0,
           right: 0,
-          maxWidth: 1440,
+          maxWidth: 1720,
           margin: '0 auto',
           backgroundColor: 'transparent',
           zIndex: 50,
@@ -247,7 +277,7 @@ export default function Landing() {
                 style={
                   active
                     ? { padding: '9px 18px', borderRadius: 999, background: 'var(--ink)', color: 'var(--paper)', fontWeight: 500 }
-                    : { padding: '9px 17px', borderRadius: 999, color: 'var(--ink-soft)' }
+                    : { padding: '9px 17px', borderRadius: 999, color: 'var(--ink)' }
                 }
               >
                 {label}
@@ -266,9 +296,9 @@ export default function Landing() {
         <section className="ls-land-page">
           <div className="ls-land-inner">
             <div ref={heroRef} style={{ position: 'relative', overflow: 'hidden', padding: '8px 12px 0' }}>
-              <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'minmax(0,1.05fr) minmax(0,.95fr)', gap: 56, alignItems: 'center' }} className="of-hero-grid">
-                <div style={{ minWidth: 0 }}>
-                  <h1 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 'clamp(38px,5.2vw,70px)', lineHeight: 1.04, letterSpacing: '-.015em', margin: '0 0 26px', textWrap: 'pretty' }}>
+              <div className="of-hero-grid">
+                <div className="of-hero-title">
+                  <h1>
                     Every application, from{' '}
                     <span style={{ position: 'relative', display: 'inline-block', isolation: 'isolate' }}>
                       <span style={{ position: 'absolute', left: -6, right: -8, top: '16%', bottom: '8%', background: 'var(--mint)', borderRadius: '12px 16px 14px 10px', zIndex: 0 }} />
@@ -279,35 +309,22 @@ export default function Landing() {
                       offer
                       <span style={{ position: 'absolute', left: 0, right: -4, bottom: -2, height: 8, background: 'var(--honey)', borderRadius: 999, transform: 'rotate(-.6deg)' }} />
                     </span>
-                    .
                   </h1>
-                  <p style={{ maxWidth: 520, margin: '0 0 34px', fontSize: 17, lineHeight: 1.62, color: 'var(--ink-soft)' }}>
-                    Add a job, tailor your resume for it, and keep every reply in one thread. When an interview lands, see what that company actually asks. No spreadsheet to babysit.
-                  </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
-                    <Link href="/resumes" className="lp-dark" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'var(--ink)', color: 'var(--paper)', padding: '15px 28px', borderRadius: 999, fontSize: 14.5, fontWeight: 500, boxShadow: isDark ? 'var(--shadow-glow)' : undefined }}>✦ Start with my resume</Link>
-                    <Link href="/dashboard" className="lp-login" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'transparent', color: 'var(--ink)', border: '1px solid var(--line)', padding: '15px 28px', borderRadius: 999, fontSize: 14.5, fontWeight: 500 }}>See a live account</Link>
-                  </div>
                 </div>
 
-                <div className="ls-hero-stage" style={{ position: 'relative', minHeight: 420, minWidth: 0 }}>
-                  <div
-                    aria-hidden
-                    style={{
-                      position: 'absolute',
-                      inset: '8% 4% 12% 0',
-                      borderRadius: '50%',
-                      background: 'radial-gradient(circle at 42% 48%, color-mix(in srgb, var(--accent) 28%, transparent), transparent 62%)',
-                      filter: 'blur(22px)',
-                      animation: 'lsHalo 6s ease-in-out infinite',
-                      pointerEvents: 'none',
-                    }}
-                  />
-                  <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 18, paddingTop: 8 }}>
-                    <HeroCard float="7s" delay="0s" align="flex-start" width={400} accent="var(--mint)" iconText="{ }" title="LeetCode, by company" sub="Questions companies asked in the last 6 months" href="/prep" cta="Open prep →" />
-                    <HeroCard float="8.5s" delay=".6s" align="flex-end" width={420} accent="var(--honey)" iconText="▤" title="resume — neo-financial.pdf" sub="6 bullets rewritten · 9 keywords matched" href="/resumes" cta="View resume →" />
-                    <HeroCard float="9.5s" delay="1.2s" align="center" width={390} accent="var(--blush)" iconText="◉" title="Mock interview · 78/100" sub="Structure up 14 points since Tuesday" href="/prep" cta="Rehearse →" />
-                  </div>
+                <div className="of-hero-deck">
+                  {HERO_CARDS.map((card, i) => (
+                    <HeroCard key={card.href} {...card} index={i} />
+                  ))}
+                </div>
+
+                <div className="of-hero-action">
+                  <Link href="/dashboard" className="of-hero-cta">
+                    <span>Get started</span>
+                    <span className="of-hero-arrow" aria-hidden>
+                      →
+                    </span>
+                  </Link>
                 </div>
               </div>
             </div>
@@ -392,74 +409,24 @@ export default function Landing() {
         </section>
       </LandingPager>
 
-      <style>{`
-        @media (max-width: 860px) {
-          .of-hero-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </div>
   );
 }
 
-function HeroCard({ float, delay, align, width, accent, iconText, badge, title, sub, href, cta }) {
+function HeroCard({ href, eyebrow, title, sub, cta, image, backdrop, index }) {
   return (
-    <Link
-      href={href}
-      aria-label={cta ? `${title} — ${cta}` : title}
-      data-card
-      className="ls-hero-card of-hero-card"
-      style={{
-        alignSelf: align === 'flex-end' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
-        marginLeft: align === 'flex-end' ? 'auto' : align === 'center' ? 24 : 0,
-        width: `min(100%,${width}px)`,
-        display: 'flex',
-        alignItems: 'center',
-        gap: 16,
-        color: 'inherit',
-        animation: `lsOrbit ${float} ease-in-out ${delay} infinite`,
-      }}
-    >
-      <div
-        style={{
-          flex: 'none',
-          width: 46,
-          height: 46,
-          borderRadius: 14,
-          background: accent,
-          display: 'grid',
-          placeItems: 'center',
-          fontSize: 14,
-          fontFamily: 'var(--font-quicksand), sans-serif',
-          fontWeight: 600,
-          border: '1px solid var(--line)',
-        }}
-      >
-        {iconText}
-      </div>
-      <div style={{ minWidth: 0, flex: 1 }}>
-        <div style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 15.5 }}>{title}</div>
-        <div style={{ fontSize: 13, color: 'var(--ink-soft)', marginTop: 3 }}>{sub}</div>
-      </div>
-      {badge ? (
-        <span
-          style={{
-            flex: 'none',
-            fontSize: 12,
-            padding: '6px 10px',
-            borderRadius: 999,
-            background: 'color-mix(in srgb, var(--accent) 16%, transparent)',
-            border: '1px solid color-mix(in srgb, var(--accent) 30%, transparent)',
-            boxShadow: '0 0 18px color-mix(in srgb, var(--accent) 18%, transparent)',
-            whiteSpace: 'nowrap',
-          }}
-        >
-          {badge}
-        </span>
-      ) : cta ? (
-        <span className="lp-cardcta" style={{ flex: 'none', background: accent, borderRadius: 999, padding: '8px 14px', fontSize: 12.5, fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', transition: 'background .25s ease, color .25s ease' }}>
-          {cta}
-        </span>
-      ) : null}
+    <Link href={href} className="of-hero-card" style={{ '--i': index }}>
+      <span
+        className="of-hero-art"
+        style={{ backgroundImage: `url(${image})`, backgroundColor: backdrop }}
+        aria-hidden
+      />
+      <span className="of-hero-meta">
+        <span className="of-hero-eyebrow">{eyebrow}</span>
+        <span className="of-hero-name">{title}</span>
+        <span className="of-hero-sub">{sub}</span>
+        <span className="of-hero-btn">{cta}</span>
+      </span>
     </Link>
   );
 }

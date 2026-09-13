@@ -1,4 +1,4 @@
-import { Quicksand, Work_Sans } from 'next/font/google';
+import { Quicksand, Work_Sans, Inter } from 'next/font/google';
 import './globals.css';
 import ThemeRoot from '@/components/ThemeRoot';
 import { AppEntryTransitionProvider } from '@/components/AppEntryTransition';
@@ -7,6 +7,12 @@ const quicksand = Quicksand({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-quicksand',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-grotesk',
 });
 
 const workSans = Work_Sans({
@@ -23,7 +29,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${quicksand.variable} ${workSans.variable}`} suppressHydrationWarning>
+    <html lang="en" className={`${quicksand.variable} ${workSans.variable} ${inter.variable}`} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
