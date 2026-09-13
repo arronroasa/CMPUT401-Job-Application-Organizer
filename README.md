@@ -1,42 +1,119 @@
-# TrackWise — Job Application Organizer (frontend only)
+# OnFile
 
-A Next.js + React frontend for the hackathon brief. No backend or database —
-all data lives in the browser's `localStorage`, seeded with demo data on first
-load, so the app is fully usable out of the box. 
+OnFile helps you find relevant jobs, tailor your resume, and apply with AI assistance while you stay in control.
 
-## Pages
+## Install (First)
 
-- `/` — Today: stats, follow-ups due, pipeline-at-a-glance, recent activity
-- `/pipeline` — drag-and-drop kanban board across Applied → Screening →
-  Interview → Offer → Closed
-- `/applications` — searchable/filterable table; click a row to open the
-  detail panel (stage control, next action, timeline, communications log)
-- `/resumes` — one master resume plus tailored copies per application. Paste a
-  job description to get AI-suggested edits per section (accept or dismiss each
-  one), check which of your skills the posting mentions, link a copy to an
-  application, and export to PDF via the browser's print dialog
+### Option 1: Docker (Recommended)
 
-## AI tailoring (Gemini)
+1. Install Docker Desktop.
+2. From the project root run:
 
-On `/resumes`, "Suggest tailored edits" sends the current resume and the pasted
-job description to Google's Gemini and returns per-section suggestions plus
-skills to add. It works with no key too: without one it returns canned,
-job-description-aware suggestions so the feature always demos.
+```bash
+docker compose up --build
+```
 
-To enable live results:
+3. Open:
+- App: `http://localhost:3000`
+- Backend health: `http://localhost:8000/health`
 
-1. Get a free key at https://aistudio.google.com/apikey
-2. `cp .env.example .env.local` and paste the key into `NEXT_PUBLIC_GEMINI_API_KEY`
-3. Restart `npm run dev`
+### Option 2: Run locally (without Docker)
 
-The key is a `NEXT_PUBLIC_` var, so it ships in the browser bundle. That is fine
-for a local demo; do not push a real key to a public deployment.
+#### Frontend
 
-## Tech
+```bash
+pnpm install
+pnpm dev
+```
 
-- Next.js 14 (App Router), React 18
-- Tailwind CSS for styling
-- lucide-react for icons
-- No database, no API routes — see `lib/store.js` for the data layer
+#### Backend
 
-See setup steps in the chat message this was shared alongside.
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+```
+
+## What it does
+
+- Finds jobs matched to your profile.
+- Scores jobs by fit so you can focus on the best ones.
+- Generates tailored resumes for specific roles.
+- Helps draft application answers.
+- Runs AI-assisted apply in a visible browser session (you can intervene anytime).
+- Tracks applications, outcomes, and interview prep.
+
+## How to use
+
+1. **Set up your profile**
+- Add your core details, skills, experience, projects, and education.
+- Upload your resume to improve auto-fill quality.
+
+2. **Discover jobs**
+- Use Job Feed and AI Auto Search.
+- Filter by location/role and shortlist relevant jobs.
+
+3. **Prepare resume**
+- Open Resume Studio.
+- Generate a tailored resume for the selected job.
+- Review and export.
+
+4. **AI Assisted Apply**
+- Open a job and click **AI Assisted Apply**.
+- AI navigates and fills what it can.
+- If a field is ambiguous, AI asks in chat.
+- You always keep final control over submission.
+
+5. **Track progress**
+- Move applications through stages in Applications.
+- Use Interviews and Insights to prepare and improve.
+
+## Visible browser setup (required for browser-assisted features)
+
+Start Chrome with remote debugging before using AI Auto Search or AI Assisted Apply.
+
+### macOS
+
+```bash
+open -na "Google Chrome" --args --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 --user-data-dir=/tmp/onfile-cdp
+```
+
+### Windows
+
+```bat
+chrome.exe --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 --user-data-dir=%TEMP%\onfile-cdp
+```
+
+If `chrome.exe` is not in PATH:
+
+```bat
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0 --user-data-dir=%TEMP%\onfile-cdp
+```
+
+Verify endpoint:
+
+```bash
+curl http://localhost:9222/json/version
+```
+
+## Quick troubleshooting
+
+- App not loading: make sure frontend is on `:3000` and backend on `:8000`.
+- Browser features not working: check Chrome debug endpoint above.
+- AI output weak or unavailable: confirm your backend AI API key is configured.
+
+## Small technical overview
+
+OnFile is a local-first monorepo:
+
+- **Frontend**: React + TypeScript
+- **Backend**: FastAPI + Python
+- **Automation**: Playwright (browser-assisted flows)
+- **Data**: SQLite (local storage)
+- **AI**: Gemini-powered generation and guidance
+
+Design goal: user-controlled automation, not blind one-click mass applying.
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).

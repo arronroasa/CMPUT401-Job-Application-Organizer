@@ -42,18 +42,18 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-ink/[.34] animate-[lsFade_.3s_ease_both]" onClick={onClose}>
       <div
-        className="w-full max-w-[470px] h-full bg-surface border-l border-line overflow-y-auto px-[30px] py-[30px] animate-[lsSlide_.42s_cubic-bezier(.2,.8,.2,1)_both]"
+        className="w-full max-w-[470px] h-[100dvh] bg-surface border-l border-line overflow-y-auto overscroll-contain px-5 py-6 sm:px-[30px] sm:py-[30px] animate-[lsSlide_.42s_cubic-bezier(.2,.8,.2,1)_both]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 mb-1">
-          <div>
-            <h2 className="font-display font-semibold text-[25px] text-ink mb-1">{app.role}</h2>
+          <div className="min-w-0">
+            <h2 className="font-display font-semibold text-[21px] sm:text-[25px] text-ink mb-1 break-words">{app.role}</h2>
             <p className="text-[13.5px] text-inkSoft">
               {app.company}
               {app.location ? ` · ${app.location}` : ''}
             </p>
           </div>
-          <button onClick={onClose} className="text-inkFaint hover:text-ink focus-ring rounded text-lg leading-none">
+          <button onClick={onClose} aria-label="Close" className="shrink-0 text-inkFaint hover:text-ink focus-ring rounded text-lg leading-none">
             <X size={18} />
           </button>
         </div>
@@ -77,8 +77,8 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
               placeholder="e.g. Follow up with recruiter"
               className="input"
             />
-            <div className="flex gap-2">
-              <input type="date" value={actionDate} onChange={(e) => setActionDate(e.target.value)} className="input" />
+            <div className="flex flex-wrap gap-2">
+              <input type="date" value={actionDate} onChange={(e) => setActionDate(e.target.value)} className="input flex-1 min-w-[140px]" />
               <Button type="submit" variant="secondary">
                 Save
               </Button>
@@ -99,9 +99,9 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
         <Section title="Timeline">
           <ul className="space-y-2">
             {app.timeline.map((t) => (
-              <li key={t.id} className="flex items-start gap-2 text-sm">
+              <li key={t.id} className="flex flex-wrap items-start gap-x-2 gap-y-0.5 text-sm">
                 <span className="w-1.5 h-1.5 rounded-full bg-pine mt-1.5 shrink-0" />
-                <span className="text-ink">{t.label}</span>
+                <span className="text-ink min-w-0 break-words">{t.label}</span>
                 <span className="text-inkFaint ml-auto shrink-0 text-xs">{t.date}</span>
               </li>
             ))}
@@ -120,8 +120,8 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
 
         <Section title="Communications">
           <form onSubmit={logComm} className="flex flex-col gap-2 mb-3">
-            <div className="flex gap-2">
-              <select value={commType} onChange={(e) => setCommType(e.target.value)} className="input w-32">
+            <div className="flex flex-wrap gap-2">
+              <select value={commType} onChange={(e) => setCommType(e.target.value)} className="input w-full sm:w-32">
                 {COMM_TYPES.map((t) => (
                   <option key={t} value={t}>
                     {t}
@@ -132,7 +132,7 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
                 value={commNote}
                 onChange={(e) => setCommNote(e.target.value)}
                 placeholder="What happened?"
-                className="input"
+                className="input flex-1 min-w-[160px]"
               />
             </div>
             <Button type="submit" variant="secondary" className="self-start">
