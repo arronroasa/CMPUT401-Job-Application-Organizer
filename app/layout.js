@@ -1,6 +1,7 @@
 import { Quicksand, Work_Sans } from 'next/font/google';
 import './globals.css';
 import ThemeRoot from '@/components/ThemeRoot';
+import ScrollbarActivity from '@/components/ScrollbarActivity';
 
 const quicksand = Quicksand({
   subsets: ['latin'],
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="font-sans text-ink bg-paper antialiased">
+        <ScrollbarActivity />
         <ThemeRoot>{children}</ThemeRoot>
       </body>
     </html>
