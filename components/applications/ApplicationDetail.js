@@ -2,30 +2,23 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { X, Trash2 } from 'lucide-react';
+import { X, Trash2, MessagesSquare } from 'lucide-react';
 import { useStore } from '@/lib/store';
-import { STAGES, COMM_TYPES } from '@/lib/constants';
+import { STAGES } from '@/lib/constants';
 import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
+import CommunicationThread from '@/components/communications/CommunicationThread';
 
 export default function ApplicationDetail({ app: appProp, onClose }) {
   const { data, moveStage, updateApplication, deleteApplication, addCommunication, setNextAction, completeNextAction } = useStore();
   const app = data.applications.find((a) => a.id === appProp.id) || appProp;
 
-  const [commType, setCommType] = useState('Email');
-  const [commNote, setCommNote] = useState('');
+  const [showThread, setShowThread] = useState(false);
   const [actionLabel, setActionLabel] = useState(app.nextAction?.label || '');
   const [actionDate, setActionDate] = useState(app.nextAction?.date || '');
   const [notes, setNotes] = useState(app.notes || '');
 
   const tailored = app.resumeVersionId ? data.tailoredResumes.find((r) => r.id === app.resumeVersionId) : null;
-
-  function logComm(e) {
-    e.preventDefault();
-    if (!commNote.trim()) return;
-    addCommunication(app.id, { type: commType, note: commNote });
-    setCommNote('');
-  }
 
   function saveNextAction(e) {
     e.preventDefault();
@@ -119,32 +112,16 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
         </Section>
 
         <Section title="Communications">
-          <form onSubmit={logComm} className="flex flex-col gap-2 mb-3">
-            <div className="flex flex-wrap gap-2">
-              <select value={commType} onChange={(e) => setCommType(e.target.value)} className="input w-full sm:w-32">
-                {COMM_TYPES.map((t) => (
-                  <option key={t} value={t}>
-                    {t}
-                  </option>
-                ))}
-              </select>
-              <input
-                value={commNote}
-                onChange={(e) => setCommNote(e.target.value)}
-                placeholder="What happened?"
-                className="input flex-1 min-w-[160px]"
-              />
-            </div>
-            <Button type="submit" variant="secondary" className="self-start">
-              Log entry
-            </Button>
-          </form>
+          <Button variant="secondary" onClick={() => setShowThread(true)} className="w-full justify-center mb-3">
+            <MessagesSquare size={14} /> Open conversation
+            {app.communications.length > 0 ? ` (${app.communications.length})` : ''}
+          </Button>
           <ul className="space-y-3">
-            {app.communications.map((c) => (
+            {app.communications.slice(0, 3).map((c) => (
               <li key={c.id} className="text-sm border-l-2 border-mint pl-3">
                 <p className="text-ink">{c.note}</p>
                 <p className="text-xs text-inkFaint mt-0.5">
-                  {c.type} · {c.date}
+                  {c.direction === 'in' ? 'Them' : 'You'} · {c.type} · {c.date}
                 </p>
               </li>
             ))}
@@ -174,6 +151,8 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
           </Button>
         </div>
       </div>
+
+      {showThread && <CommunicationThread app={app} onClose={() => setShowThread(false)} />}
     </div>
   );
 }
