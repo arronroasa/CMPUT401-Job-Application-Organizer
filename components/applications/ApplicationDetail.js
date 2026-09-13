@@ -16,6 +16,7 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
   const [commNote, setCommNote] = useState('');
   const [actionLabel, setActionLabel] = useState(app.nextAction?.label || '');
   const [actionDate, setActionDate] = useState(app.nextAction?.date || '');
+  const [notes, setNotes] = useState(app.notes || '');
 
   const tailored = app.resumeVersionId ? data.tailoredResumes.find((r) => r.id === app.resumeVersionId) : null;
 
@@ -32,6 +33,10 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
       app.id,
       actionLabel ? { label: actionLabel, date: actionDate || new Date().toISOString().slice(0, 10), done: false } : null
     );
+  }
+
+  function saveNotes() {
+    updateApplication(app.id, { notes });
   }
 
   return (
@@ -145,6 +150,16 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
             ))}
             {app.communications.length === 0 && <p className="text-sm text-inkFaint">No communications logged yet.</p>}
           </ul>
+        </Section>
+
+        <Section title="Notes">
+          <textarea
+            value={notes}
+            onChange={(e) => setNotes(e.target.value)}
+            onBlur={saveNotes}
+            placeholder="Add notes about this application…"
+            className="input min-h-[80px]"
+          />
         </Section>
 
         <div className="pt-4 border-t border-line mt-6">
