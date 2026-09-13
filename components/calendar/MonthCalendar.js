@@ -23,8 +23,8 @@ export default function MonthCalendar({ applications, cursor, onCursorChange }) 
   const weekKeys = new Set(weekDays(cursor).map(toKey));
 
   return (
-    <div className="bg-surface rounded-[22px] shadow-card p-6">
-      <div className="flex items-center justify-between mb-5">
+    <div className="bg-surface rounded-[22px] shadow-card p-5">
+      <div className="flex items-center justify-between mb-3">
         <button
           type="button"
           onClick={() => onCursorChange(addMonths(cursor, -1))}
@@ -44,13 +44,13 @@ export default function MonthCalendar({ applications, cursor, onCursorChange }) 
         </button>
       </div>
 
-      <div className="grid grid-cols-7 gap-1.5 text-center text-[11px] tracking-[.12em] text-inkSoft mb-2">
+      <div className="grid grid-cols-7 gap-1 text-center text-[11px] tracking-[.12em] text-inkSoft mb-1.5">
         {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
           <span key={i}>{d}</span>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-1.5">
+      <div className="grid grid-cols-7 gap-1">
         {days.map((day) => {
           const key = toKey(day);
           const isToday = key === todayKey;

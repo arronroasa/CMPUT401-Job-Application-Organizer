@@ -7,9 +7,10 @@ import { toKey, weekDays } from '@/lib/dates';
 
 const DAY_LABELS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 
-// Beyond this a day collapses to a "+N more" toggle. Three chips is what a
-// column of this width holds before the row grows taller than the tiles below.
-const VISIBLE = 3;
+// Beyond this a day collapses to a "+N more" toggle. Two chips is what a column
+// holds while the whole page still lands inside one screen; expanding a day is
+// the deliberate act that trades that away.
+const VISIBLE = 2;
 
 /**
  * The seven-day strip under the greeting.
@@ -41,7 +42,7 @@ export default function WeekStrip({ applications, cursor, onOpen }) {
           return (
             <div
               key={key}
-              className={`flex flex-col gap-2 p-3 min-h-[150px] ${
+              className={`flex flex-col gap-1.5 p-2.5 min-h-[112px] ${
                 i > 0 ? 'border-l border-line' : ''
               } ${isToday ? 'bg-panel' : ''}`}
             >
@@ -69,7 +70,7 @@ export default function WeekStrip({ applications, cursor, onOpen }) {
                     type="button"
                     onClick={() => onOpen(app)}
                     title={`${app.nextAction.label} · ${app.company}`}
-                    className={`block w-full text-left rounded-[10px] px-2.5 py-2 transition-opacity focus-ring ${meta.bg} ${
+                    className={`block w-full text-left rounded-[10px] px-2.5 py-1.5 transition-opacity focus-ring ${meta.bg} ${
                       done ? 'opacity-55' : 'hover:opacity-90'
                     }`}
                     style={{ borderLeft: `3px solid var(--stage-${app.stage})` }}
@@ -81,7 +82,7 @@ export default function WeekStrip({ applications, cursor, onOpen }) {
                     >
                       {app.nextAction.label}
                     </span>
-                    <span className="block text-[11.5px] text-inkSoft mt-1 truncate">{app.company}</span>
+                    <span className="block text-[11.5px] text-inkSoft mt-0.5 truncate">{app.company}</span>
                   </button>
                 );
               })}
