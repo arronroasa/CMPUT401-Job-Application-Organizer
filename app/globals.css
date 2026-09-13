@@ -24,6 +24,15 @@
   --hl-ink: #14150f;
   --sage: #eaf3ec;
 
+  /* Today page's 4 stat tiles specifically (not the shared mint/honey/
+     blush/sage tokens above, which are also used for hover states, badges
+     and the calendar — changing those would ripple everywhere). Same
+     colors as before in light mode. */
+  --tile-applied: #eaf3ec;
+  --tile-progress: color-mix(in srgb, #ffe08a 55%, transparent);
+  --tile-awaiting: #f9d9e7;
+  --tile-offers: #cfe9d4;
+
   /* LeetCode difficulty chips (interview prep) */
   --diff-easy-bg: #cfe9d4;
   --diff-easy-ink: #2f5137;
@@ -77,26 +86,41 @@ html.dark {
   --spark: #f5c451;
   --accent: #5cffb1; 
 
-  /* Kept faintly tinted so the three stay tellable apart on dark. */
-  --diff-easy-bg: color-mix(in srgb, #6ee7a5 14%, transparent);
-  --diff-easy-ink: #a7e8c4;
-  --diff-medium-bg: color-mix(in srgb, #f5c451 14%, transparent);
-  --diff-medium-ink: #f0d296;
-  --diff-hard-bg: color-mix(in srgb, #f08a7a 14%, transparent);
-  --diff-hard-ink: #f3b3a7;
+  /* Today page's 4 stat tiles: an actual neon-tinted background instead of
+     the near-black gray --sage/--honey/--blush/--mint all collapse to
+     above, so the four sections read as distinct at a glance again. */
+  --tile-applied: color-mix(in srgb, #2dd4bf 22%, #101216);
+  --tile-progress: color-mix(in srgb, #ffcc33 26%, #101216);
+  --tile-awaiting: color-mix(in srgb, #ff4fa3 22%, #101216);
+  --tile-offers: color-mix(in srgb, #39e07a 24%, #101216);
+
+  /* Same neon hues as the stage accents below, so the Easy/Medium/Hard
+     tab actually lights up in its own color when selected instead of
+     falling back to the generic ink/paper look every other tab uses. */
+  --diff-easy-bg: color-mix(in srgb, #39e07a 22%, transparent);
+  --diff-easy-ink: #39e07a;
+  --diff-medium-bg: color-mix(in srgb, #ffcc33 22%, transparent);
+  --diff-medium-ink: #ffcc33;
+  --diff-hard-bg: color-mix(in srgb, #ff6a4d 22%, transparent);
+  --diff-hard-ink: #ff6a4d;
   --logo: #f2f4f7;
   --spark: #e6e9f0;
   --accent: #e6e9f0;
 
-  --stage-applied: #8b9099;
+  /* Neon accents on dark, one per stage, same hue family as the light
+     theme (olive->lime, gold->amber, blue->azure, green->emerald,
+     rust->coral) instead of flattening every stage to gray/white — the
+     card's left edge (KanbanCard.js) needs to stay tellable apart by
+     color, and gray-on-gray wasn't. -soft badge fills stay dark/neutral. */
+  --stage-applied: #c6e847;
   --stage-applied-soft: #1a1d22;
-  --stage-screening: #c6ccd7;
+  --stage-screening: #ffcc33;
   --stage-screening-soft: #272a2f;
-  --stage-interview: #9ea5b1;
+  --stage-interview: #3ea8ff;
   --stage-interview-soft: #1a1d22;
-  --stage-offer: #e6e9f0;
+  --stage-offer: #39e07a;
   --stage-offer-soft: #272a2f;
-  --stage-closed: #b4b9c2;
+  --stage-closed: #ff6a4d;
   --stage-closed-soft: #1a1d22;
 
   --shadow-card: 0 18px 48px rgba(0, 0, 0, 0.55);

@@ -102,7 +102,7 @@ function TabButton({ active, onClick, children }) {
       onClick={onClick}
       className={`rounded-full px-[18px] py-[9px] text-[13.5px] border transition-colors focus-ring ${
         active
-          ? 'bg-ink text-[#fffdf7] border-ink font-medium'
+          ? 'bg-ink text-paper border-ink font-medium'
           : 'bg-surface border-line text-ink hover:border-ink'
       }`}
     >

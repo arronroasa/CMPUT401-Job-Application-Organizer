@@ -73,6 +73,7 @@ COPY backend/app ./backend/app
 COPY --from=frontend-builder /app/node_modules ./node_modules
 COPY --from=frontend-builder /app/.next ./.next
 COPY --from=frontend-builder /app/package.json ./package.json
+COPY --from=frontend-builder /app/public ./public
 COPY next.config.mjs ./next.config.mjs
 COPY --from=frontend-builder /app/node_modules ./node_modules
 COPY --from=frontend-builder /app/.next ./.next

@@ -45,7 +45,10 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  padding: 12%;
+  /* Content is clipped by the circular border-radius, not just the padding
+     box, so a full-width line needs real margin from the edges or it gets
+     cut off well before it reaches the top/bottom of the padding box. */
+  padding: 14% 10%;
 }
 
 .carousel-item-header.round {
@@ -88,7 +91,10 @@
 
 .carousel-item.round .carousel-item-content {
   padding: 0;
-  max-width: 88%;
+  /* Narrower than the padding box on purpose: a line this wide clears the
+     circle's curve at the vertical offsets the title/description actually
+     sit at, instead of getting clipped by border-radius: 50%. */
+  max-width: 78%;
 }
 
 /* The circle is sized from the viewport height, so scale its text with the
@@ -104,8 +110,8 @@
 }
 
 .carousel-item.round .carousel-item-description {
-  font-size: clamp(11px, 3.6cqi, 16.5px);
-  line-height: 1.45;
+  font-size: clamp(10.5px, 3.4cqi, 16px);
+  line-height: 1.32;
 }
 
 .carousel-item-eyebrow {
@@ -172,9 +178,9 @@
 
 @media (max-width: 700px) {
   .carousel-item.round {
-    padding: 10%;
+    padding: 12% 8%;
   }
   .carousel-item.round .carousel-item-content {
-    max-width: 94%;
+    max-width: 80%;
   }
 }
