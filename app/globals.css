@@ -1203,21 +1203,6 @@ html.ls-land-lock body {
   }
 }
 
-@media print {
-  body * {
-    visibility: hidden;
-  }
-  #printable-resume,
-  #printable-resume * {
-    visibility: visible;
-  }
-  #printable-resume {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-  }
-}
 /* Pretty auto-hiding scrollbar (WebKit: Chrome, Edge, Safari) */
 ::-webkit-scrollbar {
   width: 8px;

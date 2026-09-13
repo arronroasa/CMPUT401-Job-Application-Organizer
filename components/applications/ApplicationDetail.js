@@ -18,7 +18,7 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
   const [actionDate, setActionDate] = useState(app.nextAction?.date || '');
   const [notes, setNotes] = useState(app.notes || '');
 
-  const tailored = app.resumeVersionId ? data.tailoredResumes.find((r) => r.id === app.resumeVersionId) : null;
+  const resumeVersion = app.resumeVersionId ? data.resumes.find((r) => r.id === app.resumeVersionId) : null;
 
   function saveNextAction(e) {
     e.preventDefault();
@@ -102,12 +102,22 @@ export default function ApplicationDetail({ app: appProp, onClose }) {
         </Section>
 
         <Section title="Resume used">
-          {tailored ? (
-            <Link href={`/resumes?tailored=${tailored.id}`} className="text-sm text-pine hover:underline">
-              Open “{tailored.name}” →
+          <select
+            value={app.resumeVersionId || ''}
+            onChange={(e) => updateApplication(app.id, { resumeVersionId: e.target.value || null })}
+            className="input w-full mb-2"
+          >
+            <option value="">No resume linked</option>
+            {data.resumes.map((r) => (
+              <option key={r.id} value={r.id}>
+                {r.name}
+              </option>
+            ))}
+          </select>
+          {resumeVersion && (
+            <Link href={`/resumes?version=${resumeVersion.id}`} className="text-sm text-pine hover:underline">
+              Open “{resumeVersion.name}” →
             </Link>
-          ) : (
-            <p className="text-sm text-inkFaint">No tailored resume linked yet.</p>
           )}
         </Section>
 
