@@ -44,10 +44,12 @@
   --stage-closed-soft: #f4ddd6;
 
   --shadow-card: 0 18px 40px -26px rgba(20, 21, 15, 0.35);
+  --nav-shadow: 0 10px 28px -10px rgba(20, 21, 15, 0.28), 0 2px 6px -3px rgba(20, 21, 15, 0.16);
   --shadow-lift: 0 30px 60px -40px rgba(20, 21, 15, 0.55);
   --shadow-glow: 0 0 40px color-mix(in srgb, var(--accent) 12%, transparent);
-  --nav-blur: rgba(250, 246, 236, 0.9);
+  --nav-blur: rgba(250, 246, 236, 0.38);
   --hero-tint: #cfe9d4;
+  --grid-line: color-mix(in srgb, var(--ink) 10%, transparent);
   --card-bg: #ffffff;
 }
 
@@ -92,10 +94,12 @@ html.dark {
   --stage-closed-soft: #1a1d22;
 
   --shadow-card: 0 18px 48px rgba(0, 0, 0, 0.55);
+  --nav-shadow: 0 12px 34px -8px rgba(0, 0, 0, 0.72), 0 2px 8px -3px rgba(0, 0, 0, 0.6);
   --shadow-lift: 0 28px 64px rgba(0, 0, 0, 0.65);
   --shadow-glow: 0 0 56px color-mix(in srgb, var(--accent) 18%, transparent);
-  --nav-blur: color-mix(in srgb, #07080a 82%, transparent);
+  --nav-blur: color-mix(in srgb, #07080a 32%, transparent);
   --hero-tint: #e6e9f0;
+  --grid-line: color-mix(in srgb, var(--ink) 26%, transparent);
   --card-bg: #101216;
   color-scheme: dark;
 }
@@ -145,7 +149,7 @@ html.dark {
   }
 
   .input {
-    @apply w-full rounded-md border border-line bg-surface px-3 py-2 text-sm text-ink outline-none;
+    @apply w-full rounded-md border border-line bg-surface px-3 py-2 text-base sm:text-sm text-ink outline-none;
   }
 
   .diff-chip {
@@ -192,6 +196,13 @@ html.dark {
   }
 }
 
+.theme-instant,
+.theme-instant *,
+.theme-instant *::before,
+.theme-instant *::after {
+  transition: none !important;
+}
+
 /* ---- Landing-page interactive hovers ---- */
 .lp-navlink {
   transition: background 0.2s ease, color 0.2s ease;
@@ -212,6 +223,21 @@ html.dark .lp-login:hover {
   background: var(--accent);
   color: var(--paper);
 }
+/* The three floating hero cards only. The Why cards and the tour banner share
+   .ls-hero-card and keep the soft border. Unlayered, so it beats the
+   @layer components rules including :hover. */
+/* Dark-mode landing backdrop. Sits under every page layer; the effect's own
+   #lights div is absolute inside it. */
+.of-hyperspeed {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+}
+
+.of-hero-card {
+  border: 1px solid var(--ink);
+}
+
 .lp-cardcta:hover {
   background: var(--ink) !important;
   color: var(--paper) !important;
@@ -234,15 +260,13 @@ html.dark .lp-login:hover {
   width: 40px;
   height: 40px;
   border-radius: 999px;
-  border: 1px solid var(--line);
+  border: 0;
   background: var(--surface);
   color: var(--ink);
   cursor: pointer;
-  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.25s ease,
-    transform 0.2s ease;
+  transition: background 0.2s ease, box-shadow 0.25s ease, transform 0.2s ease;
 }
 .theme-toggle:hover {
-  border-color: color-mix(in srgb, var(--ink) 28%, transparent);
   box-shadow: var(--shadow-glow);
   transform: translateY(-1px);
 }
@@ -421,6 +445,7 @@ html.ls-land-lock body {
   transform-origin: center bottom;
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
   z-index: 0;
 }
 .ls-land-page.is-active {
@@ -428,6 +453,13 @@ html.ls-land-lock body {
   pointer-events: auto;
   z-index: 2;
   transform: none;
+}
+.ls-land-page.is-active,
+.ls-land-page.is-leave-next,
+.ls-land-page.is-enter-next,
+.ls-land-page.is-leave-prev,
+.ls-land-page.is-enter-prev {
+  visibility: visible;
 }
 .ls-land-page.is-leave-next {
   z-index: 3;
@@ -509,12 +541,12 @@ html.ls-land-lock body {
 }
 .ls-land-dots {
   position: fixed;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
   z-index: 45;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
   align-items: center;
 }
@@ -526,39 +558,42 @@ html.ls-land-lock body {
   padding: 0;
   cursor: pointer;
   background: var(--ink-faint);
-  transition: height 0.28s ease, background 0.28s ease, box-shadow 0.28s ease;
+  transition: width 0.28s ease, background 0.28s ease, box-shadow 0.28s ease;
 }
 .ls-land-dot.is-on {
-  height: 22px;
+  width: 22px;
   background: var(--accent);
   box-shadow: 0 0 16px color-mix(in srgb, var(--accent) 45%, transparent);
 }
-.ls-land-hint {
-  position: fixed;
-  left: 50%;
-  bottom: 22px;
-  transform: translateX(-50%);
-  z-index: 45;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  pointer-events: none;
-  transition: opacity 0.35s ease;
-}
-.ls-land-hint.is-hidden {
-  opacity: 0;
+@media (max-width: 980px) {
+  .of-nav {
+    padding: 14px 20px !important;
+    gap: 14px !important;
+  }
 }
 @media (max-width: 720px) {
   .ls-land-page {
     padding: 72px 0 56px;
   }
   .ls-land-dots {
-    right: 10px;
+    bottom: 14px;
+  }
+  .ls-land-inner {
+    padding: 0 20px;
+  }
+  .of-nav-link {
+    display: none !important;
+  }
+  .of-nav-pills {
+    padding: 4px !important;
+  }
+}
+@media (max-width: 420px) {
+  .of-nav {
+    padding: 12px 14px !important;
+  }
+  .ls-land-inner {
+    padding: 0 16px;
   }
 }
 @keyframes ofIcon {

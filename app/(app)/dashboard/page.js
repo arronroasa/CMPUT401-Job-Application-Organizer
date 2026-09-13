@@ -32,7 +32,7 @@ export default function TodayPage() {
   return (
     <div className="px-6 md:px-11 py-8 md:py-10">
       <header className="mb-8">
-        <h1 className="font-display font-semibold text-[40px] leading-none tracking-tight text-ink">{greeting}.</h1>
+        <h1 className="font-display font-semibold text-[30px] sm:text-[40px] leading-none tracking-tight text-ink">{greeting}.</h1>
         <p className="text-inkSoft text-[15px] mt-2">
           {due.length} follow-up{due.length === 1 ? '' : 's'} due · {s.offers} offer{s.offers === 1 ? '' : 's'} on the table
         </p>
@@ -76,10 +76,10 @@ export default function TodayPage() {
 
       <Reveal as="section" className="mb-10" delay={140}>
         <h2 className="font-display font-semibold text-xl text-ink mb-3.5">Pipeline at a glance</h2>
-        <div className="bg-surface border border-line rounded-lg px-6 py-[22px] flex flex-col gap-3.5">
+        <div className="bg-surface border border-line rounded-lg px-4 sm:px-6 py-[22px] flex flex-col gap-3.5">
           {stageBreakdown.map((st, i) => (
-            <div key={st.id} className="grid grid-cols-[92px_minmax(0,1fr)_28px] items-center gap-4">
-              <span className="text-[13.5px] text-inkSoft">{st.label}</span>
+            <div key={st.id} className="grid grid-cols-[72px_minmax(0,1fr)_28px] sm:grid-cols-[92px_minmax(0,1fr)_28px] items-center gap-2.5 sm:gap-4">
+              <span className="text-[12.5px] sm:text-[13.5px] text-inkSoft truncate">{st.label}</span>
               <span className="h-[7px] rounded-full bg-ink/[.08] overflow-hidden block">
                 <span
                   className={`block h-full rounded-full ${st.dot} origin-left`}
@@ -106,7 +106,7 @@ export default function TodayPage() {
           {activity.map((ev) => (
             <div
               key={ev.id}
-              className="flex flex-wrap gap-2.5 items-baseline justify-between px-6 py-[15px] border-b border-ink/[.07] last:border-b-0 transition-colors hover:bg-paper"
+              className="flex flex-wrap gap-2.5 items-baseline justify-between px-4 sm:px-6 py-[15px] border-b border-ink/[.07] last:border-b-0 transition-colors hover:bg-paper"
             >
               <span className="text-[14.5px] text-ink">
                 <b className="font-semibold">{ev.label}</b> <span className="text-inkSoft">— {ev.company}</span>

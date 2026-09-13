@@ -6,12 +6,13 @@ import { LayoutGrid, KanbanSquare, ListChecks, FileText, Code2 } from 'lucide-re
 import OnFileLogo from './OnFileLogo';
 import ThemeToggle from './ThemeToggle';
 
+// `short` keeps the mobile bar readable at 360px, where the full labels collide.
 const NAV = [
-  { href: '/dashboard', label: 'Today', icon: LayoutGrid },
-  { href: '/pipeline', label: 'Pipeline', icon: KanbanSquare },
-  { href: '/applications', label: 'Applications', icon: ListChecks },
-  { href: '/resumes', label: 'Resumes', icon: FileText },
-  { href: '/prep', label: 'Interview Prep', icon: Code2 },
+  { href: '/dashboard', label: 'Today', short: 'Today', icon: LayoutGrid },
+  { href: '/pipeline', label: 'Pipeline', short: 'Pipeline', icon: KanbanSquare },
+  { href: '/applications', label: 'Applications', short: 'Apps', icon: ListChecks },
+  { href: '/resumes', label: 'Resumes', short: 'Resumes', icon: FileText },
+  { href: '/prep', label: 'Interview Prep', short: 'Prep', icon: Code2 },
 ];
 
 function isActive(pathname, href) {
@@ -65,23 +66,24 @@ export default function Sidebar() {
       </aside>
 
       {/* Mobile bottom nav */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-line flex justify-around items-center py-2">
-        {NAV.map(({ href, label, icon: Icon }) => {
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-line flex items-center py-1.5 pb-[calc(0.375rem+env(safe-area-inset-bottom))]">
+        {NAV.map(({ href, label, short, icon: Icon }) => {
           const active = isActive(pathname, href);
           return (
             <Link
               key={href}
               href={href}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1 text-[11px] focus-ring ${
+              aria-label={label}
+              className={`flex-1 min-w-0 flex flex-col items-center gap-0.5 px-1 py-1 text-[10.5px] focus-ring ${
                 active ? 'text-pine font-semibold' : 'text-inkFaint'
               }`}
             >
-              <Icon size={19} strokeWidth={1.9} />
-              {label}
+              <Icon size={19} strokeWidth={1.9} className="shrink-0" />
+              <span className="max-w-full truncate">{short}</span>
             </Link>
           );
         })}
-        <div className="px-1">
+        <div className="shrink-0 px-1.5">
           <ThemeToggle />
         </div>
       </nav>

@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { OnFileMark, OnFileWordmark } from '@/components/OnFileLogo';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -8,77 +9,112 @@ import LandingPager from '@/components/LandingPager';
 import AppEntryLinkGuard from '@/components/AppEntryLinkGuard';
 import { useTheme } from '@/lib/theme';
 
-const RADIUS = 380;
+const Hyperspeed = dynamic(() => import('@/components/Hyperspeed'), { ssr: false });
+
+// Module-level constant on purpose: Hyperspeed tears down and rebuilds its
+// whole WebGL scene whenever this object's identity changes.
+const HYPERSPEED_OPTIONS = {
+  distortion: 'turbulentDistortion',
+  length: 400,
+  roadWidth: 10,
+  islandWidth: 2,
+  lanesPerRoad: 3,
+  fov: 90,
+  fovSpeedUp: 150,
+  speedUp: 2,
+  carLightsFade: 0.4,
+  totalSideLightSticks: 20,
+  lightPairsPerRoadWay: 40,
+  shoulderLinesWidthPercentage: 0.05,
+  brokenLinesWidthPercentage: 0.1,
+  brokenLinesLengthPercentage: 0.5,
+  lightStickWidth: [0.12, 0.5],
+  lightStickHeight: [1.3, 1.7],
+  movingAwaySpeed: [60, 80],
+  movingCloserSpeed: [-120, -160],
+  carLightsLength: [400 * 0.03, 400 * 0.2],
+  carLightsRadius: [0.05, 0.14],
+  carWidthPercentage: [0.3, 0.5],
+  carShiftX: [-0.8, 0.8],
+  carFloorSeparation: [0, 5],
+  colors: {
+    roadColor: 0x080808,
+    islandColor: 0x0a0a0a,
+    background: 0x000000,
+    shoulderLines: 0x131318,
+    brokenLines: 0x131318,
+    leftCars: [0xd856bf, 0x6750a2, 0xc247ac],
+    rightCars: [0x03b3c3, 0x0e5ea5, 0x324555],
+    sticks: 0x03b3c3,
+  },
+};
+
+const NAV_SECTIONS = [
+  { label: 'Home', hash: null, page: 0 },
+  { label: 'About', hash: 'loop', page: 1 },
+  { label: 'Tour', hash: 'why', page: 2 },
+];
+
+const RADIUS_MIN = 380;
+const RADIUS_MAX = 560;
 
 export default function Landing() {
   const { isDark } = useTheme();
+  const [activePage, setActivePage] = useState(0);
   const rootRef = useRef(null);
   const pagerRef = useRef(null);
   const heroRef = useRef(null);
   const glowRef = useRef(null);
   const gridRef = useRef(null);
-  const navGlowRef = useRef(null);
-  const navGridRef = useRef(null);
 
-  const goPage = (n) => (e) => {
+  const goPage = (n, hash) => (e) => {
     e.preventDefault();
-    pagerRef.current?.goTo(n);
+    const pager = pagerRef.current;
+    if (!pager) return;
+    if (pager.page !== n) {
+      pager.goTo(n);
+      return;
+    }
+    // Already on that page: goTo() is a no-op, so honour the anchor ourselves.
+    const target = hash ? document.getElementById(hash) : null;
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    else document.querySelector('.ls-land-page.is-active .ls-land-inner')?.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
   useEffect(() => {
     const root = rootRef.current;
-    const hero = heroRef.current;
-    if (!root || !hero) return;
+    if (!root) return;
 
     const tint = getComputedStyle(document.documentElement).getPropertyValue('--hero-tint').trim() || '#cfe9d4';
 
     const paint = (x, y, on) => {
       const g = glowRef.current;
       const grid = gridRef.current;
-      const nav = navGlowRef.current;
-      const r = RADIUS;
-      if (nav) {
-        const hb = hero.getBoundingClientRect();
-        const nb = nav.getBoundingClientRect();
-        const nx = x + (hb.left - nb.left);
-        const ny = y + (hb.top - nb.top);
-        nav.style.background = `radial-gradient(${r}px circle at ${nx}px ${ny}px, ${tint}99, ${tint}40 42%, rgba(255,255,255,0) 72%)`;
-        nav.style.opacity = on ? '1' : '0';
-        nav.style.transition = 'opacity .45s ease';
-        const ng = navGridRef.current;
-        if (ng) {
-          ng.style.maskImage = ng.style.webkitMaskImage = `radial-gradient(${r * 0.9}px circle at ${nx}px ${ny}px, rgba(0,0,0,.95) 0%, rgba(0,0,0,.35) 45%, rgba(0,0,0,0) 72%)`;
-          ng.style.opacity = on ? '1' : '0';
-          ng.style.transition = 'opacity .45s ease';
-        }
-      }
+      const r = Math.min(RADIUS_MAX, Math.max(RADIUS_MIN, window.innerWidth * 0.34));
+      const spot = (cx, cy) => `radial-gradient(${r}px circle at ${cx}px ${cy}px, ${tint}99, ${tint}40 42%, rgba(255,255,255,0) 72%)`;
+      const mask = (cx, cy) =>
+        `radial-gradient(${r * 0.9}px circle at ${cx}px ${cy}px, rgba(0,0,0,.95) 0%, rgba(0,0,0,.35) 45%, rgba(0,0,0,0) 72%)`;
+      const show = on ? '1' : '0';
+
       if (g) {
-        g.style.background = `radial-gradient(${r}px circle at ${x}px ${y}px, ${tint}99, ${tint}40 42%, rgba(255,255,255,0) 72%)`;
-        g.style.opacity = on ? '1' : '0';
+        g.style.background = spot(x, y);
+        g.style.opacity = show;
         g.style.transition = 'opacity .45s ease';
       }
       if (grid) {
-        grid.style.maskImage = grid.style.webkitMaskImage = `radial-gradient(${r * 0.9}px circle at ${x}px ${y}px, rgba(0,0,0,.95) 0%, rgba(0,0,0,.35) 45%, rgba(0,0,0,0) 72%)`;
-        grid.style.opacity = on ? '1' : '0';
+        grid.style.maskImage = grid.style.webkitMaskImage = mask(x, y);
+        grid.style.opacity = show;
         grid.style.transition = 'opacity .45s ease';
       }
     };
-    const move = (e) => {
-      const b = hero.getBoundingClientRect();
-      paint(e.clientX - b.left, e.clientY - b.top, true);
-    };
-    const leave = () => {
-      const b = hero.getBoundingClientRect();
-      paint(b.width * 0.42, b.height * 0.45, false);
-    };
-    const hr = hero.getBoundingClientRect();
-    paint(hr.width * 0.42, hr.height * 0.45, false);
-    hero.addEventListener('pointermove', move);
-    hero.addEventListener('pointerleave', leave);
-    const header = navGlowRef.current && navGlowRef.current.parentElement;
-    if (header) {
-      header.addEventListener('pointermove', move);
-      header.addEventListener('pointerleave', leave);
+
+    const rest = () => paint(window.innerWidth * 0.42, window.innerHeight * 0.45, false);
+    const move = (e) => paint(e.clientX, e.clientY, true);
+
+    if (!isDark) {
+      rest();
+      window.addEventListener('pointermove', move);
+      window.addEventListener('resize', rest);
+      document.addEventListener('pointerleave', rest);
     }
 
     const cardCleanups = [];
@@ -89,7 +125,9 @@ export default function Landing() {
         const py = (e.clientY - b.top) / b.height;
         card.style.transform = `perspective(900px) rotateX(${(0.5 - py) * 4}deg) rotateY(${(px - 0.5) * 5}deg) translateY(-6px) scale(1.02)`;
         card.style.boxShadow = 'var(--shadow-lift)';
-        card.style.backgroundImage = `radial-gradient(420px circle at ${px * 100}% ${py * 100}%, color-mix(in srgb, var(--hero-tint) 35%, transparent), transparent 70%)`;
+        card.style.backgroundImage = isDark
+          ? 'none'
+          : `radial-gradient(420px circle at ${px * 100}% ${py * 100}%, color-mix(in srgb, var(--hero-tint) 35%, transparent), transparent 70%)`;
         card.style.transition = 'box-shadow .3s ease, border-color .3s ease';
       };
       const onLeave = () => {
@@ -128,26 +166,37 @@ export default function Landing() {
     });
 
     return () => {
-      hero.removeEventListener('pointermove', move);
-      hero.removeEventListener('pointerleave', leave);
-      if (header) {
-        header.removeEventListener('pointermove', move);
-        header.removeEventListener('pointerleave', leave);
-      }
+      window.removeEventListener('pointermove', move);
+      window.removeEventListener('resize', rest);
+      document.removeEventListener('pointerleave', rest);
       cardCleanups.forEach((fn) => fn());
     };
   }, [isDark]);
 
   const gridBg = {
     backgroundImage:
-      'linear-gradient(color-mix(in srgb, var(--ink) 10%, transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb, var(--ink) 10%, transparent) 1px,transparent 1px)',
+      'linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px)',
     backgroundSize: '56px 56px',
   };
 
   return (
     <div ref={rootRef} className="bg-paper text-ink transition-colors duration-300" style={{ maxWidth: 1440, margin: '0 auto' }}>
       <AppEntryLinkGuard />
+
+      {/* Dark mode gets the Hyperspeed road; light mode keeps the grid
+          spotlight. Two full-screen ambient effects at once just fight. */}
+      {isDark ? (
+        <div className="of-hyperspeed" aria-hidden>
+          <Hyperspeed effectOptions={HYPERSPEED_OPTIONS} />
+        </div>
+      ) : (
+        <>
+          <div aria-hidden ref={gridRef} style={{ position: 'fixed', inset: 0, ...gridBg, pointerEvents: 'none', zIndex: 0 }} />
+          <div aria-hidden ref={glowRef} style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 0 }} />
+        </>
+      )}
       <header
+        className="of-nav"
         style={{
           display: 'flex',
           alignItems: 'center',
@@ -160,15 +209,10 @@ export default function Landing() {
           right: 0,
           maxWidth: 1440,
           margin: '0 auto',
-          backgroundColor: 'var(--nav-blur)',
-          backdropFilter: 'blur(14px)',
+          backgroundColor: 'transparent',
           zIndex: 50,
-          overflow: 'hidden',
         }}
       >
-        <div ref={navGridRef} style={{ position: 'absolute', inset: 0, ...gridBg, pointerEvents: 'none', zIndex: 0 }} />
-        <div ref={navGlowRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0 }} />
-
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: 11, flex: 1 }}>
           <button type="button" onClick={goPage(0)} style={{ display: 'flex', alignItems: 'center', gap: 11, background: 'none', border: 0, padding: 0, cursor: 'pointer', color: 'inherit' }}>
             <OnFileMark size={32} animated />
@@ -177,6 +221,7 @@ export default function Landing() {
         </div>
 
         <nav
+          className="of-nav-pills"
           style={{
             position: 'relative',
             zIndex: 1,
@@ -185,65 +230,63 @@ export default function Landing() {
             gap: 4,
             padding: 6,
             borderRadius: 999,
-            background: 'var(--surface)',
-            border: '1px solid var(--line)',
-            boxShadow: 'var(--shadow-card)',
+            background: 'var(--card-bg)',
+            boxShadow: 'var(--nav-shadow)',
             fontSize: 14,
           }}
         >
-          <a href="#loop" onClick={goPage(1)} className="lp-navlink" style={{ padding: '9px 17px', borderRadius: 999, color: 'var(--ink-soft)' }}>The loop</a>
-          <a href="#why" onClick={goPage(2)} className="lp-navlink" style={{ padding: '9px 17px', borderRadius: 999, color: 'var(--ink-soft)' }}>Why</a>
-          <a href="#sources" onClick={goPage(0)} className="lp-navlink" style={{ padding: '9px 17px', borderRadius: 999, color: 'var(--ink-soft)' }}>Sources</a>
-          <Link href="/dashboard" className="lp-dark" style={{ padding: '9px 18px', borderRadius: 999, background: 'var(--ink)', color: 'var(--paper)', fontWeight: 500 }}>Take the tour</Link>
+          {NAV_SECTIONS.map(({ label, hash, page }) => {
+            const active = activePage === page;
+            return (
+              <a
+                key={label}
+                href={hash ? `#${hash}` : '#hero'}
+                onClick={goPage(page, hash)}
+                aria-current={active ? 'true' : undefined}
+                className={active ? 'lp-dark' : 'lp-navlink of-nav-link'}
+                style={
+                  active
+                    ? { padding: '9px 18px', borderRadius: 999, background: 'var(--ink)', color: 'var(--paper)', fontWeight: 500 }
+                    : { padding: '9px 17px', borderRadius: 999, color: 'var(--ink-soft)' }
+                }
+              >
+                {label}
+              </a>
+            );
+          })}
         </nav>
 
-        <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center', gap: 10 }}>
+        <div style={{ position: 'relative', zIndex: 1, flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           <ThemeToggle />
-          <Link
-            href="/dashboard"
-            className="lp-login"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: 9, background: 'var(--surface)', color: 'var(--ink)', border: '1px solid var(--line)', padding: '11px 22px', borderRadius: 999, fontSize: 13.5, fontWeight: 500, transition: 'background .2s ease, color .2s ease, border-color .2s ease' }}
-          >
-            Let&apos;s get started
-          </Link>
         </div>
       </header>
 
-      <LandingPager ref={pagerRef} labels={['Hero', 'The loop', 'Why']}>
+      <LandingPager ref={pagerRef} labels={['Hero', 'The loop', 'Why']} onPageChange={setActivePage}>
         {/* Page 0 — Hero */}
         <section className="ls-land-page">
           <div className="ls-land-inner">
             <div ref={heroRef} style={{ position: 'relative', overflow: 'hidden', padding: '8px 12px 0' }}>
-              <div ref={gridRef} style={{ position: 'absolute', inset: 0, ...gridBg, pointerEvents: 'none' }} />
-              <div ref={glowRef} style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }} />
               <div style={{ position: 'relative', display: 'grid', gridTemplateColumns: 'minmax(0,1.05fr) minmax(0,.95fr)', gap: 56, alignItems: 'center' }} className="of-hero-grid">
                 <div style={{ minWidth: 0 }}>
-                  <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: 22 }}>
-                    <span style={{ width: 28, height: 1, background: 'var(--accent)' }} />A to Z job hunt
-                  </div>
                   <h1 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 'clamp(38px,5.2vw,70px)', lineHeight: 1.04, letterSpacing: '-.015em', margin: '0 0 26px', textWrap: 'pretty' }}>
-                    Every{' '}
+                    Every application, from{' '}
                     <span style={{ position: 'relative', display: 'inline-block', isolation: 'isolate' }}>
                       <span style={{ position: 'absolute', left: -6, right: -8, top: '16%', bottom: '8%', background: 'var(--mint)', borderRadius: '12px 16px 14px 10px', zIndex: 0 }} />
-                      <span style={{ position: 'relative', zIndex: 1, color: 'var(--ink)' }}>application</span>
-                    </span>
-                    , from listing{' '}
+                      <span style={{ position: 'relative', zIndex: 1, color: 'var(--ink)' }}>applied</span>
+                    </span>{' '}
+                    to{' '}
                     <span style={{ position: 'relative', display: 'inline-block' }}>
-                      to offer.
+                      offer
                       <span style={{ position: 'absolute', left: 0, right: -4, bottom: -2, height: 8, background: 'var(--honey)', borderRadius: 999, transform: 'rotate(-.6deg)' }} />
                     </span>
+                    .
                   </h1>
                   <p style={{ maxWidth: 520, margin: '0 0 34px', fontSize: 17, lineHeight: 1.62, color: 'var(--ink-soft)' }}>
-                    OnFile scrapes the listings, tailors your resume to each one, tracks every reply, and rehearses the interview with you. One place, one thread, no spreadsheet.
+                    Add a job, tailor your resume for it, and keep every reply in one thread. When an interview lands, see what that company actually asks. No spreadsheet to babysit.
                   </p>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14, marginBottom: 38 }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 14 }}>
                     <Link href="/resumes" className="lp-dark" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'var(--ink)', color: 'var(--paper)', padding: '15px 28px', borderRadius: 999, fontSize: 14.5, fontWeight: 500, boxShadow: isDark ? 'var(--shadow-glow)' : undefined }}>✦ Start with my resume</Link>
                     <Link href="/dashboard" className="lp-login" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, background: 'transparent', color: 'var(--ink)', border: '1px solid var(--line)', padding: '15px 28px', borderRadius: 999, fontSize: 14.5, fontWeight: 500 }}>See a live account</Link>
-                  </div>
-                  <div id="sources" style={{ display: 'flex', gap: 22, flexWrap: 'wrap', fontSize: 12, color: 'var(--ink-faint)' }}>
-                    <span>4 job sources</span>
-                    <span>Your data stays local</span>
-                    <span>Works on the bus</span>
                   </div>
                 </div>
 
@@ -261,7 +304,7 @@ export default function Landing() {
                     }}
                   />
                   <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 18, paddingTop: 8 }}>
-                    <HeroCard float="7s" delay="0s" align="flex-start" width={400} accent="var(--mint)" iconText="NF" badge="94% fit" title="Software Engineer Intern" sub="Neo Financial · Calgary" href="/pipeline" cta="Open →" />
+                    <HeroCard float="7s" delay="0s" align="flex-start" width={400} accent="var(--mint)" iconText="{ }" title="LeetCode, by company" sub="Questions companies asked in the last 6 months" href="/prep" cta="Open prep →" />
                     <HeroCard float="8.5s" delay=".6s" align="flex-end" width={420} accent="var(--honey)" iconText="▤" title="resume — neo-financial.pdf" sub="6 bullets rewritten · 9 keywords matched" href="/resumes" cta="View resume →" />
                     <HeroCard float="9.5s" delay="1.2s" align="center" width={390} accent="var(--blush)" iconText="◉" title="Mock interview · 78/100" sub="Structure up 14 points since Tuesday" href="/prep" cta="Rehearse →" />
                   </div>
@@ -277,17 +320,17 @@ export default function Landing() {
             <div>
               <div style={{ fontSize: 11, letterSpacing: '.22em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 18 }}>The loop</div>
               <h2 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 'clamp(30px,3.8vw,50px)', lineHeight: 1.08, letterSpacing: '-.01em', margin: '0 0 40px', maxWidth: 820 }}>
-                Four moves, repeated until{' '}
+                The same four steps,{' '}
                 <span style={{ position: 'relative', display: 'inline-block', isolation: 'isolate' }}>
                   <span style={{ position: 'absolute', left: 0, right: 0, bottom: -3, height: 7, background: 'var(--honey)', borderRadius: 999, transform: 'rotate(-.4deg)', zIndex: 0 }} />
-                  <span style={{ position: 'relative', zIndex: 1 }}>someone says yes.</span>
+                  <span style={{ position: 'relative', zIndex: 1 }}>every job.</span>
                 </span>
               </h2>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', borderTop: '1px solid var(--line)' }}>
-                <LoopCell n="01" dot="var(--mint)" title="Find" body="Four boards scraped hourly, each listing scored against your real bullets. You see six roles, not six hundred." />
-                <LoopCell n="02" dot="var(--honey)" title="Tailor" body="The master resume rewrites itself for the posting, and shows you every changed line with a reason attached." />
-                <LoopCell n="03" dot="var(--blush)" title="Track" body="Replies are read, classified and stapled to the application. Cards move stages on their own." />
-                <LoopCell n="04" dot="var(--panel)" title="Rehearse" body="Mock interviews built from the posting you applied to, scored live, with one thing to fix each time." />
+                <LoopCell n="01" dot="var(--mint)" title="Add" body="Add a job by hand: paste the link, set the company and role. That's the whole intake." />
+                <LoopCell n="02" dot="var(--honey)" title="Tailor" body="Copy your master resume for that one job and edit it there. The AI suggests changes section by section — you keep the ones you like." />
+                <LoopCell n="03" dot="var(--blush)" title="Track" body="Drag the card as things move: applied, interview, offer. Jot down what they said so you don't lose it." />
+                <LoopCell n="04" dot="var(--panel)" title="Prep" body="Search the company and see the questions it actually asks, most-common first." />
               </div>
             </div>
             <div style={{ background: 'var(--sage)', borderRadius: 26, padding: '36px 36px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 28, boxShadow: isDark ? 'var(--shadow-card)' : undefined }}>
@@ -303,15 +346,16 @@ export default function Landing() {
         <section className="ls-land-page" id="why">
           <div className="ls-land-inner" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(28px,4vw,44px)' }}>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 22 }}>
-              <WhyCard eyebrow="Not a spreadsheet" title="The thread, not the row" body={'An application is a conversation: what you sent, what they replied, what is owed on Monday. OnFile keeps all of it in one place instead of a cell that says "waiting".'} />
-              <WhyCard eyebrow="Honest scoring" title="It will tell you not to apply" body="Fit is computed from your bullets against their requirements. When a role is a reach, OnFile says so and tells you which single gap to close first." />
-              <WhyCard eyebrow="Built for momentum" title="Two a day beats twenty on Sunday" body="A streak, a daily three, and drafted follow-ups. The hard part of a job hunt is not writing — it is coming back tomorrow." />
+              <WhyCard eyebrow="Why not a spreadsheet" title="Everything for one job, together" body="A spreadsheet row can't hold the job description, the resume you sent, and their reply. Here it's all on one card, so you're not digging through tabs." />
+              <WhyCard eyebrow="Fit score" title="See where you stand" body="Each role gets a rough fit score from your bullets against their requirements — enough to tell a real match from a long shot before you sink an hour into it." />
+              <WhyCard eyebrow="A small daily habit" title="A little each day" body="A streak, a short daily list, and follow-ups drafted for you. The point is showing up for a few minutes a day instead of one giant Sunday session." />
             </div>
 
             <div data-card className="ls-hero-card" style={{ borderRadius: 26, padding: '40px 36px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 28 }}>
               <div style={{ minWidth: 260 }}>
-                <h3 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 'clamp(26px,3vw,38px)', margin: '0 0 12px' }}>Vega will walk you through it.</h3>
-                <p style={{ margin: 0, fontSize: 15.5, color: 'var(--ink-soft)' }}>A two-minute guided tour of the whole system, narrated as you click.</p>
+                <h3 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.3, margin: 0 }}>
+                  Hit &ldquo;Take the tour&rdquo; and Vega walks you through the whole thing in about two minutes.
+                </h3>
               </div>
               <Link href="/dashboard" className="lp-dark" style={{ display: 'inline-flex', alignItems: 'center', gap: 11, background: 'var(--ink)', color: 'var(--paper)', padding: '16px 30px', borderRadius: 999, fontSize: 14.5, fontWeight: 500, boxShadow: isDark ? 'var(--shadow-glow)' : undefined }}>▷ Take the tour</Link>
             </div>
@@ -330,15 +374,15 @@ export default function Landing() {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 56, fontSize: 13.5 }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     <span style={{ fontWeight: 600, marginBottom: 2 }}>Product</span>
-                    <a href="#loop" onClick={goPage(1)}>The loop</a>
-                    <a href="#why" onClick={goPage(2)}>Why OnFile</a>
+                    <a href="#loop" onClick={goPage(1, 'loop')}>The loop</a>
+                    <a href="#why" onClick={goPage(2, 'why')}>Why OnFile</a>
                     <a href="#tour" onClick={goPage(2)}>Guided tour</a>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                     <span style={{ fontWeight: 600, marginBottom: 2 }}>Your data</span>
-                    <a href="#sources" onClick={goPage(0)}>Job sources</a>
-                    <a href="#sources" onClick={goPage(0)}>Stays local</a>
-                    <a href="#sources" onClick={goPage(0)}>Export</a>
+                    <a href="#hero" onClick={goPage(0)}>Job sources</a>
+                    <a href="#hero" onClick={goPage(0)}>Stays local</a>
+                    <a href="#hero" onClick={goPage(0)}>Export</a>
                   </div>
                 </div>
               </div>
@@ -359,9 +403,11 @@ export default function Landing() {
 
 function HeroCard({ float, delay, align, width, accent, iconText, badge, title, sub, href, cta }) {
   return (
-    <div
+    <Link
+      href={href}
+      aria-label={cta ? `${title} — ${cta}` : title}
       data-card
-      className="ls-hero-card"
+      className="ls-hero-card of-hero-card"
       style={{
         alignSelf: align === 'flex-end' ? 'flex-end' : align === 'center' ? 'center' : 'flex-start',
         marginLeft: align === 'flex-end' ? 'auto' : align === 'center' ? 24 : 0,
@@ -369,6 +415,7 @@ function HeroCard({ float, delay, align, width, accent, iconText, badge, title, 
         display: 'flex',
         alignItems: 'center',
         gap: 16,
+        color: 'inherit',
         animation: `lsOrbit ${float} ease-in-out ${delay} infinite`,
       }}
     >
@@ -408,12 +455,12 @@ function HeroCard({ float, delay, align, width, accent, iconText, badge, title, 
         >
           {badge}
         </span>
-      ) : (
-        <Link href={href} className="lp-cardcta" style={{ flex: 'none', background: accent, borderRadius: 999, padding: '8px 14px', fontSize: 12.5, fontWeight: 600, color: 'var(--ink)', transition: 'background .25s ease, color .25s ease' }}>
+      ) : cta ? (
+        <span className="lp-cardcta" style={{ flex: 'none', background: accent, borderRadius: 999, padding: '8px 14px', fontSize: 12.5, fontWeight: 600, color: 'var(--ink)', whiteSpace: 'nowrap', transition: 'background .25s ease, color .25s ease' }}>
           {cta}
-        </Link>
-      )}
-    </div>
+        </span>
+      ) : null}
+    </Link>
   );
 }
 

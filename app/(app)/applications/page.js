@@ -26,11 +26,11 @@ export default function ApplicationsPage() {
     <div className="px-6 md:px-11 py-8 md:py-10">
       <header className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Applications</h1>
+          <h1 className="font-display font-semibold text-[28px] sm:text-[38px] leading-none tracking-tight text-ink mb-1.5">Applications</h1>
           <p className="text-inkSoft text-[14.5px]">{filtered.length} total</p>
         </div>
-        <div className="flex items-center gap-2.5 flex-wrap">
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search" className="input w-[190px]" />
+        <div className="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search" className="input flex-1 min-w-[140px] sm:w-[190px] sm:flex-none" />
           <select value={stageFilter} onChange={(e) => setStageFilter(e.target.value)} className="input w-auto cursor-pointer">
             <option value="all">All stages</option>
             {STAGES.map((s) => (
@@ -46,9 +46,9 @@ export default function ApplicationsPage() {
       </header>
 
       <div className="bg-surface border border-line rounded-lg overflow-hidden animate-[lsRise_.45s_cubic-bezier(.22,.8,.2,1)_both]">
-        <div className="overflow-x-auto">
-          <div className="min-w-[720px]">
-            <div className="grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_120px_120px_minmax(0,1.2fr)] gap-4 px-[22px] py-3.5 border-b border-line text-[11px] tracking-[.16em] uppercase text-inkFaint">
+        <div className="sm:overflow-x-auto">
+          <div className="sm:min-w-[720px]">
+            <div className="hidden sm:grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_120px_120px_minmax(0,1.2fr)] gap-4 px-[22px] py-3.5 border-b border-line text-[11px] tracking-[.16em] uppercase text-inkFaint">
               <span>Company</span>
               <span>Role</span>
               <span>Applied</span>
@@ -59,12 +59,21 @@ export default function ApplicationsPage() {
               <button
                 key={app.id}
                 onClick={() => setSelected(app)}
-                className="grid w-full text-left grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_120px_120px_minmax(0,1.2fr)] gap-4 items-center px-[22px] py-4 border-b border-ink/[.07] last:border-0 cursor-pointer transition-all hover:bg-paper hover:pl-7"
+                className="flex w-full flex-col gap-1 text-left px-4 py-3.5 sm:grid sm:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_120px_120px_minmax(0,1.2fr)] sm:gap-4 sm:items-center sm:px-[22px] sm:py-4 border-b border-ink/[.07] last:border-0 cursor-pointer transition-all hover:bg-paper sm:hover:pl-7"
               >
-                <span className="text-[14.5px] font-medium text-ink truncate">{app.company}</span>
+                {/* Below sm the five columns stack into a card, with the stage
+                    badge pulled up next to the company name. */}
+                <span className="flex items-center justify-between gap-3 min-w-0 sm:block">
+                  <span className="text-[14.5px] font-medium text-ink truncate">{app.company}</span>
+                  <span className="shrink-0 sm:hidden">
+                    <Badge stageId={app.stage} />
+                  </span>
+                </span>
                 <span className="text-[14px] text-inkSoft truncate">{app.role}</span>
                 <span className="text-[13px] text-inkFaint">{app.dateApplied}</span>
-                <span><Badge stageId={app.stage} /></span>
+                <span className="hidden sm:block">
+                  <Badge stageId={app.stage} />
+                </span>
                 <span className="text-[13.5px] text-inkSoft truncate">
                   {app.nextAction && !app.nextAction.done ? `${app.nextAction.label}${app.nextAction.date ? ` · ${app.nextAction.date}` : ''}` : '—'}
                 </span>
