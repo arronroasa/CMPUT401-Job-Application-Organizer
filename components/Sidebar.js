@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutGrid, KanbanSquare, ListChecks, FileText, Code2, Bell } from 'lucide-react';
+import { LayoutGrid, KanbanSquare, Briefcase, ListChecks, FileText, Code2, Bell } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { notifications, unreadNotifications } from '@/lib/derived';
 import OnFileLogo from './OnFileLogo';
@@ -12,6 +12,7 @@ import ThemeToggle from './ThemeToggle';
 const NAV = [
   { href: '/dashboard', label: 'Today', icon: LayoutGrid },
   { href: '/pipeline', label: 'Pipeline', icon: KanbanSquare },
+  { href: '/jobs', label: 'Jobs', icon: Briefcase },
   { href: '/applications', label: 'Applications', icon: ListChecks },
   { href: '/resumes', label: 'Resumes', icon: FileText },
   { href: '/prep', label: 'Interview Prep', mobileLabel: 'Prep', icon: Code2 },
