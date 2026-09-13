@@ -133,7 +133,7 @@ export default function TailoredResumeEditor({ resume, onDeleted }) {
             <option value="">Not linked to an application</option>
             {data.applications.map((a) => (
               <option key={a.id} value={a.id}>
-                {a.company} — {a.role}
+                {a.company} · {a.role}
               </option>
             ))}
           </select>
