@@ -2,16 +2,20 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutGrid, KanbanSquare, ListChecks, FileText, Code2 } from 'lucide-react';
+import { LayoutGrid, KanbanSquare, ListChecks, FileText, Code2, Bell } from 'lucide-react';
+import { useStore } from '@/lib/store';
+import { notifications, unreadNotifications } from '@/lib/derived';
 import OnFileLogo from './OnFileLogo';
 import ThemeToggle from './ThemeToggle';
 
+// `mobileLabel` keeps the bottom bar from wrapping once the list hits six.
 const NAV = [
   { href: '/dashboard', label: 'Today', icon: LayoutGrid },
   { href: '/pipeline', label: 'Pipeline', icon: KanbanSquare },
   { href: '/applications', label: 'Applications', icon: ListChecks },
   { href: '/resumes', label: 'Resumes', icon: FileText },
-  { href: '/prep', label: 'Interview Prep', icon: Code2 },
+  { href: '/prep', label: 'Interview Prep', mobileLabel: 'Prep', icon: Code2 },
+  { href: '/notifications', label: 'Notifications', mobileLabel: 'Alerts', icon: Bell },
 ];
 
 function isActive(pathname, href) {
@@ -19,8 +23,22 @@ function isActive(pathname, href) {
   return pathname === href || pathname.startsWith(href + '/');
 }
 
+function UnreadPill({ count, className = '' }) {
+  if (!count) return null;
+  return (
+    <span
+      className={`inline-flex items-center justify-center min-w-[19px] h-[19px] px-1.5 rounded-full bg-accent text-paper text-[10.5px] font-semibold leading-none ${className}`}
+      aria-label={`${count} unread`}
+    >
+      {count > 9 ? '9+' : count}
+    </span>
+  );
+}
+
 export default function Sidebar() {
   const pathname = usePathname();
+  const { data } = useStore();
+  const unread = unreadNotifications(notifications(data.applications), data.readNotifications).length;
 
   return (
     <>
@@ -51,33 +69,32 @@ export default function Sidebar() {
               >
                 <Icon size={17} strokeWidth={1.9} className="opacity-75" />
                 {label}
+                {href === '/notifications' && <UnreadPill count={unread} className="ml-auto" />}
               </Link>
             );
           })}
         </nav>
-
-        <div className="mt-auto rounded-lg bg-panel border border-line px-3.5 pt-3.5 pb-4">
-          <div className="text-[11px] tracking-[.18em] uppercase text-inkFaint">Local demo</div>
-          <div className="text-[12.5px] text-inkSoft mt-1.5 leading-snug">
-            Data lives in your browser. Nothing leaves this device.
-          </div>
-        </div>
       </aside>
 
       {/* Mobile bottom nav */}
       <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-line flex justify-around items-center py-2">
-        {NAV.map(({ href, label, icon: Icon }) => {
+        {NAV.map(({ href, label, mobileLabel, icon: Icon }) => {
           const active = isActive(pathname, href);
           return (
             <Link
               key={href}
               href={href}
-              className={`flex flex-col items-center gap-0.5 px-2 py-1 text-[11px] focus-ring ${
+              className={`flex flex-col items-center gap-0.5 px-1.5 py-1 text-[11px] focus-ring ${
                 active ? 'text-pine font-semibold' : 'text-inkFaint'
               }`}
             >
-              <Icon size={19} strokeWidth={1.9} />
-              {label}
+              <span className="relative">
+                <Icon size={19} strokeWidth={1.9} />
+                {href === '/notifications' && (
+                  <UnreadPill count={unread} className="absolute -top-1.5 -right-2.5" />
+                )}
+              </span>
+              {mobileLabel || label}
             </Link>
           );
         })}

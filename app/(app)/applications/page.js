@@ -1,20 +1,35 @@
 'use client';
 
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useStore } from '@/lib/store';
-import { STAGES } from '@/lib/constants';
-import Badge from '@/components/ui/Badge';
-import Button from '@/components/ui/Button';
+import { STAGES, stageMeta } from '@/lib/constants';
 import ApplicationDetail from '@/components/applications/ApplicationDetail';
 import AddApplicationModal from '@/components/kanban/AddApplicationModal';
+import AddApplicationButton from '@/components/kanban/AddApplicationButton';
+import AutoSearchModal from '@/components/kanban/AutoSearchModal';
 
-export default function ApplicationsPage() {
+// useSearchParams needs a Suspense boundary, same as /resumes.
+export default function ApplicationsPageWrapper() {
+  return (
+    <Suspense fallback={null}>
+      <ApplicationsPage />
+    </Suspense>
+  );
+}
+
+function ApplicationsPage() {
   const { data } = useStore();
+  const searchParams = useSearchParams();
+  const preselectId = searchParams.get('app');
   const [query, setQuery] = useState('');
   const [stageFilter, setStageFilter] = useState('all');
-  const [selected, setSelected] = useState(null);
+  // Opened from a notification link. Lazy so it only applies on arrival.
+  const [selected, setSelected] = useState(
+    () => data.applications.find((a) => a.id === preselectId) || null
+  );
   const [showModal, setShowModal] = useState(false);
+  const [showAutoSearch, setShowAutoSearch] = useState(false);
 
   const filtered = data.applications.filter((a) => {
     const matchesQuery = `${a.company} ${a.role}`.toLowerCase().includes(query.toLowerCase());
@@ -26,11 +41,11 @@ export default function ApplicationsPage() {
     <div className="px-6 md:px-11 py-8 md:py-10">
       <header className="flex flex-wrap items-start justify-between gap-4 mb-6">
         <div>
-          <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Applications</h1>
+          <h1 className="font-display font-semibold text-[28px] sm:text-[38px] leading-none tracking-tight text-ink mb-1.5">Applications</h1>
           <p className="text-inkSoft text-[14.5px]">{filtered.length} total</p>
         </div>
-        <div className="flex items-center gap-2.5 flex-wrap">
-          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search" className="input w-[190px]" />
+        <div className="flex items-center gap-2.5 flex-wrap w-full sm:w-auto">
+          <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search" className="input flex-1 min-w-[140px] sm:w-[190px] sm:flex-none" />
           <select value={stageFilter} onChange={(e) => setStageFilter(e.target.value)} className="input w-auto cursor-pointer">
             <option value="all">All stages</option>
             {STAGES.map((s) => (
@@ -39,46 +54,61 @@ export default function ApplicationsPage() {
               </option>
             ))}
           </select>
-          <Button onClick={() => setShowModal(true)}>
-            <Plus size={16} /> Add
-          </Button>
+          <AddApplicationButton onManual={() => setShowModal(true)} onAutoSearch={() => setShowAutoSearch(true)} />
         </div>
       </header>
 
-      <div className="bg-surface border border-line rounded-lg overflow-hidden animate-[lsRise_.45s_cubic-bezier(.22,.8,.2,1)_both]">
-        <div className="overflow-x-auto">
-          <div className="min-w-[720px]">
-            <div className="grid grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_120px_120px_minmax(0,1.2fr)] gap-4 px-[22px] py-3.5 border-b border-line text-[11px] tracking-[.16em] uppercase text-inkFaint">
-              <span>Company</span>
-              <span>Role</span>
-              <span>Applied</span>
-              <span>Stage</span>
-              <span>Next action</span>
-            </div>
-            {filtered.map((app) => (
-              <button
-                key={app.id}
-                onClick={() => setSelected(app)}
-                className="grid w-full text-left grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)_120px_120px_minmax(0,1.2fr)] gap-4 items-center px-[22px] py-4 border-b border-ink/[.07] last:border-0 cursor-pointer transition-all hover:bg-paper hover:pl-7"
+      <div className="flex flex-col gap-3 animate-[lsRise_.45s_cubic-bezier(.22,.8,.2,1)_both]">
+        {filtered.map((app) => {
+          const meta = stageMeta(app.stage);
+          const next =
+            app.nextAction && !app.nextAction.done
+              ? `${app.nextAction.label}${app.nextAction.date ? ` · ${app.nextAction.date}` : ''}`
+              : null;
+
+          return (
+            <button
+              key={app.id}
+              onClick={() => setSelected(app)}
+              className="w-full text-left bg-surface rounded-2xl p-[18px] shadow-card cursor-pointer transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5"
+              style={{ borderLeft: `3px solid var(--stage-${app.stage})` }}
+            >
+              <span className="flex-1 min-w-0">
+                <span className="block font-display font-semibold text-[17px] text-ink truncate">{app.company}</span>
+                <span className="block text-[13.5px] text-inkSoft truncate mt-0.5">{app.role}</span>
+              </span>
+
+              <span className="shrink-0 text-[12.5px] text-inkFaint sm:w-[96px]">{app.dateApplied}</span>
+
+              <span
+                className={`inline-flex items-center gap-2 self-start sm:self-auto shrink-0 rounded-full px-3 py-1.5 text-[12.5px] text-ink ${meta.bg}`}
               >
-                <span className="text-[14.5px] font-medium text-ink truncate">{app.company}</span>
-                <span className="text-[14px] text-inkSoft truncate">{app.role}</span>
-                <span className="text-[13px] text-inkFaint">{app.dateApplied}</span>
-                <span><Badge stageId={app.stage} /></span>
-                <span className="text-[13.5px] text-inkSoft truncate">
-                  {app.nextAction && !app.nextAction.done ? `${app.nextAction.label}${app.nextAction.date ? ` · ${app.nextAction.date}` : ''}` : '—'}
-                </span>
-              </button>
-            ))}
-            {filtered.length === 0 && (
-              <div className="px-[22px] py-10 text-center text-inkFaint text-sm">No applications match.</div>
-            )}
+                <span className={`w-1.5 h-1.5 rounded-full ${meta.dot}`} />
+                {meta.label}
+              </span>
+
+              <span className="min-w-0 sm:w-[290px] sm:shrink-0 sm:text-right">
+                {next ? (
+                  <span className="inline-flex max-w-full items-center rounded-full bg-sage px-3.5 py-1.5 text-[12.5px] text-ink">
+                    <span className="min-w-0 truncate">{next}</span>
+                  </span>
+                ) : (
+                  <span className="text-[12.5px] text-inkFaint">Nothing due</span>
+                )}
+              </span>
+            </button>
+          );
+        })}
+        {filtered.length === 0 && (
+          <div className="bg-surface rounded-2xl shadow-card px-[22px] py-10 text-center text-inkFaint text-sm">
+            No applications match.
           </div>
-        </div>
+        )}
       </div>
 
       {selected && <ApplicationDetail app={selected} onClose={() => setSelected(null)} />}
       {showModal && <AddApplicationModal onClose={() => setShowModal(false)} />}
+      {showAutoSearch && <AutoSearchModal onClose={() => setShowAutoSearch(false)} />}
     </div>
   );
 }

@@ -1,42 +1,71 @@
-import Badge from '@/components/ui/Badge';
+import { CalendarDays } from 'lucide-react';
+import Tooltip from '@/components/ui/Tooltip';
+import { shortDate } from '@/lib/dates';
 
 export default function KanbanCard({ app, onDragStart, onOpen, onShift, canBack, canFwd }) {
+  const hasTooltipContent = app.notes || app.nextAction;
+
+  const tooltipContent = hasTooltipContent ? (
+    <div className="flex flex-col gap-1">
+      {app.notes && <p>{app.notes}</p>}
+      {app.nextAction && (
+        <p className="text-mint">
+          Next: {app.nextAction.label}
+          {app.nextAction.date ? ` (${app.nextAction.date})` : ''}
+          {app.nextAction.done ? ' ✓' : ''}
+        </p>
+      )}
+    </div>
+  ) : null;
+
   return (
-    <div
-      draggable
-      onDragStart={(e) => onDragStart(e, app.id)}
-      className="bg-paper border border-line rounded-lg px-3.5 pt-3.5 pb-3 cursor-grab active:cursor-grabbing transition-all hover:border-ink/30 hover:-translate-y-0.5 hover:shadow-card"
-    >
-      <button onClick={() => onOpen(app)} className="block w-full text-left focus-ring rounded">
-        <p className="font-display font-semibold text-[15px] text-ink truncate">{app.role}</p>
-        <p className="text-[13px] text-inkSoft truncate mt-0.5">{app.company}</p>
-      </button>
-      <div className="flex flex-wrap items-center gap-2 mt-3">
-        <span className="text-xs text-inkFaint">{app.dateApplied}</span>
+    <Tooltip content={tooltipContent}>
+      <div
+        draggable
+        onDragStart={(e) => onDragStart(e, app.id)}
+        className="flex flex-col bg-surface rounded-2xl p-[18px] cursor-grab active:cursor-grabbing shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift"
+        style={{ borderLeft: `3px solid var(--stage-${app.stage})` }}
+      >
+        <button onClick={() => onOpen(app)} className="block w-full text-left focus-ring rounded">
+          <p className="font-display font-semibold text-[17px] leading-snug text-ink">{app.role}</p>
+          <p className="text-[13px] text-inkSoft truncate mt-1">{app.company}</p>
+        </button>
+
         {app.nextAction && !app.nextAction.done && (
-          <span className="text-[11.5px] px-2.5 py-1 rounded-full bg-mint text-ink truncate max-w-[130px]">
-            {app.nextAction.label}
+          <span
+            className="inline-flex items-center gap-1.5 mt-3 text-[12.5px] font-medium"
+            style={{ color: `var(--stage-${app.stage})` }}
+          >
+            <CalendarDays size={13} className="shrink-0" />
+            <span className="min-w-0 truncate">
+              {app.nextAction.label}
+              {app.nextAction.date ? ` ${shortDate(app.nextAction.date)}` : ''}
+            </span>
           </span>
         )}
-        <span className="ml-auto flex gap-1">
-          <button
-            onClick={() => onShift(app, -1)}
-            disabled={!canBack}
-            aria-label="Move to previous stage"
-            className="w-6 h-6 rounded-md border border-line bg-surface text-xs leading-none hover:border-ink disabled:opacity-30 disabled:hover:border-line focus-ring"
-          >
-            ←
-          </button>
-          <button
-            onClick={() => onShift(app, 1)}
-            disabled={!canFwd}
-            aria-label="Move to next stage"
-            className="w-6 h-6 rounded-md border border-line bg-surface text-xs leading-none hover:border-ink disabled:opacity-30 disabled:hover:border-line focus-ring"
-          >
-            →
-          </button>
-        </span>
+
+        <div className="flex items-center justify-between gap-2 mt-auto pt-4">
+          <span className="text-[12px] text-inkSoft">{app.dateApplied}</span>
+          <span className="flex gap-1">
+            <button
+              onClick={() => onShift(app, -1)}
+              disabled={!canBack}
+              aria-label="Move to previous stage"
+              className="w-6 h-6 rounded-full border border-line bg-surface text-xs leading-none text-ink hover:border-ink disabled:opacity-30 disabled:hover:border-line focus-ring"
+            >
+              ←
+            </button>
+            <button
+              onClick={() => onShift(app, 1)}
+              disabled={!canFwd}
+              aria-label="Move to next stage"
+              className="w-6 h-6 rounded-full border border-line bg-surface text-xs leading-none text-ink hover:border-ink disabled:opacity-30 disabled:hover:border-line focus-ring"
+            >
+              →
+            </button>
+          </span>
+        </div>
       </div>
-    </div>
+    </Tooltip>
   );
 }

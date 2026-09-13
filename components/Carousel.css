@@ -1,0 +1,186 @@
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-radius: 24px;
+  padding: 16px;
+  --outer-r: 24px;
+  --p-distance: 12px;
+}
+
+.carousel-track {
+  display: flex;
+}
+
+.carousel-item {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  border-radius: calc(var(--outer-r) - var(--p-distance));
+  background-color: var(--card-bg);
+  overflow: hidden;
+  cursor: grab;
+}
+
+.carousel-item:active {
+  cursor: grabbing;
+}
+
+.carousel-container.round {
+  border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  background: transparent;
+}
+
+.carousel-item.round {
+  container-type: inline-size;
+  background-color: var(--card-bg);
+  position: relative;
+  bottom: 0.1em;
+  border: 1px solid color-mix(in srgb, var(--ink) 16%, transparent);
+  box-shadow: 0 24px 52px -34px rgba(20, 21, 15, 0.55);
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  /* Content is clipped by the circular border-radius, not just the padding
+     box, so a full-width line needs real margin from the edges or it gets
+     cut off well before it reaches the top/bottom of the padding box. */
+  padding: 14% 10%;
+}
+
+.carousel-item-header.round {
+  padding: 0;
+  margin: 0 0 14px;
+}
+
+.carousel-indicators-container.round {
+  position: absolute;
+  z-index: 2;
+  bottom: 2.2em;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.carousel-item-header {
+  margin-bottom: 16px;
+  padding: 20px;
+}
+
+.carousel-icon-container {
+  display: flex;
+  height: 34px;
+  width: 34px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: var(--ink);
+}
+
+.carousel-icon {
+  height: 17px;
+  width: 17px;
+  color: var(--paper);
+}
+
+.carousel-item-content {
+  padding: 20px;
+}
+
+.carousel-item.round .carousel-item-content {
+  padding: 0;
+  /* Narrower than the padding box on purpose: a line this wide clears the
+     circle's curve at the vertical offsets the title/description actually
+     sit at, instead of getting clipped by border-radius: 50%. */
+  max-width: 78%;
+}
+
+/* The circle is sized from the viewport height, so scale its text with the
+   circle itself (cqi) rather than the viewport width. */
+.carousel-item.round .carousel-item-eyebrow {
+  font-size: clamp(9px, 2.5cqi, 11.5px);
+  margin-bottom: clamp(4px, 1.6cqi, 8px);
+}
+
+.carousel-item.round .carousel-item-title {
+  font-size: clamp(15px, 5.8cqi, 26px);
+  margin-bottom: clamp(4px, 1.6cqi, 8px);
+}
+
+.carousel-item.round .carousel-item-description {
+  font-size: clamp(10.5px, 3.4cqi, 16px);
+  line-height: 1.32;
+}
+
+.carousel-item-eyebrow {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.carousel-item-title {
+  margin-bottom: 8px;
+  font-family: var(--font-quicksand), sans-serif;
+  font-weight: 600;
+  font-size: clamp(20px, 1.7vw, 26px);
+  line-height: 1.22;
+  color: var(--ink);
+}
+
+.carousel-item-description {
+  margin: 0;
+  font-size: clamp(14px, 1.1vw, 16.5px);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.carousel-indicators-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.carousel-indicators {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.carousel-indicator {
+  height: 9px;
+  width: 9px;
+  border: none;
+  padding: 0;
+  appearance: none;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 150ms;
+}
+
+.carousel-indicator:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+.carousel-indicator.active {
+  background-color: var(--ink);
+}
+
+.carousel-indicator.inactive {
+  background-color: color-mix(in srgb, var(--ink) 26%, transparent);
+}
+
+@media (max-width: 700px) {
+  .carousel-item.round {
+    padding: 12% 8%;
+  }
+  .carousel-item.round .carousel-item-content {
+    max-width: 80%;
+  }
+}

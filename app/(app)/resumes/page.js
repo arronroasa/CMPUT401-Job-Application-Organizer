@@ -6,6 +6,7 @@ import { Plus } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import MasterResumeEditor from '@/components/resumes/MasterResumeEditor';
 import TailoredResumeEditor from '@/components/resumes/TailoredResumeEditor';
+import ImportedResumeCard from '@/components/resumes/ImportedResumeCard';
 import Button from '@/components/ui/Button';
 
 export default function ResumesPageWrapper() {
@@ -46,9 +47,11 @@ function ResumesPage() {
   return (
     <div className="px-6 md:px-11 py-8 md:py-10">
       <header className="mb-5">
-        <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Resumes</h1>
+        <h1 className="font-display font-semibold text-[28px] sm:text-[38px] leading-none tracking-tight text-ink mb-1.5">Resumes</h1>
         <p className="text-inkSoft text-[14.5px]">Keep one master resume, and a tailored copy for each application.</p>
       </header>
+
+      <ImportedResumeCard />
 
       <div className="flex items-center gap-2.5 mb-6 flex-wrap">
         <TabButton active={activeId === 'master'} onClick={() => setActiveId('master')}>
@@ -60,13 +63,13 @@ function ResumesPage() {
           </TabButton>
         ))}
         {creating ? (
-          <form onSubmit={handleCreate} className="flex items-center gap-2">
+          <form onSubmit={handleCreate} className="flex items-center gap-2 w-full sm:w-auto">
             <input
               autoFocus
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder="e.g. v3 — Acme Corp"
-              className="input w-44 py-2"
+              className="input w-full min-w-0 sm:w-44 py-2"
             />
             <Button type="submit" variant="secondary">
               Create
@@ -99,7 +102,7 @@ function TabButton({ active, onClick, children }) {
       onClick={onClick}
       className={`rounded-full px-[18px] py-[9px] text-[13.5px] border transition-colors focus-ring ${
         active
-          ? 'bg-ink text-[#fffdf7] border-ink font-medium'
+          ? 'bg-ink text-paper border-ink font-medium'
           : 'bg-surface border-line text-ink hover:border-ink'
       }`}
     >

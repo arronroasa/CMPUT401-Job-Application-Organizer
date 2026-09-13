@@ -32,7 +32,7 @@ const PAGE_TO_HASH = ['', 'loop', 'why'];
  * Lodestar-style full-viewport page turns for the marketing landing.
  * Exposes goTo(page) via ref for nav links.
  */
-const LandingPager = forwardRef(function LandingPager({ children, labels = ['Hero', 'The loop', 'Why'] }, ref) {
+const LandingPager = forwardRef(function LandingPager({ children, labels = ['Hero', 'The loop', 'Why'], onPageChange }, ref) {
   const [page, setPage] = useState(0);
   const [phase, setPhase] = useState(null); // { from, to, dir } while turning
   const pageRef = useRef(0);
@@ -42,6 +42,14 @@ const LandingPager = forwardRef(function LandingPager({ children, labels = ['Her
   const lastTurn = useRef(0);
   const touchY = useRef(null);
   const turnTimer = useRef(null);
+  const notifyRef = useRef(onPageChange);
+  notifyRef.current = onPageChange;
+
+  const shownPage = phase ? phase.to : page;
+
+  useEffect(() => {
+    notifyRef.current?.(shownPage);
+  }, [shownPage]);
 
   const syncHash = (to) => {
     const hash = PAGE_TO_HASH[to];
@@ -107,10 +115,22 @@ const LandingPager = forwardRef(function LandingPager({ children, labels = ['Her
       setPage(initial);
     }
 
+    // A page taller than the viewport (phones, short windows) has to scroll
+    // through its own content before a turn takes over.
+    const canScroll = (target, dir) => {
+      const inner = target && target.closest && target.closest('.ls-land-inner');
+      if (!inner) return false;
+      const max = inner.scrollHeight - inner.clientHeight;
+      if (max <= 1) return false;
+      return dir > 0 ? inner.scrollTop < max - 1 : inner.scrollTop > 1;
+    };
+
     const onWheel = (e) => {
       if (Math.abs(e.deltaY) < 2) return;
+      const dir = e.deltaY > 0 ? 1 : -1;
+      if (canScroll(e.target, dir)) return;
       e.preventDefault();
-      push(e.deltaY > 0 ? 1 : -1, Math.min(70, Math.abs(e.deltaY)));
+      push(dir, Math.min(70, Math.abs(e.deltaY)));
     };
 
     const onTouchStart = (e) => {
@@ -123,14 +143,18 @@ const LandingPager = forwardRef(function LandingPager({ children, labels = ['Her
       const d = touchY.current - y;
       touchY.current = y;
       if (Math.abs(d) < 1) return;
+      const dir = d > 0 ? 1 : -1;
+      if (canScroll(e.target, dir)) return;
       if (e.cancelable) e.preventDefault();
-      push(d > 0 ? 1 : -1, Math.abs(d) * 1.6);
+      push(dir, Math.abs(d) * 1.6);
     };
     const onTouchEnd = () => {
       touchY.current = null;
     };
 
     const onKey = (e) => {
+      // Space activates a focused button/link — don't steal it for a page turn.
+      if (e.key === ' ' && e.target?.closest?.('a,button,input,textarea,select')) return;
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
         goTo(pageRef.current + 1);
@@ -196,20 +220,6 @@ const LandingPager = forwardRef(function LandingPager({ children, labels = ['Her
         ))}
       </div>
 
-      <div className={`ls-land-hint${page >= LAND_COUNT - 1 ? ' is-hidden' : ''}`} aria-hidden>
-        <span
-          style={{
-            display: 'block',
-            width: 14,
-            height: 14,
-            borderLeft: '2px solid var(--accent)',
-            borderBottom: '2px solid var(--accent)',
-            transform: 'rotate(-45deg)',
-            animation: 'lsNudge 1.6s ease-in-out infinite',
-          }}
-        />
-        Swipe
-      </div>
     </div>
   );
 });
