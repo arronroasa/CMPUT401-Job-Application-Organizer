@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { OnFileMark, OnFileWordmark } from '@/components/OnFileLogo';
 import ThemeToggle from '@/components/ThemeToggle';
 import LandingPager from '@/components/LandingPager';
+import AppEntryLinkGuard from '@/components/AppEntryLinkGuard';
 import { useTheme } from '@/lib/theme';
 
 const RADIUS = 380;
@@ -145,6 +146,7 @@ export default function Landing() {
 
   return (
     <div ref={rootRef} className="bg-paper text-ink transition-colors duration-300" style={{ maxWidth: 1440, margin: '0 auto' }}>
+      <AppEntryLinkGuard />
       <header
         style={{
           display: 'flex',
