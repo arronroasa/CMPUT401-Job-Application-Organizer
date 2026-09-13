@@ -1,0 +1,41 @@
+services:
+  onfile:
+    build:
+      context: .
+      args:
+        # NEXT_PUBLIC_* vars are baked into the browser bundle at build
+        # time. Override with `NEXT_PUBLIC_CAREERSAVERS_API_URL=... docker
+        # compose build` if the backend won't be reachable at localhost:8000
+        # from wherever the browser runs.
+        NEXT_PUBLIC_CAREERSAVERS_API_URL: ${NEXT_PUBLIC_CAREERSAVERS_API_URL:-http://localhost:8000}
+    image: onfile:latest
+    ports:
+      - '3000:3000'
+      - '8000:8000'
+    environment:
+      - APPLICATION_BROWSER_HEADLESS=true
+      # "Apply" connects to a Chrome window YOU launch on your machine with
+      # remote debugging enabled, e.g.:
+      #   macOS:   open -a "Google Chrome" --args --remote-debugging-port=9222
+      #   Linux:   google-chrome --remote-debugging-port=9222
+      #   Windows: chrome.exe --remote-debugging-port=9222
+      # host.docker.internal resolves to your machine from inside the
+      # container (works out of the box on Docker Desktop for macOS/
+      # Windows; the extra_hosts entry below makes it resolve on Linux too).
+      - APPLICATION_CDP_ENDPOINT=http://host.docker.internal:9222
+      # Uncomment and set if you want live Gemini results instead of the
+      # canned demo suggestions (see .env.example).
+      # - NEXT_PUBLIC_GEMINI_API_KEY=
+    extra_hosts:
+      # No-op on Docker Desktop (macOS/Windows already resolve this), but
+      # required for host.docker.internal to work on native Linux Docker.
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      # Persists the sqlite DB and any discovery/application screenshots
+      # across `docker compose down` / `up` cycles instead of resetting
+      # them every time the container is recreated.
+      - onfile-backend-data:/srv/backend/data
+    restart: unless-stopped
+
+volumes:
+  onfile-backend-data:

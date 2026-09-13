@@ -1,20 +1,36 @@
 'use client';
 
-import { useState } from 'react';
-import { Plus } from 'lucide-react';
+import { Suspense, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useStore } from '@/lib/store';
 import { STAGES } from '@/lib/constants';
 import Badge from '@/components/ui/Badge';
-import Button from '@/components/ui/Button';
 import ApplicationDetail from '@/components/applications/ApplicationDetail';
 import AddApplicationModal from '@/components/kanban/AddApplicationModal';
+import AddApplicationButton from '@/components/kanban/AddApplicationButton';
+import AutoSearchModal from '@/components/kanban/AutoSearchModal';
 
-export default function ApplicationsPage() {
+// useSearchParams needs a Suspense boundary, same as /resumes.
+export default function ApplicationsPageWrapper() {
+  return (
+    <Suspense fallback={null}>
+      <ApplicationsPage />
+    </Suspense>
+  );
+}
+
+function ApplicationsPage() {
   const { data } = useStore();
+  const searchParams = useSearchParams();
+  const preselectId = searchParams.get('app');
   const [query, setQuery] = useState('');
   const [stageFilter, setStageFilter] = useState('all');
-  const [selected, setSelected] = useState(null);
+  // Opened from a notification link. Lazy so it only applies on arrival.
+  const [selected, setSelected] = useState(
+    () => data.applications.find((a) => a.id === preselectId) || null
+  );
   const [showModal, setShowModal] = useState(false);
+  const [showAutoSearch, setShowAutoSearch] = useState(false);
 
   const filtered = data.applications.filter((a) => {
     const matchesQuery = `${a.company} ${a.role}`.toLowerCase().includes(query.toLowerCase());
@@ -39,9 +55,7 @@ export default function ApplicationsPage() {
               </option>
             ))}
           </select>
-          <Button onClick={() => setShowModal(true)}>
-            <Plus size={16} /> Add
-          </Button>
+          <AddApplicationButton onManual={() => setShowModal(true)} onAutoSearch={() => setShowAutoSearch(true)} />
         </div>
       </header>
 
@@ -88,6 +102,7 @@ export default function ApplicationsPage() {
 
       {selected && <ApplicationDetail app={selected} onClose={() => setSelected(null)} />}
       {showModal && <AddApplicationModal onClose={() => setShowModal(false)} />}
+      {showAutoSearch && <AutoSearchModal onClose={() => setShowAutoSearch(false)} />}
     </div>
   );
 }
