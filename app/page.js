@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { LayoutGrid, KanbanSquare } from 'lucide-react';
 import { OnFileMark, OnFileWordmark } from '@/components/OnFileLogo';
 import ThemeToggle from '@/components/ThemeToggle';
 import LandingPager from '@/components/LandingPager';
@@ -10,6 +11,44 @@ import AppEntryLinkGuard from '@/components/AppEntryLinkGuard';
 import { useTheme } from '@/lib/theme';
 
 const Hyperspeed = dynamic(() => import('@/components/Hyperspeed'), { ssr: false });
+const Carousel = dynamic(() => import('@/components/Carousel'), { ssr: false });
+
+const WHY_ITEMS = [
+  {
+    id: 1,
+    eyebrow: 'Why not a spreadsheet',
+    title: 'Everything for one job, together',
+    description:
+      "A spreadsheet row can't hold the job description, the resume you sent, and their reply. Here it all lives on one card, so you're not digging through tabs.",
+  },
+  {
+    id: 2,
+    eyebrow: 'Fit score',
+    title: 'See where you stand',
+    description:
+      'Each role gets a rough fit score from your bullets against theirs. Enough to tell a real match from a long shot before you sink an hour in.',
+  },
+  {
+    id: 3,
+    eyebrow: 'A small daily habit',
+    title: 'A little each day',
+    description:
+      'A streak, a short daily list, and follow-ups drafted for you. The point is showing up for a few minutes a day, not one giant Sunday session.',
+  },
+];
+
+const LOGO_MARQUEE = [
+  'Atlassian',
+  'Dropbox',
+  'Duolingo',
+  'GitHub',
+  'Mercado Libre',
+  'Microsoft',
+  'Netflix',
+  'Shopify',
+  'Stripe',
+  'Neo Financial',
+];
 
 // Module-level constant on purpose: Hyperspeed tears down and rebuilds its
 // whole WebGL scene whenever this object's identity changes.
@@ -79,6 +118,54 @@ const HERO_CARDS = [
   },
 ];
 
+const LOOP_LINKS = [
+  {
+    href: '/dashboard',
+    Icon: LayoutGrid,
+    title: 'See what is due today',
+    sub: 'Follow-ups, stage changes, and anything waiting on a reply.',
+    cta: 'Open the dashboard',
+  },
+  {
+    href: '/pipeline',
+    Icon: KanbanSquare,
+    title: 'Move jobs as they progress',
+    sub: 'Drag a card from applied to interview to offer.',
+    cta: 'Open the pipeline',
+  },
+];
+
+const LOOP_STEPS = [
+  {
+    n: '01',
+    title: 'Add',
+    body: 'Paste a job link, set the company and role, done.',
+    tint: 'var(--mint)',
+    image: '/section-2/add-1.png',
+  },
+  {
+    n: '02',
+    title: 'Tailor',
+    body: 'Copy your resume for one job and edit it there, with AI suggestions you can take or leave.',
+    tint: 'var(--honey)',
+    image: '/section-2/tailor-2.png',
+  },
+  {
+    n: '03',
+    title: 'Track',
+    body: 'Drag each job through applied, interview, and offer, and note what they said.',
+    tint: 'var(--blush)',
+    image: '/section-2/track-3.png',
+  },
+  {
+    n: '04',
+    title: 'Prep',
+    body: 'Search a company and see the questions it actually asks, most common first.',
+    tint: 'var(--panel)',
+    image: '/section-2/prep-4.png',
+  },
+];
+
 const NAV_SECTIONS = [
   { label: 'Home', hash: null, page: 0 },
   { label: 'About', hash: 'loop', page: 1 },
@@ -91,6 +178,7 @@ const RADIUS_MAX = 560;
 export default function Landing() {
   const { isDark } = useTheme();
   const [activePage, setActivePage] = useState(0);
+  const [carouselWidth, setCarouselWidth] = useState(520);
   const rootRef = useRef(null);
   const pagerRef = useRef(null);
   const heroRef = useRef(null);
@@ -110,6 +198,13 @@ export default function Landing() {
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'center' });
     else document.querySelector('.ls-land-page.is-active .ls-land-inner')?.scrollTo({ top: 0, behavior: 'smooth' });
   };
+  useEffect(() => {
+    const fit = () => setCarouselWidth(Math.max(258, Math.min(520, window.innerWidth - 72)));
+    fit();
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, []);
+
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
@@ -171,27 +266,6 @@ export default function Landing() {
       cardCleanups.push(() => {
         card.removeEventListener('pointermove', onMove);
         card.removeEventListener('pointerleave', onLeave);
-      });
-    });
-
-    root.querySelectorAll('[data-loop]').forEach((cell) => {
-      const dot = cell.querySelector('[data-dot]');
-      const num = cell.querySelector('[data-num]');
-      if (dot) dot.style.transition = 'transform .45s cubic-bezier(.2,.8,.2,1)';
-      if (num) num.style.transition = 'color .3s ease';
-      const enter = () => {
-        if (dot) dot.style.transform = 'scale(1.75)';
-        if (num) num.style.color = 'var(--ink)';
-      };
-      const out = () => {
-        if (dot) dot.style.transform = 'none';
-        if (num) num.style.color = 'var(--ink-faint)';
-      };
-      cell.addEventListener('pointerenter', enter);
-      cell.addEventListener('pointerleave', out);
-      cardCleanups.push(() => {
-        cell.removeEventListener('pointerenter', enter);
-        cell.removeEventListener('pointerleave', out);
       });
     });
 
@@ -301,13 +375,13 @@ export default function Landing() {
                   <h1>
                     Every application, from{' '}
                     <span style={{ position: 'relative', display: 'inline-block', isolation: 'isolate' }}>
-                      <span style={{ position: 'absolute', left: -6, right: -8, top: '16%', bottom: '8%', background: 'var(--mint)', borderRadius: '12px 16px 14px 10px', zIndex: 0 }} />
-                      <span style={{ position: 'relative', zIndex: 1, color: 'var(--ink)' }}>applied</span>
+                      <span style={{ position: 'absolute', left: -6, right: -8, top: '16%', bottom: '8%', background: 'var(--hl-mint)', borderRadius: '12px 16px 14px 10px', zIndex: 0 }} />
+                      <span style={{ position: 'relative', zIndex: 1, color: 'var(--hl-ink)' }}>applied</span>
                     </span>{' '}
                     to{' '}
                     <span style={{ position: 'relative', display: 'inline-block' }}>
                       offer
-                      <span style={{ position: 'absolute', left: 0, right: -4, bottom: -2, height: 8, background: 'var(--honey)', borderRadius: 999, transform: 'rotate(-.6deg)' }} />
+                      <span style={{ position: 'absolute', left: 0, right: -4, bottom: -2, height: 8, background: 'var(--hl-honey)', borderRadius: 999, transform: 'rotate(-.6deg)' }} />
                     </span>
                   </h1>
                 </div>
@@ -335,26 +409,13 @@ export default function Landing() {
         <section className="ls-land-page" id="loop">
           <div className="ls-land-inner" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(28px,4vw,40px)' }}>
             <div>
-              <div style={{ fontSize: 11, letterSpacing: '.22em', textTransform: 'uppercase', color: 'var(--ink-soft)', marginBottom: 18 }}>The loop</div>
-              <h2 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 'clamp(30px,3.8vw,50px)', lineHeight: 1.08, letterSpacing: '-.01em', margin: '0 0 40px', maxWidth: 820 }}>
-                The same four steps,{' '}
-                <span style={{ position: 'relative', display: 'inline-block', isolation: 'isolate' }}>
-                  <span style={{ position: 'absolute', left: 0, right: 0, bottom: -3, height: 7, background: 'var(--honey)', borderRadius: 999, transform: 'rotate(-.4deg)', zIndex: 0 }} />
-                  <span style={{ position: 'relative', zIndex: 1 }}>every job.</span>
+              <h2 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 'clamp(22px,2.1vw,33px)', lineHeight: 1.2, letterSpacing: '-.01em', margin: '0 0 30px', textAlign: 'center' }}>
+                One place for your entire job hunt.
+                <span style={{ display: 'block', color: 'var(--ink-soft)' }}>
+                  Made so you go from applied to offer without losing the thread.
                 </span>
               </h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', borderTop: '1px solid var(--line)' }}>
-                <LoopCell n="01" dot="var(--mint)" title="Add" body="Add a job by hand: paste the link, set the company and role. That's the whole intake." />
-                <LoopCell n="02" dot="var(--honey)" title="Tailor" body="Copy your master resume for that one job and edit it there. The AI suggests changes section by section — you keep the ones you like." />
-                <LoopCell n="03" dot="var(--blush)" title="Track" body="Drag the card as things move: applied, interview, offer. Jot down what they said so you don't lose it." />
-                <LoopCell n="04" dot="var(--panel)" title="Prep" body="Search the company and see the questions it actually asks, most-common first." />
-              </div>
-            </div>
-            <div style={{ background: 'var(--sage)', borderRadius: 26, padding: '36px 36px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 28, boxShadow: isDark ? 'var(--shadow-card)' : undefined }}>
-              <Stat n="41" label="applications tracked this term" />
-              <Stat n="38" label="resumes tailored automatically" />
-              <Stat n="31%" label="reply rate on tailored sends" />
-              <Stat n="6.4d" label="average time to first response" />
+              <LoopSteps running={activePage === 1} />
             </div>
           </div>
         </section>
@@ -362,49 +423,31 @@ export default function Landing() {
         {/* Page 2 — Why + tour + footer */}
         <section className="ls-land-page" id="why">
           <div className="ls-land-inner" style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(28px,4vw,44px)' }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 22 }}>
-              <WhyCard eyebrow="Why not a spreadsheet" title="Everything for one job, together" body="A spreadsheet row can't hold the job description, the resume you sent, and their reply. Here it's all on one card, so you're not digging through tabs." />
-              <WhyCard eyebrow="Fit score" title="See where you stand" body="Each role gets a rough fit score from your bullets against their requirements — enough to tell a real match from a long shot before you sink an hour into it." />
-              <WhyCard eyebrow="A small daily habit" title="A little each day" body="A streak, a short daily list, and follow-ups drafted for you. The point is showing up for a few minutes a day instead of one giant Sunday session." />
+            <div className="of-why-split">
+              <div className="of-why-carousel">
+                <Carousel items={WHY_ITEMS} baseWidth={carouselWidth} round autoplay autoplayDelay={4200} pauseOnHover loop />
+              </div>
+              <div className="of-why-side">
+                <Link href="/dashboard" className="of-hero-cta">
+                  <span>Take a tour</span>
+                  <span className="of-hero-arrow" aria-hidden>
+                    →
+                  </span>
+                </Link>
+              </div>
             </div>
 
-            <div data-card className="ls-hero-card" style={{ borderRadius: 26, padding: '40px 36px', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 28 }}>
-              <div style={{ minWidth: 260 }}>
-                <h3 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 'clamp(20px,2.4vw,28px)', lineHeight: 1.3, margin: 0 }}>
-                  Hit &ldquo;Take the tour&rdquo; and Vega walks you through the whole thing in about two minutes.
-                </h3>
+            <div className="of-logos" aria-hidden>
+              <div className="of-logos-track">
+                {[...LOGO_MARQUEE, ...LOGO_MARQUEE].map((name, i) => (
+                  <span key={`${name}-${i}`} className="of-logo">
+                    {name}
+                  </span>
+                ))}
               </div>
-              <Link href="/dashboard" className="lp-dark" style={{ display: 'inline-flex', alignItems: 'center', gap: 11, background: 'var(--ink)', color: 'var(--paper)', padding: '16px 30px', borderRadius: 999, fontSize: 14.5, fontWeight: 500, boxShadow: isDark ? 'var(--shadow-glow)' : undefined }}>▷ Take the tour</Link>
             </div>
 
-            <footer style={{ background: 'var(--sage)', borderRadius: 22, padding: '40px 36px 28px' }}>
-              <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 32, paddingBottom: 28, borderBottom: '1px solid var(--line)' }}>
-                <div style={{ maxWidth: 360 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-                    <OnFileMark size={26} />
-                    <span style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 19, color: 'var(--logo)' }}>
-                      <span style={{ fontStyle: 'italic' }}>On</span>File
-                    </span>
-                  </div>
-                  <p style={{ margin: 0, fontSize: 14, lineHeight: 1.6, color: 'var(--ink-soft)' }}>For 2nd-year CS, hunting 2027 internships.</p>
-                </div>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 56, fontSize: 13.5 }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    <span style={{ fontWeight: 600, marginBottom: 2 }}>Product</span>
-                    <a href="#loop" onClick={goPage(1, 'loop')}>The loop</a>
-                    <a href="#why" onClick={goPage(2, 'why')}>Why OnFile</a>
-                    <a href="#tour" onClick={goPage(2)}>Guided tour</a>
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                    <span style={{ fontWeight: 600, marginBottom: 2 }}>Your data</span>
-                    <a href="#hero" onClick={goPage(0)}>Job sources</a>
-                    <a href="#hero" onClick={goPage(0)}>Stays local</a>
-                    <a href="#hero" onClick={goPage(0)}>Export</a>
-                  </div>
-                </div>
-              </div>
-              <div style={{ paddingTop: 18, fontSize: 12.5, color: 'var(--ink-faint)' }}>OnFile · built at the Fall 2026 hackathon</div>
-            </footer>
+            <footer className="of-footer" />
           </div>
         </section>
       </LandingPager>
@@ -431,34 +474,61 @@ function HeroCard({ href, eyebrow, title, sub, cta, image, backdrop, index }) {
   );
 }
 
-function LoopCell({ n, dot, title, body }) {
+function LoopSteps({ running }) {
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (!running) return undefined;
+    const id = setInterval(() => setActive((a) => (a + 1) % LOOP_STEPS.length), 2600);
+    return () => clearInterval(id);
+  }, [running]);
+
   return (
-    <div data-loop className="lp-loop" style={{ background: 'transparent', padding: '24px 22px 28px', borderBottom: '1px solid var(--line)', boxShadow: '1px 0 0 var(--line)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 28 }}>
-        <span data-num style={{ fontSize: 12, color: 'var(--ink-faint)' }}>{n}</span>
-        <span data-dot style={{ width: 30, height: 30, borderRadius: '50%', background: dot }} />
+    <div className="of-loop-split">
+      <div className="of-loop-rail">
+          {LOOP_STEPS.map((step, i) => (
+            <button
+              key={step.n}
+              type="button"
+              onClick={() => setActive(i)}
+              aria-label={step.title}
+              aria-current={i === active ? 'true' : undefined}
+              className={`of-loop-dot${i === active ? ' is-on' : ''}`}
+            />
+          ))}
       </div>
-      <h3 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 21, margin: '0 0 10px' }}>{title}</h3>
-      <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.6, color: 'var(--ink-soft)' }}>{body}</p>
+
+      <div className="of-loop-cards">
+          {LOOP_STEPS.map((step, i) => (
+          <div key={step.n} className={`of-loop-card${i === active ? ' is-on' : ''}`}>
+            <span
+              className="of-loop-thumb"
+              style={{ backgroundColor: step.tint, backgroundImage: `url(${step.image})` }}
+              aria-hidden
+            />
+            <span className="of-loop-num">{step.n}</span>
+            <h3 className="of-loop-title">{step.title}</h3>
+            <p className="of-loop-body">{step.body}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="of-loop-links">
+        {LOOP_LINKS.map(({ href, Icon, title, sub, cta }) => (
+          <Link key={href} href={href} className="of-loop-link">
+            <Icon size={24} strokeWidth={2.1} className="of-loop-link-icon" />
+            <span className="of-loop-link-title">{title}</span>
+            <span className="of-loop-link-sub">{sub}</span>
+            <span className="of-loop-link-cta">
+              {cta}
+              <span className="of-loop-link-arrow" aria-hidden>
+                →
+              </span>
+            </span>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }
 
-function Stat({ n, label }) {
-  return (
-    <div>
-      <div style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 'clamp(34px,4vw,52px)', lineHeight: 1 }}>{n}</div>
-      <div style={{ fontSize: 13.5, color: 'var(--ink-soft)', marginTop: 8 }}>{label}</div>
-    </div>
-  );
-}
-
-function WhyCard({ eyebrow, title, body }) {
-  return (
-    <div data-card className="lp-why ls-hero-card" style={{ borderRadius: 22, padding: '30px 28px 34px', willChange: 'transform' }}>
-      <div style={{ fontSize: 11, letterSpacing: '.2em', textTransform: 'uppercase', color: 'var(--ink-faint)', marginBottom: 16 }}>{eyebrow}</div>
-      <h3 style={{ fontFamily: 'var(--font-quicksand), sans-serif', fontWeight: 600, fontSize: 25, lineHeight: 1.18, margin: '0 0 14px' }}>{title}</h3>
-      <p style={{ margin: 0, fontSize: 14.5, lineHeight: 1.62, color: 'var(--ink-soft)' }}>{body}</p>
-    </div>
-  );
-}
