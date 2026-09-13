@@ -199,7 +199,7 @@ export default function Landing() {
     else document.querySelector('.ls-land-page.is-active .ls-land-inner')?.scrollTo({ top: 0, behavior: 'smooth' });
   };
   useEffect(() => {
-    const fit = () => setCarouselWidth(Math.max(258, Math.min(520, window.innerWidth - 72)));
+    const fit = () => setCarouselWidth(Math.max(258, Math.min(520, window.innerWidth - 72, window.innerHeight - 390)));
     fit();
     window.addEventListener('resize', fit);
     return () => window.removeEventListener('resize', fit);

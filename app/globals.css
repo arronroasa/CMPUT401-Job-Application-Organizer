@@ -408,7 +408,7 @@ html.dark .lp-login:hover {
 .of-loop-cards {
   position: relative;
   aspect-ratio: 1 / 1;
-  width: 100%;
+  width: min(100%, 54vh);
 }
 
 .of-loop-card {
@@ -534,6 +534,10 @@ html.dark .lp-login:hover {
   }
   .of-loop-cards {
     aspect-ratio: 4 / 5;
+    width: min(100%, 42vh);
+  }
+  .of-loop-links {
+    max-width: 460px;
   }
 }
 
@@ -599,6 +603,13 @@ html.dark .lp-login:hover {
 @media (max-width: 560px) {
   .of-why-carousel {
     width: 100%;
+  }
+  .of-loop-cards {
+    aspect-ratio: 1 / 1;
+    width: min(100%, 40vh);
+  }
+  .of-loop-split {
+    gap: 16px;
   }
 }
 
