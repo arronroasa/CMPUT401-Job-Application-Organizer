@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { STAGES } from '@/lib/constants';
 import { useStore } from '@/lib/store';
 import KanbanCard from './KanbanCard';
+import Tooltip from '@/components/ui/Tooltip';
 
 export default function KanbanBoard({ applications, onOpen }) {
   const { moveStage } = useStore();
@@ -27,7 +28,7 @@ export default function KanbanBoard({ applications, onOpen }) {
   }
 
   return (
-    <div className="grid grid-flow-col auto-cols-[minmax(200px,1fr)] gap-3.5 items-start overflow-x-auto pb-2">
+    <div className="flex gap-3.5 items-start overflow-x-auto pb-2 -mx-1 px-1">
       {STAGES.map((stage, ci) => {
         const items = applications.filter((a) => a.stage === stage.id);
         return (
@@ -39,7 +40,7 @@ export default function KanbanBoard({ applications, onOpen }) {
             }}
             onDragLeave={() => setDragOverStage(null)}
             onDrop={(e) => handleDrop(e, stage.id)}
-            className={`rounded-lg border px-3 pt-3.5 pb-4 min-h-[150px] transition-colors ${
+            className={`w-[240px] sm:w-[260px] shrink-0 rounded-lg border px-3 pt-3.5 pb-4 min-h-[150px] transition-colors ${
               dragOverStage === stage.id ? 'border-pine bg-mint/40' : 'border-line bg-surface'
             }`}
             style={{ animation: `lsRise .5s cubic-bezier(.22,.8,.2,1) ${ci * 70}ms both` }}

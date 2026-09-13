@@ -6,6 +6,7 @@ import { useStore } from '@/lib/store';
 import KanbanBoard from '@/components/kanban/KanbanBoard';
 import AddApplicationModal from '@/components/kanban/AddApplicationModal';
 import ApplicationDetail from '@/components/applications/ApplicationDetail';
+import ApplicationCalendar from '@/components/calendar/ApplicationCalendar';
 import Button from '@/components/ui/Button';
 
 export default function PipelinePage() {
@@ -36,8 +37,11 @@ export default function PipelinePage() {
         </div>
       </header>
 
-      <div className="animate-[lsRise_.45s_cubic-bezier(.22,.8,.2,1)_both]">
-        <KanbanBoard applications={filtered} onOpen={setSelected} />
+      <div className="flex flex-col md:flex-row gap-6 items-start">
+        <div className="flex-1 min-w-0">
+          <KanbanBoard applications={filtered} onOpen={setSelected} />
+        </div>
+        <ApplicationCalendar applications={data.applications} onSelectApp={setSelected} />
       </div>
 
       {showModal && <AddApplicationModal onClose={() => setShowModal(false)} />}
