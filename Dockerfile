@@ -39,6 +39,7 @@ COPY jsconfig.json next.config.mjs postcss.config.js tailwind.config.js ./
 COPY app ./app
 COPY components ./components
 COPY lib ./lib
+COPY public ./public
 
 ARG NEXT_PUBLIC_CAREERSAVERS_API_URL=http://localhost:8000
 ENV NEXT_PUBLIC_CAREERSAVERS_API_URL=${NEXT_PUBLIC_CAREERSAVERS_API_URL}
@@ -73,6 +74,10 @@ COPY --from=frontend-builder /app/node_modules ./node_modules
 COPY --from=frontend-builder /app/.next ./.next
 COPY --from=frontend-builder /app/package.json ./package.json
 COPY next.config.mjs ./next.config.mjs
+COPY --from=frontend-builder /app/node_modules ./node_modules
+COPY --from=frontend-builder /app/.next ./.next
+COPY --from=frontend-builder /app/public ./public
+COPY --from=frontend-builder /app/package.json ./package.json
 
 ARG NEXT_PUBLIC_CAREERSAVERS_API_URL=http://localhost:8000
 ENV NEXT_PUBLIC_CAREERSAVERS_API_URL=${NEXT_PUBLIC_CAREERSAVERS_API_URL}
@@ -87,6 +92,9 @@ ENV PYTHONUNBUFFERED=1
 ENV APPLICATION_CDP_ENDPOINT=http://host.docker.internal:9222
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh \
+    && chmod +x /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 3000 8000

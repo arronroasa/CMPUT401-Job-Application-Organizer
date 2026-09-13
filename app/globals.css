@@ -65,17 +65,17 @@ html.dark {
   --line: color-mix(in srgb, #f2f4f7 14%, transparent);
   --panel: #15171a;
 
-  --pine: #e6e9f0;
-  --pine-dark: #c3c9d4;
-  --pine-soft: #272a2f;
-
-  --mint: #1a1d22;
-  --honey: #2b2f35;
-  --blush: #23272f;
+  --mint: color-mix(in srgb, #5cffb1 14%, var(--surface));
+  --honey: color-mix(in srgb, #ffd84d 14%, var(--surface));
+  --blush: color-mix(in srgb, #f9a8c9 14%, var(--surface));
   --hl-mint: #5cffb1;
   --hl-honey: #ffd84d;
   --hl-ink: #07080a;
-  --sage: #13151a;
+  --sage: #171b16;
+
+  --logo: #7fd99b;
+  --spark: #f5c451;
+  --accent: #5cffb1; 
 
   /* Kept faintly tinted so the three stay tellable apart on dark. */
   --diff-easy-bg: color-mix(in srgb, #6ee7a5 14%, transparent);

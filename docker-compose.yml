@@ -10,8 +10,8 @@ services:
         NEXT_PUBLIC_CAREERSAVERS_API_URL: ${NEXT_PUBLIC_CAREERSAVERS_API_URL:-http://localhost:8000}
     image: onfile:latest
     ports:
-      - '3000:3000'
-      - '8000:8000'
+      - '3000:3000' #Frontend
+      - '8000:8000' #Backend
     environment:
       - APPLICATION_BROWSER_HEADLESS=true
       # "Apply" connects to a Chrome window YOU launch on your machine with
