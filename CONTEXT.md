@@ -22,6 +22,16 @@ Generating suggested edits for a tailored resume from a pasted **job description
 
 A job the user has applied to. Records company, role, date applied, stage, and communications. May link to one tailored resume via a resume reference.
 
+## Next action
+
+The one dated piece of work the user still owes an application, such as "Prep for panel interview" on the 15th. An application has at most one at a time, and it is either outstanding or done. It looks forward: it says what has not happened yet.
+
+## Timeline entry
+
+A record that an application arrived at a stage on a date. Entries accumulate, so an application that slid back and forward again carries the arrival twice. It looks backward: it says what already happened.
+
+A next action and a timeline entry are both dated, and they are not interchangeable. Anything showing the days ahead reads next actions. Anything showing history, including notifications, reads timeline entries.
+
 ## Notification
 
 News that one application reached a stage worth knowing about. A notification exists for each time an application arrives at **interview** or **offer**. Moving an application backward produces nothing. An application that returns to a stage it held before produces a second notification, because each arrival is separate news.
