@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Plus } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { STAGES } from '@/lib/constants';
 import Badge from '@/components/ui/Badge';
-import Button from '@/components/ui/Button';
 import ApplicationDetail from '@/components/applications/ApplicationDetail';
 import AddApplicationModal from '@/components/kanban/AddApplicationModal';
+import AddApplicationButton from '@/components/kanban/AddApplicationButton';
+import AutoSearchModal from '@/components/kanban/AutoSearchModal';
 
 export default function ApplicationsPage() {
   const { data } = useStore();
@@ -15,6 +15,7 @@ export default function ApplicationsPage() {
   const [stageFilter, setStageFilter] = useState('all');
   const [selected, setSelected] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showAutoSearch, setShowAutoSearch] = useState(false);
 
   const filtered = data.applications.filter((a) => {
     const matchesQuery = `${a.company} ${a.role}`.toLowerCase().includes(query.toLowerCase());
@@ -39,9 +40,7 @@ export default function ApplicationsPage() {
               </option>
             ))}
           </select>
-          <Button onClick={() => setShowModal(true)}>
-            <Plus size={16} /> Add
-          </Button>
+          <AddApplicationButton onManual={() => setShowModal(true)} onAutoSearch={() => setShowAutoSearch(true)} />
         </div>
       </header>
 
@@ -79,6 +78,7 @@ export default function ApplicationsPage() {
 
       {selected && <ApplicationDetail app={selected} onClose={() => setSelected(null)} />}
       {showModal && <AddApplicationModal onClose={() => setShowModal(false)} />}
+      {showAutoSearch && <AutoSearchModal onClose={() => setShowAutoSearch(false)} />}
     </div>
   );
 }

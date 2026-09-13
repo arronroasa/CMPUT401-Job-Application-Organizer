@@ -1,0 +1,18 @@
+node_modules
+.next
+out
+.git
+.DS_Store
+.env
+.env.local
+*.log
+
+# Reference-only project, not part of the shipped app — keeping it out of
+# the build context is what makes `docker build` fast.
+careersavers
+app-org
+
+# Backend runtime artifacts that should be generated fresh, not baked in.
+backend/data/*.db
+backend/data/screenshots
+backend/**/__pycache__

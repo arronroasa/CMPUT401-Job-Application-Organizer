@@ -6,6 +6,7 @@ import { Plus } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import MasterResumeEditor from '@/components/resumes/MasterResumeEditor';
 import TailoredResumeEditor from '@/components/resumes/TailoredResumeEditor';
+import ImportedResumeCard from '@/components/resumes/ImportedResumeCard';
 import Button from '@/components/ui/Button';
 
 export default function ResumesPageWrapper() {
@@ -49,6 +50,8 @@ function ResumesPage() {
         <h1 className="font-display font-semibold text-[38px] leading-none tracking-tight text-ink mb-1.5">Resumes</h1>
         <p className="text-inkSoft text-[14.5px]">Keep one master resume, and a tailored copy for each application.</p>
       </header>
+
+      <ImportedResumeCard />
 
       <div className="flex items-center gap-2.5 mb-6 flex-wrap">
         <TabButton active={activeId === 'master'} onClick={() => setActiveId('master')}>

@@ -1,0 +1,7 @@
+{
+  "backend engineer": ["backend developer", "server-side developer", "API engineer", "software engineer backend"],
+  "frontend engineer": ["frontend developer", "UI engineer", "React developer", "web developer"],
+  "full stack engineer": ["full stack developer", "software engineer", "web engineer"],
+  "data engineer": ["data developer", "ETL engineer", "data pipeline engineer"],
+  "ml engineer": ["machine learning engineer", "AI engineer", "MLOps engineer"]
+}
