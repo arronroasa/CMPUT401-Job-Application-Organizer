@@ -89,7 +89,8 @@ ENV PYTHONUNBUFFERED=1
 ENV APPLICATION_CDP_ENDPOINT=http://host.docker.internal:9222
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+RUN sed -i 's/\r$//' /usr/local/bin/docker-entrypoint.sh \
+    && chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 3000 8000
 
