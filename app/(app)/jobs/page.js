@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { RefreshCw, Link2, AlertTriangle, Loader2 } from 'lucide-react';
 import { useStore } from '@/lib/store';
 import { fetchJobs, importJobLink, archiveJob, runDiscovery, getDiscoveryStatus, generateResumesForJob, getResume } from '@/lib/api';
-import { flattenBackendResumeContent } from '@/lib/resumeMapping';
+import { mapBackendResumeContent } from '@/lib/resumeMapping';
 import Button from '@/components/ui/Button';
 import JobCard from '@/components/jobs/JobCard';
 import JobDetail from '@/components/jobs/JobDetail';
@@ -13,7 +13,7 @@ import ImportJobModal from '@/components/jobs/ImportJobModal';
 
 export default function JobsPage() {
   const router = useRouter();
-  const { data, addApplication, addTailoredResume } = useStore();
+  const { data, addApplication, addResumeVersionFromFields } = useStore();
 
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -124,14 +124,9 @@ export default function JobsPage() {
       const versionId = result?.versions?.[0]?.id;
       if (!versionId) throw new Error('The backend did not return a resume.');
       const resume = await getResume(versionId);
-      const flattened = flattenBackendResumeContent(resume.content_json);
-      const id = addTailoredResume({
-        name: `${job.company} — ${job.title}`,
-        applicationId: null,
-        jobDescription: job.description || '',
-        ...flattened,
-      });
-      router.push(`/resumes?tailored=${id}`);
+      const fields = mapBackendResumeContent(resume.content_json);
+      const id = addResumeVersionFromFields(`${job.company} — ${job.title}`, fields);
+      router.push(`/resumes?version=${id}`);
     } catch (err) {
       setError(err.message || 'Could not generate a resume for that job.');
     } finally {
