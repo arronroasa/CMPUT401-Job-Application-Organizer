@@ -219,7 +219,19 @@ export default function Landing() {
       // 300px would push the circle past the screen edges, which is its
       // own version of "cut off".
       const widthCap = Math.min(520, window.innerWidth - 72);
-      setCarouselWidth(widthCap < 300 ? widthCap : Math.max(300, Math.min(widthCap, room)));
+      // `room` is a real DOM measurement of what's actually left over on
+      // THIS page (it already accounts for the footer/gaps/CTA that come
+      // back at full size once the >820px-tall "compact" breakpoint stops
+      // applying). Flooring the circle at 300px regardless of `room` meant
+      // that on taller screens, where the returning footer/gaps eat into
+      // the leftover space, the circle could be forced bigger than the
+      // room actually available -- pushing its bottom (and the text inside
+      // it) past the visible page into the ls-land-inner scroll area, which
+      // has its scrollbar deliberately hidden, so it just reads as "cut
+      // off". A too-small circle is a minor look; an overflowing one loses
+      // content, so let `room` win below 300 too, with a lower hard floor
+      // only to stop it collapsing to nothing.
+      setCarouselWidth(widthCap < 300 ? widthCap : Math.min(widthCap, Math.max(220, room)));
     };
     fit();
     window.addEventListener('resize', fit);

@@ -40,7 +40,6 @@ export default function RootLayout({ children }) {
       </head>
       <body className="font-sans text-ink bg-paper antialiased">
         <ScrollbarActivity />
-        <ThemeRoot>{children}</ThemeRoot>
         <ThemeRoot>
           <AppEntryTransitionProvider>{children}</AppEntryTransitionProvider>
         </ThemeRoot>
