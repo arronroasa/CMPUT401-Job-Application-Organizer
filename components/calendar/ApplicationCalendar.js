@@ -137,7 +137,7 @@ export default function DeadlineCalendar({ applications, onSelectApp }) {
                 onClick={() => onSelectApp?.(app)}
                 className="w-full flex items-center justify-between gap-3 text-left text-[13px] hover:underline"
               >
-                <span className="text-ink truncate">
+                <span className="min-w-0 text-ink truncate">
                   {app.company} · {app.nextAction.label}
                 </span>
                 <span className="text-ink shrink-0">

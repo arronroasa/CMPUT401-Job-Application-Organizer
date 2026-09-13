@@ -90,7 +90,7 @@ function ApplicationsPage() {
               <span className="min-w-0 sm:w-[290px] sm:shrink-0 sm:text-right">
                 {next ? (
                   <span className="inline-flex max-w-full items-center rounded-full bg-sage px-3.5 py-1.5 text-[12.5px] text-ink">
-                    <span className="truncate">{next}</span>
+                    <span className="min-w-0 truncate">{next}</span>
                   </span>
                 ) : (
                   <span className="text-[12.5px] text-inkFaint">Nothing due</span>

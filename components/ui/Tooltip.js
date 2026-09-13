@@ -29,7 +29,7 @@ export default function Tooltip({ content, children, delay = 300 }) {
             {show &&
                 createPortal(
                     <div
-                        className="fixed z-[999] max-w-[240px] -translate-x-1/2 -translate-y-full
+                        className="fixed z-[999] max-w-[min(240px,calc(100vw-24px))] -translate-x-1/2 -translate-y-full
                         rounded-lg bg-ink text-paper text-[12px] leading-snug px-3 py-2 shadow-xl
                         pointer-events-none"
                         style={{ left: coords.x, top: coords.y - 8 }}

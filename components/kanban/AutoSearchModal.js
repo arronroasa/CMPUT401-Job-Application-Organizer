@@ -141,11 +141,11 @@ export default function AutoSearchModal({ onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 grid place-items-center bg-ink/[.34] px-6 animate-[lsFade_.28s_ease_both]"
+      className="fixed inset-0 z-50 grid place-items-center bg-ink/[.34] p-4 sm:p-6 animate-[lsFade_.28s_ease_both]"
       onClick={onClose}
     >
       <div
-        className="bg-surface rounded-2xl border border-line w-full max-w-[560px] p-7 max-h-[88vh] overflow-y-auto overscroll-contain animate-[lsPop_.4s_cubic-bezier(.2,.8,.2,1)_both]"
+        className="bg-surface rounded-2xl border border-line w-full max-w-[560px] p-5 sm:p-7 max-h-[88dvh] overflow-y-auto overscroll-contain animate-[lsPop_.4s_cubic-bezier(.2,.8,.2,1)_both]"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-5">

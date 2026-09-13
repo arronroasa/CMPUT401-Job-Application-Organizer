@@ -37,7 +37,7 @@ export default function KanbanCard({ app, onDragStart, onOpen, onShift, canBack,
             className={`inline-flex items-center gap-2 self-start max-w-full mt-3.5 px-3 py-1.5 rounded-full text-[12.5px] text-ink ${meta.bg}`}
           >
             <span className={`shrink-0 w-1.5 h-1.5 rounded-full ${meta.dot}`} />
-            <span className="truncate">{app.nextAction.label}</span>
+            <span className="min-w-0 truncate">{app.nextAction.label}</span>
           </span>
         )}
 
