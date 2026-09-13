@@ -22,6 +22,16 @@ Generating suggested edits for a tailored resume from a pasted **job description
 
 A job the user has applied to. Records company, role, date applied, stage, and communications. May link to one tailored resume via a resume reference.
 
+## Notification
+
+News that one application reached a stage worth knowing about. A notification exists for each time an application arrives at **interview** or **offer**. Moving an application backward produces nothing. An application that returns to a stage it held before produces a second notification, because each arrival is separate news.
+
+Notifications are a reading of an application's own history, not records kept beside it. Nothing is written when a move happens, and the list is worked out from the moves each application already carries. One consequence follows: deleting an application takes its notifications with it, leaving no trace. This is a deliberate choice, not a gap.
+
+## Unread
+
+A notification is unread until the user has looked at it. Opening the notifications page marks everything listed at that moment as read. The unread count is how many notifications the user has not yet looked at.
+
 ## Interview prep
 
 A standalone page for interview preparation. The user searches a company and sees the LeetCode questions that company asks, ranked by frequency. Read-only, backed by a vendored public dataset. Separate from the user's own application data.
