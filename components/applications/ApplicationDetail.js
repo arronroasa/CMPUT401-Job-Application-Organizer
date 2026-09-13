@@ -9,7 +9,7 @@ import Badge from '@/components/ui/Badge';
 import Button from '@/components/ui/Button';
 
 export default function ApplicationDetail({ app: appProp, onClose }) {
-  const { data, moveStage, deleteApplication, addCommunication, setNextAction, completeNextAction } = useStore();
+  const { data, moveStage, updateApplication, deleteApplication, addCommunication, setNextAction, completeNextAction } = useStore();
   const app = data.applications.find((a) => a.id === appProp.id) || appProp;
 
   const [commType, setCommType] = useState('Email');
