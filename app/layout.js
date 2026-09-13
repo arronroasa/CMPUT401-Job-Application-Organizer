@@ -1,6 +1,7 @@
 import { Quicksand, Work_Sans } from 'next/font/google';
 import './globals.css';
 import ThemeRoot from '@/components/ThemeRoot';
+import { AppEntryTransitionProvider } from '@/components/AppEntryTransition';
 
 const quicksand = Quicksand({
   subsets: ['latin'],
@@ -31,7 +32,9 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="font-sans text-ink bg-paper antialiased">
-        <ThemeRoot>{children}</ThemeRoot>
+        <ThemeRoot>
+          <AppEntryTransitionProvider>{children}</AppEntryTransitionProvider>
+        </ThemeRoot>
       </body>
     </html>
   );
